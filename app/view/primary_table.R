@@ -20,26 +20,36 @@ box::use(
 
 #' @export
 ui <- function(id, datasets) {
-  ns <- shiny::NS(id)
-  shiny::tagList(
-    shiny::uiOutput(ns("table")),
-    shiny::p("Statistical model and comparison p-values removed when applying data filters. Refer to the application information for additional details."),
-    shiny::p("[1] Based on Analysis of covariance (ANCOVA) model with treatment and site group as factors and baseline value as a covariate."),
-    shiny::p("[2] Test for a non-zero coefficient for treatment (dose) as a continuous variable."),
-    shiny::p("[3] Pairwise comparison with treatment as a categorical variable: p-values without adjustment for multiple comparisons.")
+  ns <- NS(id)
+  tagList(
+    uiOutput(ns("table")),
+    p(
+      "Statistical model and comparison p-values removed when applying data filters.
+      Refer to the application information for additional details."
+    ),
+    p(
+      "[1] Based on Analysis of covariance (ANCOVA) model with treatment and
+      site group as factors and baseline value as a covariate."
+    ),
+    p(
+      "[2] Test for a non-zero coefficient for treatment (dose) as a continuous variable."
+    ),
+    p(
+      "[3] Pairwise comparison with treatment as a categorical variable:
+      p-values without adjustment for multiple comparisons."
+    )
   )
 }
 
 #' @export
 server <- function(input, output, session, datasets) {
-  output$table <- shiny::renderUI({
-    ADSL_FILTERED <- datasets$get_data("ADSL", filtered = TRUE)
-    ADAS_FILTERED <- datasets$get_data("ADAS", filtered = TRUE)
-    adas <- ADAS_FILTERED
+  output$table <- renderUI({
+    filtered_adsl <- datasets$get_data("ADSL", filtered = TRUE)
+    filtered_adas <- datasets$get_data("ADAS", filtered = TRUE)
+    adas <- filtered_adas
 
-    ## -----------------------------------------------------------------------------------------------------------------------------------
     t <- tplyr_table(adas, TRTP) |>
-      set_pop_data(ADSL_FILTERED) |>
+      set_pop_data(filtered_adsl) |>
       set_pop_treat_var(TRT01P) |>
       set_pop_where(EFFFL == "Y" & ITTFL == "Y") |>
       set_distinct_by(USUBJID) |>
@@ -61,7 +71,7 @@ server <- function(input, output, session, datasets) {
     sum_data <- t |>
       build() |>
       nest_rowlabels() |>
-      dplyr::select(-starts_with("ord")) |>
+      select(-starts_with("ord")) |>
       add_column_headers(
         paste0(
           "|Placebo</br>(N=**Placebo**)| Xanomeline High Dose</br>(N=**Xanomeline High Dose**) ",
@@ -69,23 +79,18 @@ server <- function(input, output, session, datasets) {
         ),
         header_n(t)
       )
-
-
-    ## -----------------------------------------------------------------------------------------------------------------------------------
     model_portion <- efficacy_models(adas, "CHG", 24, !filter_active(datasets))
 
+    final <- bind_rows(sum_data, model_portion)
 
-    ## -----------------------------------------------------------------------------------------------------------------------------------
-    final <- dplyr::bind_rows(sum_data, model_portion)
-
-    ht <- huxtable::as_hux(final, add_colnames = FALSE) |>
-      huxtable::set_bold(1, 1:ncol(final), TRUE) |>
-      huxtable::set_align(1, 1:ncol(final), "center") |>
-      huxtable::set_valign(1, 1:ncol(final), "bottom") |>
-      huxtable::set_bottom_border(1, 1:ncol(final), 1) |>
-      huxtable::set_width(1) |>
-      huxtable::set_escape_contents(FALSE) |>
-      huxtable::set_col_width(c(.5, 1 / 6, 1 / 6, 1 / 6))
-    htmltools::HTML(huxtable::to_html(ht))
+    ht <- as_hux(final, add_colnames = FALSE) |>
+      set_bold(1, seq_len(ncol(final)), TRUE) |>
+      set_align(1, seq_len(ncol(final)), "center") |>
+      set_valign(1, seq_len(ncol(final)), "bottom") |>
+      set_bottom_border(1, seq_len(ncol(final)), 1) |>
+      set_width(1) |>
+      set_escape_contents(FALSE) |>
+      set_col_width(c(.5, 1 / 6, 1 / 6, 1 / 6))
+    HTML(to_html(ht))
   })
 }

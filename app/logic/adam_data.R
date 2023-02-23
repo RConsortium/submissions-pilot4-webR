@@ -10,7 +10,10 @@ get_adsl <- function() {
     mutate(
       TRT01P = factor(TRT01P, levels = c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose")),
       AGEGR1 = factor(AGEGR1, levels = c("<65", "65-80", ">80")),
-      RACE = factor(RACE, levels = c("WHITE", "BLACK OR AFRICAN AMERICAN", "AMERICAN INDIAN OR ALASKA NATIVE"))
+      RACE = factor(
+        RACE,
+        levels = c("WHITE", "BLACK OR AFRICAN AMERICAN", "AMERICAN INDIAN OR ALASKA NATIVE")
+      )
     )
 }
 

@@ -80,7 +80,12 @@ set_data_path <- function(path) {
   # assertions on path
   path <- normalizePath(path, mustWork = FALSE)
 
-  if (!dir.exists(path)) stop(paste("The path", path, "does not exist. Please use a valid directory path"), call. = FALSE)
+  if (!dir.exists(path)) {
+    stop(
+      paste("The path", path, "does not exist. Please use a valid directory path"),
+      call. = FALSE
+    )
+  }
 
   # check if data files are present
   data_files <- c("adsl.xpt", "adadas.xpt", "adtte.xpt", "adlbc.xpt")
@@ -89,7 +94,13 @@ set_data_path <- function(path) {
   if (!all(data_check)) {
     # determine which files are missing
     missing_files <- data_files[!data_check]
-    stop(paste("The following data files are missing in the specified path", path, ":", paste(missing_files, collapse = ", ")), call. = FALSE)
+    stop(
+      paste(
+        "The following data files are missing in the specified path",
+        path, ":", paste(missing_files, collapse = ", ")
+      ),
+      call. = FALSE
+    )
   }
 
   # set golem config option

@@ -24,7 +24,7 @@ ui <- function(id, datasets) {
 #' @export
 server <- function(input, output, session, datasets) {
   output$table <- renderUI({
-    ADSL_FILTERED <- datasets$get_data("ADSL", filtered = TRUE)
+    filtered_adsl <- datasets$get_data("ADSL", filtered = TRUE)
     vars <- c("AGE", "AGEGR1", "RACE", "HEIGHTBL", "WEIGHTBL", "BMIBL")
     labels <- datasets$get_varlabels("ADSL", vars)
     labels <- vapply(vars, function(x) {
@@ -58,7 +58,7 @@ server <- function(input, output, session, datasets) {
       },
       var_labels = labels
       )
-    tbl <- build_table(lyt, ADSL_FILTERED)
+    tbl <- build_table(lyt, filtered_adsl)
     as_html(tbl)
   })
 }

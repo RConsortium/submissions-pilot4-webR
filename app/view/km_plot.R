@@ -4,6 +4,7 @@ box::use(
   ggplot2[element_text, geom_hline, rel, theme, theme_bw, theme_set],
   shiny[NS, p, plotOutput, renderPlot, tagList, tags],
   visR[add_CI, add_CNSR, estimate_KM, visr],
+  shinyWidgets[alert],
 )
 
 box::use(
@@ -14,8 +15,15 @@ box::use(
 ui <- function(id, datasets) {
   ns <- NS(id)
   tagList(
-    shinyWidgets::alert(
-      tagList(tags$b("Important Information:"), tags$p("The analyses performed when utilizing subgroups or other subsets of the source data sets are considered ", tags$b("exploratory."))),
+    alert(
+      tagList(
+        tags$b("Important Information:"),
+        tags$p(
+          "The analyses performed when utilizing subgroups or
+          other subsets of the source data sets are considered ",
+          tags$b("exploratory.")
+        )
+      ),
       status = "info",
       dismissible = TRUE
     ),
@@ -29,63 +37,59 @@ server <- function(input, output, session, datasets) {
     adsl <- datasets$get_data("ADSL", filtered = TRUE)
     adtte <- datasets$get_data("ADTTE", filtered = TRUE)
     anl <- adsl |>
-      dplyr::filter(
+      filter(
         SAFFL == "Y",
         STUDYID == "CDISCPILOT01"
       ) |>
-      dplyr::select(STUDYID, USUBJID, TRT01A) |>
-      dplyr::inner_join(
+      select(STUDYID, USUBJID, TRT01A) |>
+      inner_join(
         filter(
           adtte, STUDYID == "CDISCPILOT01"
         ) |> select(STUDYID, USUBJID, AVAL, CNSR, PARAM, PARAMCD),
         by = c("STUDYID", "USUBJID")
       ) |>
-      dplyr::mutate(
-        TRT01A = factor(TRT01A, levels = c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose")),
+      mutate(
+        TRT01A = factor(
+          TRT01A,
+          levels = c("Placebo", "Xanomeline Low Dose", "Xanomeline High Dose")
+        ),
         AVAL = AVAL / 30.4167
       )
 
+    surv_mod <- estimate_KM(data = anl, strata = "TRT01A")
+    theme_set(theme_bw())
 
-    ## -----------------------------------------------------------------------------------------------------------------------------------
-    # estimate survival
-    surv_mod <- visR::estimate_KM(data = anl, strata = "TRT01A")
-
-    #
-    # # save plot
-    ggplot2::theme_set(theme_bw())
-
-    KM <- visR::visr(surv_mod,
+    km_plot <- visr(surv_mod,
       y_label = "Survival Probability (%)",
       x_label = "Time (Months)",
       fun = "pct",
       legend_position = "bottom"
     ) |>
-      visR::add_CNSR() |>
-      visR::add_CI()
+      add_CNSR() |>
+      add_CI()
 
-    KM <- KM +
-      ggplot2::theme(
+    km_plot <- km_plot +
+      theme(
         axis.text = element_text(size = rel(1.3)),
         axis.title = element_text(size = rel(1.4)),
         legend.text = element_text(size = rel(1.3)),
         legend.title = element_text(size = rel(1.4))
       ) +
-      ggplot2::geom_hline(yintercept = 0.5, linetype = "dashed")
+      geom_hline(yintercept = 0.5, linetype = "dashed")
 
-    KM <- KM |>
+    km_plot <- km_plot |>
       add_risktable2(group = "statlist")
-    # visR::add_risktable(group = "statlist")
 
-    title <- cowplot::ggdraw() +
-      cowplot::draw_label(
+    title <- ggdraw() +
+      draw_label(
         "KM plot for Time to First Dermatologic Event: Safety population\n",
         fontfamily = "sans",
         fontface = "bold",
         size = 16
       )
 
-    caption <- cowplot::ggdraw() +
-      cowplot::draw_label(
+    caption <- ggdraw() +
+      draw_label(
         paste(
           "The shaded areas are 95% CI of the survival probability for each group",
           "\n",
@@ -95,11 +99,11 @@ server <- function(input, output, session, datasets) {
         size = 12
       )
 
-    KM <- cowplot::plot_grid(
-      title, KM, caption,
+    km_plot <- plot_grid(
+      title, km_plot, caption,
       ncol = 1,
       rel_heights = c(0.1, 0.8, 0.1)
     )
-    KM
+    km_plot
   })
 }

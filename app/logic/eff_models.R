@@ -15,7 +15,7 @@ box::use(
 #'
 #' This function handles the necessary data processing to handle the CDISC pilot
 #' primary endpoint analysis. The original source can be found
-#' [here](https://github.com/atorus-research/CDISC_pilot_replication/blob/3c8e9e3798c02be8d93bd8e8944d1e0d3f6519e2/programs/funcs.R#L401)
+#' [here](https://github.com/atorus-research/CDISC_pilot_replication/blob/3c8e9e3798c02be8d93bd8e8944d1e0d3f6519e2/programs/funcs.R#L401) #nolint
 #'
 #' @param data Source dataset (filtered by flags)
 #' @param var Variable on which model should be run
@@ -28,7 +28,7 @@ box::use(
 #'
 efficacy_models <- function(data, var = NULL, wk = NULL, show_pvalue = TRUE) {
   # Need to set contrasts to work for Type III SS. See analysis results metadata for
-  # table 14-3.01. Reference for R here: https://www.r-bloggers.com/anova-%E2%80%93-type-iiiiii-ss-explained/
+  # table 14-3.01. Reference for R here: https://www.r-bloggers.com/anova-%E2%80%93-type-iiiiii-ss-explained/  #nolint
   op <- options(contrasts = c("contr.sum", "contr.poly"))
 
   # Subset to analyze
@@ -65,7 +65,11 @@ efficacy_models <- function(data, var = NULL, wk = NULL, show_pvalue = TRUE) {
   # Pull it out into a table
   sect1 <- tibble::tibble(
     row_label = c("p-value(Dose Response) [1][2]"),
-    `81` = ifelse(show_pvalue, c(num_fmt(ancova[2, "Pr(>F)"], int_len = 4, digits = 3, size = 12)), "Not Applicable")
+    `81` = ifelse(
+      show_pvalue,
+      c(num_fmt(ancova[2, "Pr(>F)"], int_len = 4, digits = 3, size = 12)),
+      "Not Applicable"
+    )
   ) |>
     pad_row()
 
@@ -91,12 +95,22 @@ efficacy_models <- function(data, var = NULL, wk = NULL, show_pvalue = TRUE) {
     rowwise() |>
     # Create the display strings
     mutate(
-      p = ifelse(show_pvalue, num_fmt(p.value, int_len = 4, digits = 3, size = 12), "Not Applicable"),
+      p = ifelse(
+        show_pvalue,
+        num_fmt(p.value, int_len = 4, digits = 3, size = 12),
+        "Not Applicable"
+      ),
       diff_se = as.character(
-        glue::glue("{num_fmt(estimate, int_len=2, digits=1, size=4)} ({num_fmt(SE, int_len=1, digits=2, size=4)})")
+        glue(
+          "{num_fmt(estimate, int_len=2, digits=1, size=4)}
+          ({num_fmt(SE, int_len=1, digits=2, size=4)})"
+        )
       ),
       ci = as.character(
-        glue::glue("({num_fmt(lower.CL, int_len=2, digits=1, size=4)};{num_fmt(upper.CL, int_len=1, digits=1, size=3)})")
+        glue(
+          "({num_fmt(lower.CL, int_len=2, digits=1, size=4)};
+          {num_fmt(upper.CL, int_len=1, digits=1, size=3)})"
+        )
       )
     ) |>
     # Clean out the numeric variables
@@ -112,7 +126,9 @@ efficacy_models <- function(data, var = NULL, wk = NULL, show_pvalue = TRUE) {
     pad_row()
 
   # Add in row_label
-  xan_lo["row_label"] <- c("p-value(Xan - Placebo) [1][3]", "  Diff of LS Means (SE)", "  95% CI", "")
+  xan_lo["row_label"] <- c(
+    "p-value(Xan - Placebo) [1][3]", "  Diff of LS Means (SE)", "  95% CI", ""
+  )
 
   # Subset Xan_hi - Pbo into table variables
   xan_hi <- pw_data |>
@@ -121,7 +137,9 @@ efficacy_models <- function(data, var = NULL, wk = NULL, show_pvalue = TRUE) {
     select(`81` = value) |>
     pad_row()
   # Add in row_label
-  xan_hi["row_label"] <- c("p-value(Xan - Placebo) [1][3]", "  Diff of LS Means (SE)", "  95% CI", "")
+  xan_hi["row_label"] <- c(
+    "p-value(Xan - Placebo) [1][3]", "  Diff of LS Means (SE)", "  95% CI", ""
+  )
   xan_hi["ord"] <- c(1, 2, 3, 4) # Order for sorting
 
   # Subset Xan_Hi - Xan_Lo into table variable
@@ -130,7 +148,9 @@ efficacy_models <- function(data, var = NULL, wk = NULL, show_pvalue = TRUE) {
     # Rename to the table display variable
     select(`81` = value)
   # Add in row_label
-  xan_xan["row_label"] <- c("p-value(Xan High - Xan Low) [1][3]", "  Diff of LS Means (SE)", "  95% CI")
+  xan_xan["row_label"] <- c(
+    "p-value(Xan High - Xan Low) [1][3]", "  Diff of LS Means (SE)", "  95% CI"
+  )
   xan_xan["ord"] <- c(5, 6, 7) # Order for sorting
 
   # Pack it all together

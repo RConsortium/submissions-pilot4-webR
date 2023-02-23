@@ -33,7 +33,9 @@ app <- init(
   modules = modules(
     module(
       label = "App Information",
-      server = function(input, output, session, datasets) {},
+      server = function(input, output, session, datasets) {
+
+      },
       ui = function(id, ...) {
         includeMarkdown("docs/about.md")
       },

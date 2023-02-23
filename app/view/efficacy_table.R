@@ -23,7 +23,10 @@ ui <- function(id, datasets) {
     fluidRow(
       tippy::tippy(
         h4("Primary Endpoint Analysis: Glucose (mmol/L) - Summary at Week 20 LOCF"),
-        tooltip = tooltip_text("Table is based on participants who have observable data at Baseline and Week 20", 16),
+        tooltip = tooltip_text(
+          "Table is based on participants who have observable data at Baseline and Week 20",
+          font_size = 16
+        ),
         allowHTML = TRUE
       ),
       tags$br(), tags$br(),
@@ -38,7 +41,11 @@ ui <- function(id, datasets) {
     fluidRow(
       tippy::tippy(
         h4("Pairwise Comparison"),
-        tooltip = tooltip_text("Inference in this table is based on a Analysis of Covariance (ANCOVA) model with treatment and baseline value as covariates.", 16),
+        tooltip = tooltip_text(
+          "Inference in this table is based on a Analysis of Covariance (ANCOVA) model
+          with treatment and baseline value as covariates.",
+          font_size = 16
+        ),
         allowHTML = TRUE
       ),
       tags$br(),
@@ -52,9 +59,16 @@ ui <- function(id, datasets) {
     tags$br(),
     tags$hr(),
     fluidRow(
-      h6(tags$i("Abbreviations: CI=Confidence Interval; LS=Least Squares; SD=Standard Deviation")),
-      h6(tags$p("Table is based on participants who had observable data at Baseline and Week 20")),
-      h6(tags$p("Based on an Analysis of Covariance (ANCOVA) model with treatment and baseline value as covariates"))
+      h6(tags$i(
+        "Abbreviations: CI=Confidence Interval; LS=Least Squares; SD=Standard Deviation"
+      )),
+      h6(tags$p(
+        "Table is based on participants who had observable data at Baseline and Week 20"
+      )),
+      h6(tags$p(
+        "Based on an Analysis of Covariance (ANCOVA) model
+        with treatment and baseline value as covariates"
+      ))
     )
   )
 }
@@ -122,8 +136,6 @@ server <- function(input, output, session, datasets) {
       ) |>
       select(Trt:CI)
 
-
-    ## -----------------------------------------------------------------------------------------------------------------------------------
     t2 <- data.frame(pairs(t12))
 
     ## Treatment Comparison
@@ -139,7 +151,6 @@ server <- function(input, output, session, datasets) {
       ) |>
       select(comp:p)
 
-    ## -----------------------------------------------------------------------------------------------------------------------------------
     ### Calculate root mean square and save data in output folder
     apr0ancova3 <- data.frame(rmse = paste0(
       "Root Mean Squared Error of Change = ",
@@ -163,7 +174,7 @@ server <- function(input, output, session, datasets) {
     colgr <- c(1, 2, 2, 3, 3, 4, 4, 4)
     colwidths <- c(rep(100, 7), 150)
     colgrn <- c("", "Baseline", "Week 20", "Change from Baseline")
-    collist <- purrr::map2(1:ncol(apr0ancova1), colwidths, ~ {
+    collist <- map2(seq_len(ncol(apr0ancova1)), colwidths, ~ {
       colDef(name = coln[.x], minWidth = .y)
     })
     names(collist) <- names(apr0ancova1)
@@ -186,7 +197,7 @@ server <- function(input, output, session, datasets) {
       "Difference in LS Mean (95% CI)",
       "p-Value"
     )
-    collist <- lapply(1:ncol(apr0ancova2), function(xx) {
+    collist <- lapply(seq_len(ncol(apr0ancova2)), function(xx) {
       if (xx > 1) {
         colDef(name = coln[xx])
       } else {

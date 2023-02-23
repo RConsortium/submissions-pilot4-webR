@@ -25,10 +25,10 @@ ui <- function(id, datasets) {
 #' @export
 server <- function(input, output, session, datasets) {
   output$table <- renderUI({
-    ADSL_FILTERED <- datasets$get_data("ADSL", filtered = TRUE)
-    ADLB_FILTERED <- datasets$get_data("ADLB", filtered = TRUE)
-    adsl <- ADSL_FILTERED
-    adlbc <- ADLB_FILTERED
+    filtered_adsl <- datasets$get_data("ADSL", filtered = TRUE)
+    filtered_adlb <- datasets$get_data("ADLB", filtered = TRUE)
+    adsl <- filtered_adsl
+    adlbc <- filtered_adlb
 
     # use adlbc data set to remain consistent with efficacy table input data
     visit_df <- adlbc |>
@@ -47,7 +47,16 @@ server <- function(input, output, session, datasets) {
       AVISITN = c(0, 2, 4, 6, 8, 12, 16, 20, 24, 26, 99),
       VISIT = c("Baseline ", paste("Week", c(2, 4, 6, 8, 12, 16, 20, 24, 26)), "End of Treatment")
     ) |>
-      mutate(VISIT = factor(VISIT, levels = c("Baseline ", paste("Week", c(2, 4, 6, 8, 12, 16, 20, 24, 26)), "End of Treatment")))
+      mutate(
+        VISIT = factor(
+          VISIT,
+          levels = c(
+            "Baseline ",
+            paste("Week", c(2, 4, 6, 8, 12, 16, 20, 24, 26)),
+            "End of Treatment"
+          )
+        )
+      )
 
     # build Tplyr table
     t_visit <- visit_df |>
@@ -66,7 +75,10 @@ server <- function(input, output, session, datasets) {
 
     b_t_visit <- t_visit |>
       build() |>
-      dplyr::select(row_label1, var1_Placebo, `var1_Xanomeline High Dose`, `var1_Xanomeline Low Dose`, var1_Total) |>
+      select(
+        row_label1, var1_Placebo, `var1_Xanomeline High Dose`,
+        `var1_Xanomeline Low Dose`, var1_Total
+      ) |>
       add_column_headers(
         paste0(
           "|Placebo</br>(N=**Placebo**)",
@@ -77,14 +89,14 @@ server <- function(input, output, session, datasets) {
         header_n(t_visit)
       )
 
-    ht <- huxtable::as_hux(b_t_visit, add_colnames = FALSE) |>
-      huxtable::set_bold(1, 1:ncol(b_t_visit), TRUE) |>
-      huxtable::set_align(1, 1:ncol(b_t_visit), "center") |>
-      huxtable::set_valign(1, 1:ncol(b_t_visit), "bottom") |>
-      huxtable::set_bottom_border(1, 1:ncol(b_t_visit), 1) |>
-      huxtable::set_width(0.9) |>
-      huxtable::set_escape_contents(FALSE) |>
-      huxtable::set_col_width(c(.5, 1 / 8, 1 / 8, 1 / 8, 1 / 8))
-    htmltools::HTML(huxtable::to_html(ht))
+    ht <- as_hux(b_t_visit, add_colnames = FALSE) |>
+      set_bold(1, seq_len(ncol(b_t_visit)), TRUE) |>
+      set_align(1, seq_len(ncol(b_t_visit)), "center") |>
+      set_valign(1, seq_len(ncol(b_t_visit)), "bottom") |>
+      set_bottom_border(1, seq_len(ncol(b_t_visit)), 1) |>
+      set_width(0.9) |>
+      set_escape_contents(FALSE) |>
+      set_col_width(c(.5, 1 / 8, 1 / 8, 1 / 8, 1 / 8))
+    HTML(to_html(ht))
   })
 }
