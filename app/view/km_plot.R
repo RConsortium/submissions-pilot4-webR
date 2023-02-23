@@ -83,7 +83,6 @@ server <- function(input, output, session, datasets) {
     title <- ggdraw() +
       draw_label(
         "KM plot for Time to First Dermatologic Event: Safety population\n",
-        fontfamily = "sans",
         fontface = "bold",
         size = 16
       )
@@ -95,7 +94,6 @@ server <- function(input, output, session, datasets) {
           "\n",
           paste0(Sys.time())
         ),
-        fontfamily = "sans",
         size = 12
       )
 

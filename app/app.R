@@ -67,7 +67,7 @@ app <- init(
       filters = NULL
     )
   ),
-  header = "Pilot 2 Shiny Application",
+  header = "Pilot 2 Shiny Application using Rhino framework",
   footer = tags$p(class = "text-muted", "Source: R Consortium")
 )
 
