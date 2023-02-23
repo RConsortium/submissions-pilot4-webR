@@ -6,11 +6,6 @@ box::use(
 
 box::use(
   app / logic / adam_data[get_adsl, get_adas, get_adtte, get_adlb],
-  app / logic / formatters[fmt_num, fmt_est, fmt_ci, fmt_pval],
-  app / logic / helpers[pad_row, num_fmt, tooltip_text, set_data_path, filter_active],
-  app / logic / eff_models[efficacy_models],
-  app / logic / kmplot_helpers[add_risktable2],
-  app / logic / Tplyr_helpers[nest_rowlabels],
   app / view / demographic_table,
   app / view / km_plot,
   app / view / primary_table,
