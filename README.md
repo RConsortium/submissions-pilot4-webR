@@ -1,6 +1,6 @@
 # Pilot 2 Submission based on Rhino framework
 
-The R Consortium R submission Pilot 2 Project is to test the concept that a Shiny application created with the R-language can be successgully bundled into a submission package and transferred successfully to FDA reviewers.
+The R Consortium R submission [Pilot 2 Project](https://github.com/RConsortium/submissions-pilot2) is to test the concept that a Shiny application created with the R-language can be successgully bundled into a submission package and transferred successfully to FDA reviewers.
 
 This repo tries to reproduce the same Shiny application using the Rhino framework.
 
