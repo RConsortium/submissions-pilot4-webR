@@ -77,7 +77,7 @@ teal_modules <- modules(
 ui <- function(id) {
   ns <- NS(id)
   ui_teal_with_splash(
-    title = "Some title",
+    title = "Pilot 2 Shiny Rhino Application",
     id = ns("teal_wrapper"),
     data = teal_data,
     header = "Pilot 2 Shiny Application using Rhino framework",
