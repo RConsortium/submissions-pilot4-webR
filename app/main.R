@@ -75,9 +75,10 @@ teal_modules <- modules(
 
 #' @export
 ui <- function(id) {
+  ns <- NS(id)
   ui_teal_with_splash(
     title = "Some title",
-    id = id,
+    id = ns("teal_wrapper"),
     data = teal_data,
     header = "Pilot 2 Shiny Application using Rhino framework",
     footer = tags$p(class = "text-muted", "Source: R Consortium")
@@ -86,5 +87,7 @@ ui <- function(id) {
 
 #' @export
 server <- function(id) {
-  srv_teal_with_splash(id = id, data = teal_data, modules = teal_modules)
+  moduleServer(id, function(input, output, session) {
+    srv_teal_with_splash(id = "teal_wrapper", data = teal_data, modules = teal_modules)
+  })
 }
