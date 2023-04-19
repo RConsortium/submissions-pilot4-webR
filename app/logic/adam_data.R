@@ -1,7 +1,7 @@
 box::use(
   config[get],
   haven[read_xpt],
-  dplyr[mutate, filter],
+  dplyr[mutate, filter, select],
 )
 
 #' @export
@@ -31,7 +31,8 @@ get_adas <- function() {
 #' @export
 get_adtte <- function() {
   read_xpt(file.path(get("adam_path"), "adtte.xpt")) |>
-    filter(PARAMCD == "TTDE")
+    filter(PARAMCD == "TTDE") |>
+    select(-c(TRTDUR, TRTP, TRTA, TRTAN))
 }
 
 #' @export

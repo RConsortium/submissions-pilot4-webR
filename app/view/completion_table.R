@@ -25,8 +25,8 @@ ui <- function(id, datasets) {
 #' @export
 server <- function(input, output, session, datasets) {
   output$table <- renderUI({
-    filtered_adsl <- datasets$get_data("ADSL", filtered = TRUE)
-    filtered_adlb <- datasets$get_data("ADLB", filtered = TRUE)
+    filtered_adsl <- datasets$get_data("ADSL", filtered = FALSE)
+    filtered_adlb <- datasets$get_data("ADLB", filtered = FALSE)
     adsl <- filtered_adsl
     adlbc <- filtered_adlb
 

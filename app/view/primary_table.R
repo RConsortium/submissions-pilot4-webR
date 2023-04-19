@@ -44,8 +44,8 @@ ui <- function(id, datasets) {
 #' @export
 server <- function(input, output, session, datasets) {
   output$table <- renderUI({
-    filtered_adsl <- datasets$get_data("ADSL", filtered = TRUE)
-    filtered_adas <- datasets$get_data("ADAS", filtered = TRUE)
+    filtered_adsl <- datasets$get_data("ADSL", filtered = FALSE)
+    filtered_adas <- datasets$get_data("ADAS", filtered = FALSE)
     adas <- filtered_adas
 
     t <- tplyr_table(adas, TRTP) |>

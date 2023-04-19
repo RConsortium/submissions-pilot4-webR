@@ -9,6 +9,7 @@ box::use(
 
 box::use(
   app / logic / adam_data[get_adsl, get_adas, get_adtte, get_adlb],
+  app / view / user_guide,
   app / view / demographic_table,
   app / view / km_plot,
   app / view / primary_table,
@@ -39,6 +40,12 @@ teal_modules <- modules(
     ui = function(id, ...) {
       includeMarkdown("app/docs/about.md")
     },
+    filters = NULL
+  ),
+  module(
+    label = "Usage Guide",
+    ui = user_guide$ui,
+    server = user_guide$server,
     filters = NULL
   ),
   module(
