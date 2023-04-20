@@ -111,7 +111,7 @@ server <- function(input, output, session, datasets) {
       output = c(
         "Table 14-2.01 Summary of Demographic and Baseline Characteristics",
         "Figure 14-1 Time to Dermatologic Event by Treatment Group",
-        "Table 14-3.01 Primary Endpoint Analysis: ADAS Cog(11) - Change from Baseline to Week 24 - LOCF",
+        "Table 14-3.01 Primary Endpoint Analysis: ADAS Cog(11) - Change from Baseline to Week 24 - LOCF", # nolint
         "Table 14-3.02 Primary Endpoint Analysis: Glucose (mmol/L) - Summary at Week 20 - LOCF",
         "Not Applicable"
       )
