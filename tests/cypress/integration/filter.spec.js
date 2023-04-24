@@ -1,5 +1,4 @@
 describe('app', () => {
-
   // Rhino applications have an 'app' prefix
   const nsPrefix = 'app-';
   // Support function to help generating namespaces
@@ -18,18 +17,25 @@ describe('app', () => {
     cy
       .get('.nav.nav-pills a[data-bs-toggle=tab]')
       .contains('KM plot for TTDE')
-      .click()
+      .as('navPills');
+
+    cy
+      .get('@navPills')
+      .click();
+
+    cy
+      .get('@navPills')
       .invoke('attr', 'href')
-      .as('href_tab');
+      .as('hrefTab');
 
     // Make sure the correct tab is selected
-    cy.get('@href_tab').then(href_tab => {
+    cy.get('@hrefTab').then((hrefTab) => {
       // Look for 'Data is loaded' element
       cy.contains('Data loaded - App fully started up');
 
       // Define an alias that references the current active tab
       cy
-        .get(`${href_tab}.tab-pane.active`)
+        .get(`${hrefTab}.tab-pane.active`)
         .should('be.visible')
         .as('active_tab');
 
@@ -56,19 +62,18 @@ describe('app', () => {
         .get('html')
         .not('.shiny-busy');
     });
-
   });
 
   //  Filter summary
   // ######################################
 
   it('Filter Summary has non-zero Observations', () => {
-     cy
+    cy
       .get('@filter_summary')
       .within(() => {
         cy
           .get('.shiny-bound-output')
-          .each(($el, index, $list) => {
+          .each(($el) => {
             cy
               .wrap($el)
               .children()
@@ -81,7 +86,7 @@ describe('app', () => {
   // ######################################
 
   it('Filter variables has shiny content rendered', () => {
-     cy
+    cy
       .get('@filter_variables')
       .within(() => {
         cy
@@ -114,18 +119,18 @@ describe('app', () => {
   // ######################################
 
   it('Add filter variables has shiny content rendered', {
-    defaultCommandTimeout: 10000
+    defaultCommandTimeout: 10000,
   }, () => {
-     cy
+    cy
       .get('@add_filter')
       .within(() => {
         cy
           .get('.shiny-input-container')
-          .each(($el, index, $list) => {
+          .each(($el) => {
             cy
               .wrap($el)
               .children()
-              .should('have.length.gte', 1)
+              .should('have.length.gte', 1);
           });
       });
   });
@@ -134,8 +139,7 @@ describe('app', () => {
   // ######################################
 
   it('Add filter', () => {
-    const ns_info_table = (selector) =>
-      nsTeal('filter_panel-teal_filters_info-table') + ` ${selector}`;
+    const nsInfoTable = (selector) => `${nsTeal('filter_panel-teal_filters_info-table')} ${selector}`;
 
     // Add Age filter (find and click on it)
     // ------------------------------------
@@ -146,13 +150,13 @@ describe('app', () => {
           .get('.shiny-input-container:first')
           .contains('Select variable to filter')
           .should('be.visible')
-          .click("top");
+          .click('top');
 
         cy
           .get('.dropdown-menu.open li')
           .contains('Age')
-          .click("top");
-      })
+          .click('top');
+      });
 
     // Let shiny finish rendering
     cy
@@ -162,7 +166,7 @@ describe('app', () => {
     // Test if application has non-zero subjects
 
     cy
-      .get(ns_info_table('table tbody tr:first td:last'))
+      .get(nsInfoTable('table tbody tr:first td:last'))
       .contains(/[1-9]+[0-9]*\/[1-9]+[0-9]*/);
 
     // Monitor how many times summary is recalculated vias shiny:recalculated
@@ -180,9 +184,6 @@ describe('app', () => {
     cy
       .get('@filter_variables')
       .within(() => {
-
-        const dataTransfer = new DataTransfer();
-
         // Make sure that the overlay plot is rendered
         cy
           .get('.filterPlotOverlayRange .shiny-plot-output')
@@ -196,58 +197,55 @@ describe('app', () => {
         // Move the handle 3x
         //  note: this is necessary as developer wasn't able to define a single
         //    long drag. This is open to improvement
-        cy
-          .get('.irs-handle.from')
-          .trigger('mousedown', 'top', { button: 0, which: 1, pageX: 600, pageY: 100 })
-          .trigger('mousemove', 'top', { clientX: 300, clientY: 400 })
-          .trigger('mouseup', 'top');
+        cy.get('.irs-handle.from').as('irs-handle');
+
+        const mousedownOpts = {
+          button: 0, which: 1, pageX: 600, pageY: 100,
+        };
+        const mousemoveOpts = {
+          clientX: 300, clientY: 400,
+        };
+
+        cy.get('@irs-handle').trigger('mousedown', 'top', mousedownOpts);
+        cy.get('@irs-handle').trigger('mousemove', 'top', mousemoveOpts);
+        cy.get('@irs-handle').trigger('mouseup', 'top');
 
         cy
           .get('.filterPlotOverlayRange .shiny-plot-output')
           .not('.recalculating');
         // cy.get('@summary_change', { timeout: 20000 }).should('have.callCount', 1)
 
-        cy
-          .get('.irs-handle.from')
-          .trigger('mousedown', 'top', { button: 0, which: 1, pageX: 600, pageY: 100 })
-          .trigger('mousemove', 'top', { clientX: 300, clientY: 400 })
-          .trigger('mouseup', 'top');
+        cy.get('@irs-handle').trigger('mousedown', 'top', mousedownOpts);
+        cy.get('@irs-handle').trigger('mousemove', 'top', mousemoveOpts);
+        cy.get('@irs-handle').trigger('mouseup', 'top');
 
         cy
           .get('.filterPlotOverlayRange .shiny-plot-output')
           .not('.recalculating');
 
-        cy
-          .get('.irs-handle.from')
-          .trigger('mousedown', 'top', { button: 0, which: 1, pageX: 600, pageY: 100 })
-          .trigger('mousemove', 'top', { clientX: 300, clientY: 400 })
-          .trigger('mouseup', 'top');
+        cy.get('@irs-handle').trigger('mousedown', 'top', mousedownOpts);
+        cy.get('@irs-handle').trigger('mousemove', 'top', mousemoveOpts);
+        cy.get('@irs-handle').trigger('mouseup', 'top');
 
         cy
           .get('.filterPlotOverlayRange .shiny-plot-output')
           .not('.recalculating');
       });
 
-
-      // Let shiny finish rendering
-      cy
-        .get('html')
-        .not('.shiny-busy');
+    // Let shiny finish rendering
+    cy
+      .get('html')
+      .not('.shiny-busy');
 
     // Verify that data is filtered (selected subjets != dataset)
     // ------------------------------------
     cy
-      .get(
-        ns_info_table('table tbody tr:first td:last'),
-        { timeout: 10000 }
-      )
-      // There
+      .get(nsInfoTable('table tbody tr:first td:last'), { timeout: 10000 })
       .should('satisfy', ($el) => {
         const result = /([0-9]+)\/([0-9]+)/.exec($el[0].innerText);
-        return result.length == 3 && result[1] != result[2];
+        return result.length === 3 && result[1] !== result[2];
       });
   });
-
 
   //  Active tab
   // ######################################
@@ -258,13 +256,12 @@ describe('app', () => {
       .within(() => {
         cy
           .get('.shiny-bound-output')
-          .each(($el, index, $list) => {
+          .each(($el) => {
             cy
               .wrap($el)
               .children()
-              .should('have.length.gte', 1)
+              .should('have.length.gte', 1);
           });
       });
   });
-
 });
