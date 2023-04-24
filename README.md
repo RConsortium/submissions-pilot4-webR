@@ -107,6 +107,7 @@ file.remove("DESCRIPTION")
 ```
 
 ## Unpacking Shiny app from the `.txt` file
+
 The packed `.txt` file can be unpacked into the shiny app with the help of `pkglite`
 ```
 pkglite::unpack("rhinosubmission.txt")
