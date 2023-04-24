@@ -1,6 +1,16 @@
 describe('app', () => {
+
+  const ns_prefix = "app-"
+  const ns = (id) => `#${ns_prefix}${id}`
+  const ns_teal = (id) => ns(`teal_wrapper-teal-main_ui-${id}`)
+
+
   beforeEach(() => {
     cy.visit('/')
+
+    cy
+      .get("html")
+      .not(".shiny-busy")
 
     // Find the tab and click to navigate
     cy
@@ -24,20 +34,26 @@ describe('app', () => {
 
       // Define an alias that references the active filters
       cy
-        .get("#app-teal_wrapper-teal-main_ui-filter_panel-filters_overview")
+        .get(ns_teal("filter_panel-filters_overview"))
         .as("filter_summary")
 
       // Define an alias that references the active variables
       cy
-        .get("#app-teal_wrapper-teal-main_ui-filter_panel-filter_active_vars")
+        .get(ns_teal("filter_panel-filter_active_vars"))
         .as("filter_variables")
 
       // Define an alias that references the section that adds new variables to
       //  the filters
       cy
-        .get("#app-teal_wrapper-teal-main_ui-filter_panel-filter_add_vars")
+        .get(ns_teal("filter_panel-filter_add_vars"))
         .should("be.visible")
         .as("add_filter")
+
+      // Make sure that html element does not have a class that indicates
+      // that shiny is busy
+      cy
+        .get("html")
+        .not(".shiny-busy")
     })
 
   })
@@ -68,26 +84,26 @@ describe('app', () => {
       .get("@filter_variables")
       .within(() => {
         cy
-          .get('#app-teal_wrapper-teal-main_ui-filter_panel-filter_active_vars_contents')
+          .get(ns_teal("filter_panel-filter_active_vars_contents"))
           .should("have.length.gte", 1)
 
         cy
-          .get("#app-teal_wrapper-teal-main_ui-filter_panel-ADSL_filter-filter-cards")
+          .get(ns_teal("filter_panel-ADSL_filter-filter-cards"))
           .children()
           .should("have.length", 0)
 
         cy
-          .get("#app-teal_wrapper-teal-main_ui-filter_panel-ADAS_filter-filter-cards")
+          .get(ns_teal("filter_panel-ADAS_filter-filter-cards"))
           .children()
           .should("have.length", 0)
 
         cy
-          .get("#app-teal_wrapper-teal-main_ui-filter_panel-ADTTE_filter-filter-cards")
+          .get(ns_teal("filter_panel-ADTTE_filter-filter-cards"))
           .children()
           .should("have.length", 0)
 
         cy
-          .get("#app-teal_wrapper-teal-main_ui-filter_panel-ADLB_filter-filter-cards")
+          .get(ns_teal("filter_panel-ADLB_filter-filter-cards"))
           .children()
           .should("have.length", 0)
       })
@@ -113,34 +129,40 @@ describe('app', () => {
         })
   })
 
-    //  Add variables to filter
+  //  Add variables to filter
   // ######################################
 
   it("Add filter", () => {
-     cy
+    const ns_info_table = (selector) =>
+      ns_teal("filter_panel-teal_filters_info-table") + ` ${selector}`
+
+    // Add Age filter (find and click on it)
+    // ------------------------------------
+    cy
       .get("@add_filter")
       .within(() => {
-          cy
-            .get(".filter-option")
-            .contains("Select variable to filter")
-            .should("be.visible")
-            .click()
+        cy
+          .get(".filter-option")
+          .contains("Select variable to filter")
+          .should("be.visible")
+          .click()
 
-          cy
-            .get(".dropdown-menu.open li")
-            .contains("Age")
-            .click()
-        })
+        cy
+          .get(".dropdown-menu.open li")
+          .contains("Age")
+          .click()
+      })
 
-    let subjects = ""
+    // Let shiny finish rendering
+    cy
+      .get("html")
+      .not(".shiny-busy")
+
+    // Test if application has non-zero subjects
 
     cy
-      .get("#app-teal_wrapper-teal-main_ui-filter_panel-teal_filters_info-table table tbody tr:first td:last")
-      .contains(/[0-9]+\/[0-9]+/)
-      .then(($el, index, $list) => {
-        cy.log(`Content is ${$el[0].innerText}`)
-        subjects = $el[0].innerText
-      })
+      .get(ns_info_table("table tbody tr:first td:last"))
+      .contains(/[1-9]+[0-9]*\/[1-9]+[0-9]*/)
 
     // Monitor how many times summary is recalculated vias shiny:recalculated
     // event
@@ -152,21 +174,27 @@ describe('app', () => {
           .invoke("on", "shiny:recalculated", cy.stub().as("summary_change"))
       })
 
+    // Move slider via cypress2 mouse drag
+    // ------------------------------------
     cy
       .get("@filter_variables")
       .within(() => {
 
         const dataTransfer = new DataTransfer()
 
+        // Make sure that the overlay plot is rendered
         cy
           .get(".filterPlotOverlayRange .shiny-plot-output")
           .children()
           .should("have.length.gte", 1)
 
+        // Move the handle 3x
+        //  note: this is necessary as developer wasn't able to define a single
+        //    long drag. This is open to improvement
         cy
           .get(".irs-handle.from")
           .trigger("mousedown", { button: 0, which: 1, pageX: 600, pageY: 100 })
-          .trigger("mousemove", { clientX: 0, clientY: 400 })
+          .trigger("mousemove", { clientX: 300, clientY: 400 })
           .trigger("mouseup")
 
         cy.get('@summary_change', { timeout: 20000 }).should('have.callCount', 1)
@@ -174,7 +202,7 @@ describe('app', () => {
         cy
           .get(".irs-handle.from")
           .trigger("mousedown", { button: 0, which: 1, pageX: 600, pageY: 100 })
-          .trigger("mousemove", { clientX: 0, clientY: 400 })
+          .trigger("mousemove", { clientX: 300, clientY: 400 })
           .trigger("mouseup")
 
         cy.get('@summary_change', { timeout: 20000 }).should('have.callCount', 2)
@@ -182,38 +210,32 @@ describe('app', () => {
         cy
           .get(".irs-handle.from")
           .trigger("mousedown", { button: 0, which: 1, pageX: 600, pageY: 100 })
-          .trigger("mousemove", { clientX: 0, clientY: 400 })
+          .trigger("mousemove", { clientX: 300, clientY: 400 })
           .trigger("mouseup")
 
         cy.get('@summary_change', { timeout: 20000 }).should('have.callCount', 3)
       })
 
 
-      cy.log(`Subjects: ${subjects}`)
+      // Let shiny finish rendering
       cy
-        .get("@filter_summary")
-        .within(() => {
+        .get("html")
+        .not(".shiny-busy")
 
-        // First row
-        cy
-          .get(
-            "#app-teal_wrapper-teal-main_ui-filter_panel-teal_filters_info-table table tbody tr:first td:last",
-            { timeout: 10000 }
-          )
-          // There
-          .should("satisfy", ($el) => {
-            console.log($el[0])
-            console.log($el[0].innerText)
-            const result = /([0-9]+)\/([0-9]+)/.exec($el[0].innerText)
-            return result.length == 3 && result[1] != result[2]
-          })
-          .then(($el, index, $list) => {
-            cy.log(`Content is ${$el[0].innerText}`)
-            subjects = $el[0].innerText
-          })
-        })
-
-
+    // Verify that data is filtered (selected subjets != dataset)
+    // ------------------------------------
+    cy
+      .get(
+        ns_info_table("table tbody tr:first td:last"),
+        { timeout: 10000 }
+      )
+      // There
+      .should("satisfy", ($el) => {
+        console.log($el[0])
+        console.log($el[0].innerText)
+        const result = /([0-9]+)\/([0-9]+)/.exec($el[0].innerText)
+        return result.length == 3 && result[1] != result[2]
+      })
   })
 
 
