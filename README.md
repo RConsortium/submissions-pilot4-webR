@@ -67,3 +67,42 @@ This application is deployed at [pilot-2-submission-rhino](https://connect.appsi
 - No tests are added as of now.
 
 - No custom CSS/JS is added as of now.
+
+# Packing the code for FDA Submission
+
+Proprietary packages cannot be submitted as a compressed file through the eCTD gateway. However, proprietary R packages can be converted to a plain `.txt` file by `pkglite` then submitted through the eCTD gateway. FDA reviewers can use `pkglite` to convert the .txt file back to R package.
+We have to package our shiny app using the same package `pkglite` in order for the file to go through the eCTD gateway. Since the `pkglite` package was built to pack R packages to `.txt` file we have to create a simple DESCRIPTION file with just a package name to use `pkglite` to pack any R script into a `.txt` file.
+
+## Packing Shiny app to `.txt` file
+Now, we can use the following code to pack our shiny app into a `.txt` file: Create a simple DESCRIPTION file, pack the app, and remove the DESCRIPTION file.
+```
+app_name <- "rhinosubmission"
+renv_spec <- pkglite::file_spec(
+  "renv",
+  pattern = "^settings\\.dcf$|^activate\\.R$",
+  format = "text", recursive = FALSE
+)
+tests_spec <- pkglite::file_tests()
+app_spec <- pkglite::file_auto("app")
+root_spec <- pkglite::file_spec(
+  path = ".",
+  pattern = "^\\.Rprofile$|^rhino\\.yml$|^renv\\.lock$|^dependencies\\.R$|^config\\.yml$|^app\\.R$|^README\\.md$|\\.Rproj$",
+  all_files = TRUE,
+  recursive = FALSE
+)
+write(paste0("Package: ", app_name), "DESCRIPTION", append=TRUE)
+pkglite::collate(
+  getwd(),
+  renv_spec,
+  tests_spec,
+  app_spec,
+  root_spec
+) |> pkglite::pack()
+file.remove("DESCRIPTION")
+```
+
+## Unpacking Shiny app from the `.txt` file
+The packed `.txt` file can be unpacked into the shiny app with the help of `pkglite`
+```
+pkglite::unpack("rhinosubmission.txt")
+```
