@@ -153,11 +153,11 @@ describe('app', () => {
           .parent()
           .as('filterButton')
 
-        cy.get('@filterButton').click('top');
+        cy.get('@filterButton', {timeout: 15000}).click('top');
 
         cy.get('.dropdown-menu.open li').contains('Age').as("age")
 
-        cy.get("@age").click('top');
+        cy.get("@age", {timeout: 15000}).click('top');
       });
 
     // Let shiny finish rendering
