@@ -70,8 +70,12 @@ This application is deployed at [pilot-2-submission-rhino](https://connect.appsi
 
 # Packing the code for FDA Submission
 
-Proprietary packages cannot be submitted as a compressed file through the eCTD gateway. However, proprietary R packages can be converted to a plain `.txt` file by `pkglite` then submitted through the eCTD gateway. FDA reviewers can use `pkglite` to convert the .txt file back to R package.
-We have to package our shiny app using the same package `pkglite` in order for the file to go through the eCTD gateway. Since the `pkglite` package was built to pack R packages to `.txt` file we have to create a simple DESCRIPTION file with just a package name to use `pkglite` to pack any R script into a `.txt` file.
+Proprietary packages cannot be submitted as a compressed file through the eCTD gateway.
+However, proprietary R packages can be converted to a plain `.txt` file by `pkglite` then submitted through the eCTD gateway.
+FDA reviewers can use `pkglite` to convert the .txt file back to R package.
+
+We have to package our shiny app using the same package `pkglite` in order for the file to go through the eCTD gateway.
+Since the `pkglite` package was built to pack R packages to `.txt` file we have to create a simple DESCRIPTION file with just a package name to use `pkglite` to pack any R script into a `.txt` file.
 
 ## Packing Shiny app to `.txt` file
 Now, we can use the following code to pack our shiny app into a `.txt` file: Create a simple DESCRIPTION file, pack the app, and remove the DESCRIPTION file.
