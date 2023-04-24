@@ -150,12 +150,14 @@ describe('app', () => {
           .get('.shiny-input-container:first')
           .contains('Select variable to filter')
           .should('be.visible')
-          .click('top');
+          .parent()
+          .as('filterButton')
 
-        cy
-          .get('.dropdown-menu.open li')
-          .contains('Age')
-          .click('top');
+        cy.get('@filterButton').click('top');
+
+        cy.get('.dropdown-menu.open li').contains('Age').as("age")
+
+        cy.get("@age").click('top');
       });
 
     // Let shiny finish rendering
