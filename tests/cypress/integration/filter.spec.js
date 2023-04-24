@@ -96,7 +96,9 @@ describe('app', () => {
   //  Add variables to filter
   // ######################################
 
-  it("Add filter variables has shiny content rendered", () => {
+  it("Add filter variables has shiny content rendered", {
+    defaultCommandTimeout: 10000
+  }, () => {
      cy
       .get("@add_filter")
       .within(() => {
@@ -119,7 +121,8 @@ describe('app', () => {
       .get("@add_filter")
       .within(() => {
           cy
-            .get(".filter-option-inner-inner:first")
+            .get(".filter-option")
+            .contains("Select variable to filter")
             .should("be.visible")
             .click()
 
@@ -128,6 +131,26 @@ describe('app', () => {
             .contains("Age")
             .click()
         })
+
+    let subjects = ""
+
+    cy
+      .get("#app-teal_wrapper-teal-main_ui-filter_panel-teal_filters_info-table table tbody tr:first td:last")
+      .contains(/[0-9]+\/[0-9]+/)
+      .then(($el, index, $list) => {
+        cy.log(`Content is ${$el[0].innerText}`)
+        subjects = $el[0].innerText
+      })
+
+    // Monitor how many times summary is recalculated vias shiny:recalculated
+    // event
+    cy
+      .get("@filter_summary")
+      .within(() => {
+        cy
+          .get(".shiny-bound-output")
+          .invoke("on", "shiny:recalculated", cy.stub().as("summary_change"))
+      })
 
     cy
       .get("@filter_variables")
@@ -146,23 +169,50 @@ describe('app', () => {
           .trigger("mousemove", { clientX: 0, clientY: 400 })
           .trigger("mouseup")
 
-        cy
-          .get(".irs-handle.from")
-          .trigger("mousedown", { button: 0, which: 1, pageX: 600, pageY: 100 })
-          .trigger("mousemove", { clientX: 0, clientY: 400 })
-          .trigger("mouseup")
+        cy.get('@summary_change', { timeout: 20000 }).should('have.callCount', 1)
 
         cy
           .get(".irs-handle.from")
           .trigger("mousedown", { button: 0, which: 1, pageX: 600, pageY: 100 })
           .trigger("mousemove", { clientX: 0, clientY: 400 })
           .trigger("mouseup")
-/*
-       cy
-        .get("#app-teal_wrapper-teal-main_ui-filter_panel-teal_filters_info-table table tbody tr:first")
-        .then(($el, index, ))
-*/
+
+        cy.get('@summary_change', { timeout: 20000 }).should('have.callCount', 2)
+
+        cy
+          .get(".irs-handle.from")
+          .trigger("mousedown", { button: 0, which: 1, pageX: 600, pageY: 100 })
+          .trigger("mousemove", { clientX: 0, clientY: 400 })
+          .trigger("mouseup")
+
+        cy.get('@summary_change', { timeout: 20000 }).should('have.callCount', 3)
       })
+
+
+      cy.log(`Subjects: ${subjects}`)
+      cy
+        .get("@filter_summary")
+        .within(() => {
+
+        // First row
+        cy
+          .get(
+            "#app-teal_wrapper-teal-main_ui-filter_panel-teal_filters_info-table table tbody tr:first td:last",
+            { timeout: 10000 }
+          )
+          // There
+          .should("satisfy", ($el) => {
+            console.log($el[0])
+            console.log($el[0].innerText)
+            const result = /([0-9]+)\/([0-9]+)/.exec($el[0].innerText)
+            return result.length == 3 && result[1] != result[2]
+          })
+          .then(($el, index, $list) => {
+            cy.log(`Content is ${$el[0].innerText}`)
+            subjects = $el[0].innerText
+          })
+        })
+
 
   })
 
