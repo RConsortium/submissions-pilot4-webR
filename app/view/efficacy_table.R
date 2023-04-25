@@ -21,7 +21,7 @@ ui <- function(id, datasets) {
     tags$br(),
     tags$br(),
     fluidRow(
-      tippy::tippy(
+      tippy(
         h4("Primary Endpoint Analysis: Glucose (mmol/L) - Summary at Week 20 LOCF"),
         tooltip = tooltip_text(
           "Table is based on participants who have observable data at Baseline and Week 20",
@@ -32,14 +32,14 @@ ui <- function(id, datasets) {
       tags$br(), tags$br(),
       column(
         width = 10,
-        reactable::reactableOutput(ns("tbl_efficacy_1"))
+        reactableOutput(ns("tbl_efficacy_1"))
       )
     ),
     tags$br(),
     tags$br(),
     tags$hr(),
     fluidRow(
-      tippy::tippy(
+      tippy(
         h4("Pairwise Comparison"),
         tooltip = tooltip_text(
           "Inference in this table is based on a Analysis of Covariance (ANCOVA) model
@@ -52,7 +52,7 @@ ui <- function(id, datasets) {
       tags$br(),
       column(
         width = 10,
-        reactable::reactableOutput(ns("tbl_efficacy_2"))
+        reactableOutput(ns("tbl_efficacy_2"))
       )
     ),
     tags$br(),
@@ -90,7 +90,7 @@ server <- function(input, output, session, datasets) {
       filter(TRTPN %in% c(0, 81), PARAMCD == "GLUC", !is.na(AVISITN)) |>
       mutate(TRTPN = ifelse(TRTPN == 0, 99, TRTPN))
 
-    gluc_lmfit <- stats::lm(
+    gluc_lmfit <- lm(
       CHG ~ BASE + TRTPN,
       data = adlb1 |>
         filter(AVISITN == 20)
@@ -118,7 +118,7 @@ server <- function(input, output, session, datasets) {
       )
 
     ## Calculate LS mean
-    t12 <- emmeans::emmeans(gluc_lmfit, "TRTPN")
+    t12 <- emmeans(gluc_lmfit, "TRTPN")
 
     ## Merge and format data for reporting
     apr0ancova1 <- merge(t10, t11) |>
@@ -162,7 +162,7 @@ server <- function(input, output, session, datasets) {
       apr0ancova3 = apr0ancova3
     )
   })
-  output$tbl_efficacy_1 <- reactable::renderReactable({
+  output$tbl_efficacy_1 <- renderReactable({
     efficacy_results <- efficacy_results()
     apr0ancova1 <- efficacy_results$apr0ancova1
     coln <- c(
@@ -188,7 +188,7 @@ server <- function(input, output, session, datasets) {
       )
     )
   })
-  output$tbl_efficacy_2 <- reactable::renderReactable({
+  output$tbl_efficacy_2 <- renderReactable({
     efficacy_results <- efficacy_results()
     apr0ancova2 <- efficacy_results$apr0ancova2
     apr0ancova3 <- efficacy_results$apr0ancova3

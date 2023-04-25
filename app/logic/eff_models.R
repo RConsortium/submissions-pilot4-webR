@@ -63,7 +63,7 @@ efficacy_models <- function(data, var = NULL, wk = NULL, show_pvalue = TRUE) {
   ancova <- drop1(model1, . ~ ., test = "F")
 
   # Pull it out into a table
-  sect1 <- tibble::tibble(
+  sect1 <- tibble(
     row_label = c("p-value(Dose Response) [1][2]"),
     `81` = ifelse(
       show_pvalue,
@@ -81,17 +81,17 @@ efficacy_models <- function(data, var = NULL, wk = NULL, show_pvalue = TRUE) {
 
   # Linear model but use treatment group as a factor now
   # LS Means and weight proportionately to match OM option on PROC GLM in SAS
-  lsm <- emmeans::lsmeans(model2, ~TRTPCD_F, weights = "proportional")
+  lsm <- lsmeans(model2, ~TRTPCD_F, weights = "proportional")
 
   # Here on out - it's all the same data manipulation
   # Get pairwise contrast and remove P-values adjustment for multiple groups
-  cntrst_p <- emmeans::contrast(lsm, method = "pairwise", adjust = NULL)
+  cntrst_p <- contrast(lsm, method = "pairwise", adjust = NULL)
   # 95% CI
   cntrst_ci <- confint(cntrst_p)
 
   # merge and convert into dataframe
-  pw_data <- tibble::as_tibble(summary(cntrst_p)) |>
-    merge(tibble::as_tibble(cntrst_ci)) |>
+  pw_data <- as_tibble(summary(cntrst_p)) |>
+    merge(as_tibble(cntrst_ci)) |>
     rowwise() |>
     # Create the display strings
     mutate(
@@ -116,7 +116,7 @@ efficacy_models <- function(data, var = NULL, wk = NULL, show_pvalue = TRUE) {
     # Clean out the numeric variables
     select(contrast, p, diff_se, ci) |>
     # Transpose
-    tidyr::pivot_longer(c("p", "diff_se", "ci"), names_to = "row_label")
+    pivot_longer(c("p", "diff_se", "ci"), names_to = "row_label")
 
   # Subset Xan_Lo - Pbo into table variables
   xan_lo <- pw_data |>

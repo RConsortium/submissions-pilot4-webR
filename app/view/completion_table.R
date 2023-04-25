@@ -43,7 +43,7 @@ server <- function(input, output, session, datasets) {
       )
 
     # visit number and week lookup
-    v_week_df <- tibble::tibble(
+    v_week_df <- tibble(
       AVISITN = c(0, 2, 4, 6, 8, 12, 16, 20, 24, 26, 99),
       VISIT = c("Baseline ", paste("Week", c(2, 4, 6, 8, 12, 16, 20, 24, 26)), "End of Treatment")
     ) |>

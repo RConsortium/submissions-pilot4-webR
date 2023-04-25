@@ -1,5 +1,6 @@
 box::use(
   dplyr[across, starts_with, arrange, mutate, bind_rows, select, distinct, rename],
+  tidyr[replace_na],
 )
 
 #' Nest Row Labels in a Tplyr table
@@ -26,6 +27,6 @@ nest_rowlabels <- function(.dat) {
     bind_rows(stubs) |>
     arrange(ord_layer_index, ord_layer_1, ord_layer_2) |>
     mutate(
-      across(starts_with("var"), ~ tidyr::replace_na(., ""))
+      across(starts_with("var"), ~ replace_na(., ""))
     )
 }
