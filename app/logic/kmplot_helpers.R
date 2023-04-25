@@ -35,7 +35,7 @@ add_risktable2 <- function(gg,
   if (is.null(times)) times <- graphtimes
 
   final <-
-    visR:::get_risktable(estimate_object,
+    get_risktable(estimate_object,
       times = times,
       statlist = statlist,
       label = label,
@@ -51,13 +51,13 @@ add_risktable2 <- function(gg,
   attr(final, "statlist") <- NULL
   attr(final, "title") <- NULL
 
-  tbls <- base::Map(
+  tbls <- Map(
     function(statlist, title = NA) {
       ggrisk <- ggplot(
         final,
         aes(
           x = time,
-          y = stats::reorder(y_values, dplyr::desc(y_values)),
+          y = reorder(y_values, desc(y_values)),
           label = format(get(statlist), nsmall = 0)
         )
       ) +
@@ -100,12 +100,12 @@ add_risktable2 <- function(gg,
   )
 
   gglist <- list(gg) |>
-    base::append(tbls)
+    append(tbls)
 
   gg_a <- gglist |>
-    visR:::align_plots()
+    align_plots()
 
-  gg_b <- cowplot::plot_grid(
+  gg_b <- plot_grid(
     plotlist = gg_a,
     align = "none",
     nrow = length(gg_a),

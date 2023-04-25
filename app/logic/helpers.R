@@ -66,7 +66,7 @@ num_fmt <- Vectorize(function(var, digits = 0, size = 10, int_len = 3) {
 #' @return HTML with font size applied
 #' @export
 tooltip_text <- function(text, font_size = 16) {
-  glue::glue("<span style='font-size:{font_size}px;'>{text}<span>")
+  glue("<span style='font-size:{font_size}px;'>{text}<span>")
 }
 
 #' check if a filter is active in a teal module
@@ -78,10 +78,10 @@ tooltip_text <- function(text, font_size = 16) {
 filter_active <- function(datasets) {
   result <- FALSE
   if (length(names(datasets$get_filter_state()) > 0)) {
-    filter_use <- purrr::map_lgl(names(datasets$get_filter_state()), ~ {
+    filter_use <- map_lgl(names(datasets$get_filter_state()), ~ {
       # grab call of filter code
       f_call <- datasets$get_call(.x)$filter
-      f_call != glue::glue("{.x}_FILTERED <- {.x}")
+      f_call != glue("{.x}_FILTERED <- {.x}")
     })
     result <- any(filter_use)
   }
