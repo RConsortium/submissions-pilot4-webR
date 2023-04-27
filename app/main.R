@@ -91,7 +91,13 @@ ui <- function(id) {
       data = teal_data,
       header = tags$div(
         class = "flex",
-        tags$h1("Pilot 2 Shiny Application using Rhino framework"),
+        tags$h1(
+          "Pilot 2 Shiny Application",
+          tags$span(
+            class = "text-muted text-smaller text-italic",
+            "(using Rhino framework)"
+          )
+        ),
         tags$div(
           class = "logos-wrapper",
           tags$a(
