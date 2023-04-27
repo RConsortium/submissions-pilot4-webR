@@ -48,10 +48,8 @@ describe('Filter panes in KM tab', () => {
 
       // Define an alias that references the section that adds new variables to
       //  the filters
-      cy
-        .get(nsTeal('filter_panel-filter_add_vars'))
-        .should('be.visible')
-        .as('add_filter');
+      cy.get(nsTeal('filter_panel-filter_add_vars')).as('add_filter');
+      cy.get('@add_filter').should('be.visible')
 
       // Make sure that html element does not have a class that indicates
       // that shiny is busy
@@ -62,7 +60,7 @@ describe('Filter panes in KM tab', () => {
   // Hamburger works hidding / showing
   // ######################################
 
-  it('Hamburger menu shows by defaults and hides/shows when clicked', () => {
+  it('Hamburger menu shows by default and hides/shows when clicked', () => {
     cy.get('#filter_hamburger').as('hamburger-menu');
 
     // By default, the filter pane should be visible
@@ -76,6 +74,17 @@ describe('Filter panes in KM tab', () => {
     cy.get('@hamburger-menu').click();
     cy.get('@filter_summary').should('be.visible');
   });
+
+  // Alert is dismissible
+  it('Alert in KM tab is dismissible', () => {
+    cy.get('@active_tab').within(() => {
+      cy.get('.alert.alert-dismissible').as('alert');
+
+      cy.get('@alert').should('be.visible')
+      cy.get('@alert').get('button.close').click()
+      cy.get('@alert').should('not.exist')
+    })
+  })
 
   //  Filter summary
   // ######################################
