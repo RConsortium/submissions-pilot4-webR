@@ -26,27 +26,26 @@ describe('app', () => {
 
         cy.get('@tealTab').invoke('attr', 'href').as('hrefTab');
 
+        // Make sure that html element does not have a class that indicates
+        // that shiny is busy
+        cy.get('html').not('.shiny-busy');
+
         cy
           .get('@hrefTab')
           .then((hrefTab) => {
             cy
               .get(`${hrefTab}.tab-pane.active`)
               .should('be.visible')
-              .then((tabPane) => {
-                if (cy.wrap(tabPane).find('.shiny-bound-output').length > 0) {
-                  cy.wrap(tabPane)
-                    .find('.shiny-bound-output')
-                    .filter(':visible')
-                    .each(($el2) => {
-                      cy
-                        .wrap($el2)
-                        .children()
-                        .should('have.length.gte', 1);
-                    });
-                } else {
-                  cy.log('Didn\'t find bound output, skipping test');
-                }
-              });
+              .within(() => {
+                cy
+                  .get('*')
+                  .filter(':visible')
+                  .should('have.length.gte', 1)
+                  .then(($el) => {
+                    cy.wrap($el).contains(/.+/)
+                  });
+
+              })
           });
       });
   });
