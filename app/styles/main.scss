@@ -45,6 +45,34 @@ header {
   }
 }
 
+
+.container-fluid {
+  margin-left: 15px;
+  margin-right: 15px;
+}
+
+.logos-wrapper {
+  &.dark {
+    display: none;
+  }
+
+  &.light {
+    display: flex;
+  }
+}
+
+.btn.color-mode-toggle {
+  &,
+  &:focus,
+  &:focus-visible,
+  &:hover,
+  &:active {
+    background: transparent;
+    border: transparent;
+    box-shadow: none;
+  }
+}
+
 // ###############################
 //
 //    __            _
@@ -105,15 +133,10 @@ footer {
 //  dark
 // ##########################
 
-.dark {
+html > body > .dark {
   min-height: 100vh;
   background-color: var(--primary-dark);
   color: var(--white);
-
-  & > .container-fluid {
-    margin-left: 15px;
-    margin-right: 15px;
-  }
 
   .nav-pills > li {
     & > a:focus,
@@ -148,6 +171,16 @@ footer {
 
     &.disabled {
       color: var(--disabled);
+    }
+  }
+
+  .logos-wrapper {
+    &.dark {
+      display: flex;
+    }
+
+    &.light {
+      display: none;
     }
   }
 

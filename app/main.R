@@ -1,7 +1,7 @@
 box::use(
   shiny[
     shinyApp, tagList, tags, includeMarkdown, moduleServer, NS, bootstrapPage,
-    textOutput, renderText
+    textOutput, renderText, actionButton, observe, bindEvent,
   ],
   teal[ui_teal_with_splash, modules, module, srv_teal_with_splash],
   teal.data[cdisc_data, cdisc_dataset],
@@ -84,7 +84,7 @@ teal_modules <- modules(
 ui <- function(id) {
   ns <- NS(id)
   tags$div(
-    class = "dark",
+    class = "dark color-mode",
     ui_teal_with_splash(
       title = "Pilot 2 Shiny Rhino Application",
       id = ns("teal_wrapper"),
@@ -99,11 +99,31 @@ ui <- function(id) {
           )
         ),
         tags$div(
-          class = "logos-wrapper",
+          class = "logos-wrapper dark",
+          actionButton(
+            ns("mode_dark"),
+            class = "color-mode-toggle",
+            title = "Switch to light mode",
+            "☀️"
+          ),
           tags$a(
             href = "https://rconsortium.github.io/submissions-wg/",
             target = "_blank",
             tags$img(class = "logo", src = "static/logos/rconsortium_dark.svg")
+          )
+        ),
+        tags$div(
+          class = "logos-wrapper light",
+          actionButton(
+            ns("mode_light"),
+            class = "color-mode-toggle",
+            title = "Switch to light mode",
+            "🌑"
+          ),
+          tags$a(
+            href = "https://rconsortium.github.io/submissions-wg/",
+            target = "_blank",
+            tags$img(class = "logo", src = "static/logos/rconsortium.svg")
           )
         )
       ),
@@ -113,7 +133,7 @@ ui <- function(id) {
           "Source: R Consortium. Adapted to a Rhino application by Appsilon."
         ),
         tags$div(
-          class = "logos-wrapper",
+          class = "logos-wrapper dark",
           tags$a(
             href = "https://rconsortium.github.io/submissions-wg/",
             target = "_blank",
@@ -123,6 +143,19 @@ ui <- function(id) {
             href = "https://appsilon.com",
             target = "_blank",
             tags$img(class = "logo", src = "static/logos/appsilon_dark.svg")
+          )
+        ),
+        tags$div(
+          class = "logos-wrapper light",
+          tags$a(
+            href = "https://rconsortium.github.io/submissions-wg/",
+            target = "_blank",
+            tags$img(class = "logo", src = "static/logos/rconsortium.svg")
+          ),
+          tags$a(
+            href = "https://appsilon.com",
+            target = "_blank",
+            tags$img(class = "logo", src = "static/logos/appsilon.svg")
           )
         )
       )
@@ -134,5 +167,15 @@ ui <- function(id) {
 server <- function(id) {
   moduleServer(id, function(input, output, session) {
     srv_teal_with_splash(id = "teal_wrapper", data = teal_data, modules = teal_modules)
+
+    observe({
+      session$sendCustomMessage("toggle_dark", input$mode_dark)
+    }) |>
+      bindEvent(input$mode_dark, once = FALSE, ignoreInit = TRUE)
+
+    observe({
+      session$sendCustomMessage("toggle_dark", input$mode_light)
+    }) |>
+      bindEvent(input$mode_light, once = FALSE, ignoreInit = TRUE)
   })
 }
