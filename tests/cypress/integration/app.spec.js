@@ -17,10 +17,9 @@ describe('app', () => {
       .each(($el) => {
         cy.wrap($el).as('tealTab');
 
-        cy.get('@tealTab').then(($el) => {
-          cy.log(`Navigating to: ${$el[0].innerText}`);
-        })
-
+        cy.get('@tealTab').then(($el2) => {
+          cy.log(`Navigating to: ${$el2[0].innerText}`);
+        });
 
         cy.get('@tealTab').click();
 
@@ -41,11 +40,10 @@ describe('app', () => {
                   .get('*')
                   .filter(':visible')
                   .should('have.length.gte', 1)
-                  .then(($el) => {
-                    cy.wrap($el).contains(/.+/)
+                  .then(($el3) => {
+                    cy.wrap($el3).contains(/.+/);
                   });
-
-              })
+              });
           });
       });
   });

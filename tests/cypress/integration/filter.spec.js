@@ -49,7 +49,7 @@ describe('Filter panes in KM tab', () => {
       // Define an alias that references the section that adds new variables to
       //  the filters
       cy.get(nsTeal('filter_panel-filter_add_vars')).as('add_filter');
-      cy.get('@add_filter').should('be.visible')
+      cy.get('@add_filter').should('be.visible');
 
       // Make sure that html element does not have a class that indicates
       // that shiny is busy
@@ -80,11 +80,11 @@ describe('Filter panes in KM tab', () => {
     cy.get('@active_tab').within(() => {
       cy.get('.alert.alert-dismissible').as('alert');
 
-      cy.get('@alert').should('be.visible')
-      cy.get('@alert').get('button.close').click()
-      cy.get('@alert').should('not.exist')
-    })
-  })
+      cy.get('@alert').should('be.visible');
+      cy.get('@alert').get('button.close').click();
+      cy.get('@alert').should('not.exist');
+    });
+  });
 
   //  Filter summary
   // ######################################
@@ -102,30 +102,30 @@ describe('Filter panes in KM tab', () => {
 
   it('Filter variables has shiny content rendered', () => {
     cy.get('@filter_variables').within(() => {
-        cy
-          .get(nsTeal('filter_panel-filter_active_vars_contents'))
-          .should('have.length.gte', 1);
+      cy
+        .get(nsTeal('filter_panel-filter_active_vars_contents'))
+        .should('have.length.gte', 1);
 
-        cy
-          .get(nsTeal('filter_panel-ADSL_filter-filter-cards'))
-          .children()
-          .should('have.length', 0);
+      cy
+        .get(nsTeal('filter_panel-ADSL_filter-filter-cards'))
+        .children()
+        .should('have.length', 0);
 
-        cy
-          .get(nsTeal('filter_panel-ADAS_filter-filter-cards'))
-          .children()
-          .should('have.length', 0);
+      cy
+        .get(nsTeal('filter_panel-ADAS_filter-filter-cards'))
+        .children()
+        .should('have.length', 0);
 
-        cy
-          .get(nsTeal('filter_panel-ADTTE_filter-filter-cards'))
-          .children()
-          .should('have.length', 0);
+      cy
+        .get(nsTeal('filter_panel-ADTTE_filter-filter-cards'))
+        .children()
+        .should('have.length', 0);
 
-        cy
-          .get(nsTeal('filter_panel-ADLB_filter-filter-cards'))
-          .children()
-          .should('have.length', 0);
-      });
+      cy
+        .get(nsTeal('filter_panel-ADLB_filter-filter-cards'))
+        .children()
+        .should('have.length', 0);
+    });
   });
 
   //  Add variables to filter
