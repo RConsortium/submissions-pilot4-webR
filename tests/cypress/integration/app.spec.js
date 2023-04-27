@@ -15,11 +15,11 @@ describe('app', () => {
     cy
       .get('.nav.nav-pills a[data-bs-toggle=tab]')
       .each(($el) => {
-        cy.wrap($el).as('el');
+        cy.wrap($el).as('tealTab');
 
-        cy.get('@el').click();
+        cy.get('@tealTab').click();
 
-        cy.get('@el').invoke('attr', 'href').as('hrefTab');
+        cy.get('@tealTab').invoke('attr', 'href').as('hrefTab');
 
         cy
           .get('@hrefTab')
