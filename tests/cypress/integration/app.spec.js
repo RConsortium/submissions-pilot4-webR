@@ -3,12 +3,12 @@ describe('app', () => {
     cy.visit('/');
   });
 
-  it('starts', () => {});
+  it('Starts', () => {});
 
-  it('Has more than 7 tabs', () => {
+  it('Has 7 tabs', () => {
     cy
       .get('.nav.nav-pills a[data-bs-toggle=tab]')
-      .should('have.length.at.least', 7);
+      .should('have.length', 7);
   });
 
   it('Navigates to all tabs', () => {
@@ -28,7 +28,7 @@ describe('app', () => {
               .get(`${hrefTab}.tab-pane.active`)
               .should('be.visible')
               .then((tabPane) => {
-                if (tabPane.find('.shiny-bound-output').length > 0) {
+                if (cy.wrap(tabPane).find('.shiny-bound-output').length > 0) {
                   cy.wrap(tabPane)
                     .find('.shiny-bound-output')
                     .filter(':visible')
