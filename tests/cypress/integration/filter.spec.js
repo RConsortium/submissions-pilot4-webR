@@ -257,7 +257,7 @@ describe('app', () => {
       .get('@active_tab')
       .within(() => {
         cy
-          .get('.shiny-bound-output')
+          .get('.shiny-bound-output:visible')
           .each(($el) => {
             cy
               .wrap($el)
