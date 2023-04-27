@@ -1,17 +1,38 @@
 @import "colors-fonts";
 
+:root {
+  --primary: var(--AppsilonBlue);
+  --primary-dark: var(--AppsilonNavi-strong-3);
+  --white: var(--AppsilonSnow);
+  --disabled: var(--AppsilonGray-strong-1);
+}
+
 html,
 body {
-  height: 100%;
+  height: 100vh;
 }
 
 .logos-wrapper {
-  display:flex;
+  display: flex;
   align-items: end;
   gap: 15px;
 
   img.logo { height: 45px; }
 }
+
+// #####################################
+//
+//   _                    _
+//  | |                  | |
+//  | |__   ___  __ _  __| | ___ _ __
+//  | '_ \ / _ \/ _` |/ _` |/ _ \ '__|
+//  | | | |  __/ (_| | (_| |  __/ |
+//  |_| |_|\___|\__,_|\__,_|\___|_|
+//
+//
+//
+//  header
+// ####################################
 
 header {
   margin-top: 15px;
@@ -22,6 +43,20 @@ header {
   }
 }
 
+// ###############################
+//
+//    __            _
+//   / _|          | |
+//  | |_ ___   ___ | |_ ___ _ __
+//  |  _/ _ \ / _ \| __/ _ \ '__|
+//  | || (_) | (_) | ||  __/ |
+//  |_| \___/ \___/ \__\___|_|
+//
+//
+//
+//  footer
+// ##############################
+
 footer {
   .logos-wrapper {
     margin-bottom: 1em;
@@ -30,57 +65,83 @@ footer {
   }
 }
 
-.top-margin { margin-top: 20px; }
+// ######################################################
+//
+//                     _             _   _
+//                    (_)           | | (_)
+//   _ __   __ ___   ___  __ _  __ _| |_ _  ___  _ __
+//  | '_ \ / _` \ \ / / |/ _` |/ _` | __| |/ _ \| '_ \
+//  | | | | (_| |\ V /| | (_| | (_| | |_| | (_) | | | |
+//  |_| |_|\__,_| \_/ |_|\__, |\__,_|\__|_|\___/|_| |_|
+//                        __/ |
+//                       |___/
+//
+//  navigation for non-dark background
+// #####################################################
 
+.dark .nav-pills > li > a { // Required to be before navigation (lint rules)
+  color: var(--white);
+}
 
 .nav-pills > li.active > a,
 .nav-pills > li.active > a:focus,
 .nav-pills > li.active > a:hover {
-  background-color: var(--AppsilonBlue);
+  background-color: var(--primary);
 }
 
+// ##########################
+//
+//       _            _
+//      | |          | |
+//    __| | __ _ _ __| | __
+//   / _` |/ _` | '__| |/ /
+//  | (_| | (_| | |  |   <
+//   \__,_|\__,_|_|  |_|\_\
+//
+//
+//
+//  dark
+// ##########################
 
 .dark {
-  height: 100%;
-  background-color: var(--AppsilonNavi-strong-3);
-  color: var(--AppsilonSnow);
+  min-height: 100vh;
+  background-color: var(--primary-dark);
+  color: var(--white);
 
   & > .container-fluid {
     margin-left: 15px;
     margin-right: 15px;
   }
 
-  .nav-pills > li > a {
-    color: var(--AppsilonSnow);
+  .nav-pills > li {
+    & > a:focus,
+    & > a:hover {
+      color: var(--primary-dark);
+    }
 
-    &:focus,
-    &:hover {
-      color: var(--AppsilonNavi-strong-3);
+    &.active > a,
+    &.active > a:focus,
+    &.active > a:hover {
+      background-color: var(--primary);
+      color: var(--white);
     }
   }
 
-  .nav-pills > li.active > a,
-  .nav-pills > li.active > a:focus,
-  .nav-pills > li.active > a:hover {
-    background-color: var(--AppsilonBlue);
-    color: var(--AppsilonSnow);
-  }
-
   #teal_primary_col {
-    background-color: var(--AppsilonSnow);
-    color: var(--AppsilonNavi-strong-3);
+    background-color: var(--white);
+    color: var(--primary-dark);
     border-radius: 4px;
   }
 
   #teal_secondary_col {
-    color: var(--AppsilonNavi-strong-3);
+    color: var(--primary-dark);
   }
 
   #filter_hamburger {
-    color: var(--AppsilonSnow);
+    color: var(--white);
 
     &.disabled {
-      color: var(--AppsilonGray-strong-1);
+      color: var(--disabled);
     }
   }
 
@@ -88,3 +149,19 @@ footer {
     .text-muted { color: #fefefe; }
   }
 }
+
+// ###########################
+//
+//       _             _                   _
+//      (_)           | |                 | |
+//   ___ _ _ __   __ _| | ___   _ __ _   _| | ___  ___
+//  / __| | '_ \ / _` | |/ _ \ | '__| | | | |/ _ \/ __|
+//  \__ \ | | | | (_| | |  __/ | |  | |_| | |  __/\__ \
+//  |___/_|_| |_|\__, |_|\___| |_|   \__,_|_|\___||___/
+//                __/ |
+//               |___/
+//
+//  single rules
+// ##########################
+
+.top-margin { margin-top: 20px; }
