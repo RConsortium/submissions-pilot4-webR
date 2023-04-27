@@ -83,12 +83,34 @@ teal_modules <- modules(
 #' @export
 ui <- function(id) {
   ns <- NS(id)
-  ui_teal_with_splash(
-    title = "Pilot 2 Shiny Rhino Application",
-    id = ns("teal_wrapper"),
-    data = teal_data,
-    header = "Pilot 2 Shiny Application using Rhino framework",
-    footer = tags$p(class = "text-muted", "Source: R Consortium")
+  tags$div(
+    class = "dark",
+    ui_teal_with_splash(
+      title = "Pilot 2 Shiny Rhino Application",
+      id = ns("teal_wrapper"),
+      data = teal_data,
+      header = tags$div(
+        class = "flex",
+        tags$h1("Pilot 2 Shiny Application using Rhino framework"),
+        tags$div(
+          class = "logos-wrapper",
+          tags$a(
+            href = "https://rconsortium.github.io/submissions-wg/",
+            target = "_blank",
+            tags$img(class = "logo", src = "static/logos/rconsortium_dark.svg")
+          ),
+          tags$a(
+            href = "https://appsilon.com",
+            target = "_blank",
+            tags$img(class = "logo", src = "static/logos/appsilon_dark.svg")
+          )
+        )
+      ),
+      footer = tags$p(
+        class = "text-muted",
+        "Source: R Consortium. Adapted to a Rhino application by Appsilon."
+      )
+    )
   )
 }
 

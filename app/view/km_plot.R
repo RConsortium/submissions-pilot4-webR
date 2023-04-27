@@ -16,6 +16,7 @@ ui <- function(id, datasets) {
   ns <- NS(id)
   tagList(
     alert(
+      class = "top-margin",
       tagList(
         tags$b("Important Information:"),
         tags$p(

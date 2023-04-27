@@ -41,9 +41,10 @@ ui <- function(id, datasets) {
             fluidRow(
               column(
                 width = 4,
-                imageOutput(ns("step1_image"))
+                imageOutput(ns("step1_image"), height = "auto")
               ),
               column(
+                class = "top-margin",
                 width = 8,
                 tags$p(
                   "Within the", tags$b("Add Filter Variables"),
@@ -57,9 +58,10 @@ ui <- function(id, datasets) {
             title = "Step 2",
             column(
               width = 4,
-              imageOutput(ns("step2_image"))
+              imageOutput(ns("step2_image"), height = "auto")
             ),
             column(
+              class = "top-margin",
               width = 8,
               tags$p(
                 "Scroll up/down or use the search bar to find the variable for subpopulation.
@@ -72,10 +74,11 @@ ui <- function(id, datasets) {
             title = "Step 3",
             column(
               width = 4,
-              imageOutput(ns("step3_image"))
+              imageOutput(ns("step3_image"), height = "auto")
             ),
             column(
               width = 8,
+              class = "top-margin",
               tags$p(
                 "In the", tags$b("Active Filter Variables"),
                 "widget, the selected variable with its available categories or levels
@@ -125,7 +128,8 @@ server <- function(input, output, session, datasets) {
       list(
         src = "app/static/app_screenshot2.png",
         alt = "Filter Screenshot 1",
-        width = "85%"
+        width = "85%",
+        height = "auto"
       )
     },
     deleteFile = FALSE
@@ -136,7 +140,8 @@ server <- function(input, output, session, datasets) {
       list(
         src = "app/static/app_screenshot3.png",
         alt = "Filter Screenshot 2",
-        width = "90%"
+        width = "90%",
+        height = "auto"
       )
     },
     deleteFile = FALSE
@@ -147,7 +152,8 @@ server <- function(input, output, session, datasets) {
       list(
         src = "app/static/app_screenshot4.png",
         alt = "Filter Screenshot 3",
-        width = "90%"
+        width = "90%",
+        height = "auto"
       )
     },
     deleteFile = FALSE

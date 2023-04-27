@@ -1,0 +1,85 @@
+@import "colors-fonts";
+
+html,
+body {
+  height: 100%;
+}
+
+header {
+  margin-top: 15px;
+  margin-bottom: 15px;
+
+
+  .flex {
+    justify-content: space-between;
+  }
+
+  .logos-wrapper {
+    display:flex;
+    align-items: center;
+    gap: 15px;
+
+    img.logo {
+      height: 45px;
+    }
+  }
+}
+
+.top-margin { margin-top: 20px; }
+
+
+.nav-pills > li.active > a,
+.nav-pills > li.active > a:focus,
+.nav-pills > li.active > a:hover {
+  background-color: var(--AppsilonBlue);
+}
+
+
+.dark {
+  height: 100%;
+  background-color: var(--AppsilonNavi-strong-3);
+  color: var(--AppsilonSnow);
+
+  & > .container-fluid {
+    margin-left: 15px;
+    margin-right: 15px;
+  }
+
+  .nav-pills > li > a {
+    color: var(--AppsilonSnow);
+
+    &:focus,
+    &:hover {
+      color: var(--AppsilonNavi-strong-3);
+    }
+  }
+
+  .nav-pills > li.active > a,
+  .nav-pills > li.active > a:focus,
+  .nav-pills > li.active > a:hover {
+    background-color: var(--AppsilonBlue);
+    color: var(--AppsilonSnow);
+  }
+
+  #teal_primary_col {
+    background-color: var(--AppsilonSnow);
+    color: var(--AppsilonNavi-strong-3);
+    border-radius: 4px;
+  }
+
+  #teal_secondary_col {
+    color: var(--AppsilonNavi-strong-3);
+  }
+
+  #filter_hamburger {
+    color: var(--AppsilonSnow);
+
+    &.disabled {
+      color: var(--AppsilonGray-strong-1);
+    }
+  }
+
+  footer {
+    .text-muted { color: #dddddd; }
+  }
+}
