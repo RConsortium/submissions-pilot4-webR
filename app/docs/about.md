@@ -9,7 +9,10 @@ Pilot&nbsp;2. The data sets and results displayed in the application originate f
 
 This R/Shiny application was initially developed using the
 <a href="https://thinkr-open.github.io/golem/" target="_blank">Golem</a>
-framework by the R Consortium submission working group. Among the participants are people from Roche, Atorus Research, Merck, Eli Lilly and FDA.
+framework by the R Consortium submission working group.
+
+Among the participants are Ning Leng _(Roche)_, Heng Wang _(Roche)_, Mike Stakehouse _(Atorus)_, Eli Miller _(Atorus)_, Yilong Zhang _(Merck)_, Gregery Chen _(Merck)_ and Eric Nantz _(Eli Lilly)_. Paul Schuette and Hye Soo Cho from FDA are also participating in this working group.
+
 The full list is publicly available at the
 <a href="https://rconsortium.github.io/submissions-wg/pilot2.html" target="_blank">Pilot&nbsp;2 page</a>.
 
