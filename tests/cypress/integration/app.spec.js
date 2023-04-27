@@ -17,6 +17,11 @@ describe('app', () => {
       .each(($el) => {
         cy.wrap($el).as('tealTab');
 
+        cy.get('@tealTab').then(($el) => {
+          cy.log(`Navigating to: ${$el[0].innerText}`);
+        })
+
+
         cy.get('@tealTab').click();
 
         cy.get('@tealTab').invoke('attr', 'href').as('hrefTab');
