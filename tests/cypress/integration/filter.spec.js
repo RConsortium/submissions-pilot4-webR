@@ -151,13 +151,13 @@ describe('Filter panes', () => {
           .contains('Select variable to filter')
           .should('be.visible')
           .parent()
-          .as('filterButton')
+          .as('filterButton');
 
-        cy.get('@filterButton', {timeout: 15000}).click('top');
+        cy.get('@filterButton', { timeout: 15000 }).click('top');
 
-        cy.get('.dropdown-menu.open li').contains('Age').as("age")
+        cy.get('.dropdown-menu.open li').contains('Age').as('age');
 
-        cy.get("@age", {timeout: 15000}).click('top');
+        cy.get('@age', { timeout: 15000 }).click('top');
       });
 
     // Let shiny finish rendering
