@@ -6,9 +6,9 @@
    id="Layer_1"
    x="0px"
    y="0px"
-   width="545.60858"
-   height="157.06715"
-   viewBox="0 0 545.60858 157.06715"
+   width="260.52957"
+   height="75"
+   viewBox="0 0 260.52957 74.999998"
    enable-background="new 0 0 660.521 262.957"
    xml:space="preserve"
    sodipodi:docname="appsilon_dark.svg"
@@ -28,10 +28,10 @@
    inkscape:deskcolor="#d1d1d1"
    showgrid="false"
    inkscape:zoom="1.9832829"
-   inkscape:cx="273.53637"
-   inkscape:cy="78.657462"
+   inkscape:cx="274.04058"
+   inkscape:cy="79.413784"
    inkscape:window-width="3840"
-   inkscape:window-height="2091"
+   inkscape:window-height="2096"
    inkscape:window-x="0"
    inkscape:window-y="0"
    inkscape:window-maximized="1"
@@ -50,7 +50,7 @@
 
 <g
    id="g283"
-   transform="translate(-57.456444,-52.946234)"><path
+   transform="matrix(0.47750275,0,0,0.47750275,-27.43561,-25.281972)"><path
      fill="#ffffff"
      d="m 280.21,143.016 h -22.079 l -4.257,12.77 h -13.566 l 22.345,-59.144 h 15.695 l 20.926,59.144 h -14.719 z m -3.546,-10.553 -7.537,-22.346 -7.449,22.346 z"
      id="path2" /><path

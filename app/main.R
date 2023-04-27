@@ -1,6 +1,6 @@
 box::use(
   shiny[
-    shinyApp, tags, includeMarkdown, moduleServer, NS, bootstrapPage,
+    shinyApp, tagList, tags, includeMarkdown, moduleServer, NS, bootstrapPage,
     textOutput, renderText
   ],
   teal[ui_teal_with_splash, modules, module, srv_teal_with_splash],
@@ -98,6 +98,20 @@ ui <- function(id) {
             href = "https://rconsortium.github.io/submissions-wg/",
             target = "_blank",
             tags$img(class = "logo", src = "static/logos/rconsortium_dark.svg")
+          )
+        )
+      ),
+      footer = tagList(
+        tags$p(
+          class = "text-muted",
+          "Source: R Consortium. Adapted to a Rhino application by Appsilon."
+        ),
+        tags$div(
+          class = "logos-wrapper",
+          tags$a(
+            href = "https://rconsortium.github.io/submissions-wg/",
+            target = "_blank",
+            tags$img(class = "logo", src = "static/logos/rconsortium_dark.svg")
           ),
           tags$a(
             href = "https://appsilon.com",
@@ -105,10 +119,6 @@ ui <- function(id) {
             tags$img(class = "logo", src = "static/logos/appsilon_dark.svg")
           )
         )
-      ),
-      footer = tags$p(
-        class = "text-muted",
-        "Source: R Consortium. Adapted to a Rhino application by Appsilon."
       )
     )
   )

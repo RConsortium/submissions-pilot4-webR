@@ -5,23 +5,28 @@ body {
   height: 100%;
 }
 
+.logos-wrapper {
+  display:flex;
+  align-items: end;
+  gap: 15px;
+
+  img.logo { height: 45px; }
+}
+
 header {
   margin-top: 15px;
   margin-bottom: 15px;
 
-
   .flex {
     justify-content: space-between;
   }
+}
 
+footer {
   .logos-wrapper {
-    display:flex;
-    align-items: center;
-    gap: 15px;
+    margin-bottom: 1em;
 
-    img.logo {
-      height: 45px;
-    }
+    img.logo { height: 25px; }
   }
 }
 
@@ -80,6 +85,6 @@ header {
   }
 
   footer {
-    .text-muted { color: #dddddd; }
+    .text-muted { color: #fefefe; }
   }
 }
