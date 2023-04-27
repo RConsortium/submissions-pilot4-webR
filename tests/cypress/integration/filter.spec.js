@@ -1,4 +1,4 @@
-describe('app', () => {
+describe('Filter panes', () => {
   // Rhino applications have an 'app' prefix
   const nsPrefix = 'app-';
   // Support function to help generating namespaces
