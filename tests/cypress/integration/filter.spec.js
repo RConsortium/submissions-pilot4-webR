@@ -22,43 +22,44 @@ describe('Filter panes in KM tab', () => {
     cy.visit('/');
 
     cy.get('html').not('.shiny-busy');
+    // Look for 'Data is loaded' element
+    cy.contains('Data loaded - App fully started up');
 
     // Find the tab and click to navigate
     cy
       .get('.nav.nav-pills a[data-bs-toggle=tab]')
       .contains('KM plot for TTDE')
-      .as('navPills');
+      .as('kmNav');
 
-    cy.get('@navPills').click();
+    cy.get('@kmNav').click();
 
-    cy.get('@navPills').invoke('attr', 'href').as('hrefTab');
+    // Make sure that html element does not have a class that indicates
+    // that shiny is busy
+    cy.get('html').not('.shiny-busy');
 
-    // Make sure the correct tab is selected
-    cy.get('@hrefTab').then((hrefTab) => {
-      // Look for 'Data is loaded' element
-      cy.contains('Data loaded - App fully started up');
-
+    cy.get('@kmNav').invoke('attr', 'href').then((hrefTab) => {
       // Define an alias that references the current active tab
       cy
         .get(`${hrefTab}.tab-pane.active`)
         .should('be.visible')
         .as('active_tab');
-
-      // Define an alias that references the active filters
-      cy.get(nsTeal('filter_panel-filters_overview')).as('filter_summary');
-
-      // Define an alias that references the active variables
-      cy.get(nsTeal('filter_panel-filter_active_vars')).as('filter_variables');
-
-      // Define an alias that references the section that adds new variables to
-      //  the filters
-      cy.get(nsTeal('filter_panel-filter_add_vars')).as('add_filter');
-      cy.get('@add_filter').should('be.visible');
-
-      // Make sure that html element does not have a class that indicates
-      // that shiny is busy
-      cy.get('html').not('.shiny-busy');
     });
+
+    // Define an alias that references the active filters
+    cy.get(nsTeal('filter_panel-filters_overview')).as('filter_summary');
+
+    // Define an alias that references the active variables
+    cy.get(nsTeal('filter_panel-filter_active_vars')).as('filter_variables');
+
+    // Define an alias that references the section that adds new variables to
+    //  the filters
+    cy.get(nsTeal('filter_panel-filter_add_vars')).as('add_filter');
+    cy.get('@add_filter').should('be.visible');
+
+    // Make sure that html element does not have a class that indicates
+    // that shiny is busy
+    cy.get('html').not('.shiny-busy');
+
   });
 
   // Hamburger works hidding / showing
