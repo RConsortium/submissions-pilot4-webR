@@ -1,18 +1,27 @@
-@import "colors-fonts";
-
-:root {
-  --primary: var(--AppsilonBlue);
-  --primary-dark: var(--AppsilonNavi-strong-3);
-  --white: var(--AppsilonSnow);
-  --disabled: var(--AppsilonGray-strong-1);
-  --muted-dark: var(--AppsilonLightGray-weak-1);
-  --muted: var(--AppsilonGray-strong-1);
-}
+// #################################
+//
+//    _____      _
+//   / ____|    | |
+//  | |     ___ | | ___  _ __ ___
+//  | |    / _ \| |/ _ \| '__/ __|
+//  | |___| (_) | | (_) | |  \__ \
+//   \_____\___/|_|\___/|_|  |___/
+//
+//
+//
+//  Colors to theme the application
+// ################################
+$color-primary: #0099f9;
+$color-primary-dark: #00172c;
+$color-white: #fff;
+$color-disabled: #767a7d;
+$color-muted-dark: #a7aaad;
+$color-muted: #767a7d;
 
 html,
 body {
   height: 100vh;
-  color: var(--primary-dark);
+  color: $color-primary-dark;
 }
 
 .logos-wrapper {
@@ -108,13 +117,13 @@ footer {
 // #####################################################
 
 .dark .nav-pills > li > a { // Required to be before navigation (lint rules)
-  color: var(--white);
+  color: $color-white;
 }
 
 .nav-pills > li.active > a,
 .nav-pills > li.active > a:focus,
 .nav-pills > li.active > a:hover {
-  background-color: var(--primary);
+  background-color: $color-primary;
 }
 
 // ##########################
@@ -133,42 +142,42 @@ footer {
 
 html > body > .dark {
   min-height: 100vh;
-  background-color: var(--primary-dark);
-  color: var(--white);
+  background-color: $color-primary-dark;
+  color: $color-white;
 
   .nav-pills > li {
     & > a:focus,
     & > a:hover {
-      color: var(--primary-dark);
+      color: $color-primary-dark;
     }
 
     &.active > a,
     &.active > a:focus,
     &.active > a:hover {
-      background-color: var(--primary);
-      color: var(--white);
+      background-color: $color-primary;
+      color: $color-white;
     }
   }
 
-  .text-muted { color: var(--muted-dark); }
+  .text-muted { color: $color-muted-dark; }
 
   #teal_primary_col {
-    background-color: var(--white);
-    color: var(--primary-dark);
+    background-color: $color-white;
+    color: $color-primary-dark;
     border-radius: 4px;
 
-    .text-muted { color: var(--muted); }
+    .text-muted { color: $color-muted; }
   }
 
   #teal_secondary_col {
-    color: var(--primary-dark);
+    color: $color-primary-dark;
   }
 
   #filter_hamburger {
-    color: var(--white);
+    color: $color-white;
 
     &.disabled {
-      color: var(--disabled);
+      color: $color-disabled;
     }
   }
 
