@@ -31,11 +31,11 @@ body {
 
   img.logo { height: 45px; }
 
-  & > .color-mode-toggle .color-mode.dark {
+  & .color-mode-toggle .color-mode.dark {
     display: none;
   }
 
-  & > .color-mode-toggle .color-mode.light {
+  & .color-mode-toggle .color-mode.light {
     display: flex;
   }
 }
@@ -182,11 +182,11 @@ html > body > .dark {
   }
 
   .logos-wrapper {
-    & > .color-mode-toggle .color-mode.dark {
+    & .color-mode-toggle .color-mode.dark {
       display: flex;
     }
 
-    & > .color-mode-toggle .color-mode.light {
+    & .color-mode-toggle .color-mode.light {
       display: none;
     }
 

@@ -100,26 +100,29 @@ ui <- function(id) {
         ),
         tags$div(
           class = "logos-wrapper",
-          actionButton(
-            ns("theme_mode_toggle"),
-            class = "color-mode-toggle",
-            label = tagList(
-              tags$span(
-                class = "color-mode dark",
-                title = "Switch to light mode",
-                "☀️"
-              ),
-              tags$span(
-                class = "color-mode light",
-                title = "Switch to light mode",
-                "🌑"
+          tags$div(
+            class = "center-wrap",
+            actionButton(
+              ns("theme_mode_toggle"),
+              class = "color-mode-toggle",
+              label = tagList(
+                tags$span(
+                  class = "color-mode dark",
+                  title = "Switch to light mode",
+                  "☀️"
+                ),
+                tags$span(
+                  class = "color-mode light",
+                  title = "Switch to light mode",
+                  "🌑"
+                )
               )
+            ),
+            tags$a(
+              href = "https://rconsortium.github.io/submissions-wg/",
+              target = "_blank",
+              tags$img(class = "logo", src = "static/logos/rconsortium.svg")
             )
-          ),
-          tags$a(
-            href = "https://rconsortium.github.io/submissions-wg/",
-            target = "_blank",
-            tags$img(class = "logo", src = "static/logos/rconsortium.svg")
           )
         )
       ),
