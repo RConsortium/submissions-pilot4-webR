@@ -7,6 +7,10 @@ describe('Filter panes in KM tab', () => {
   const nsTeal = (id) => ns(`teal_wrapper-teal-main_ui-${id}`);
 
   afterEach(() => {
+    // Make sure that html element does not have a class that indicates
+    // that shiny is busy
+    cy.get('html').not('.shiny-busy');
+
     cy.get('@active_tab').within(() => {
       cy.get('.shiny-bound-output:visible').each(($el) => {
         cy.wrap($el).children().should('have.length.gte', 1);
@@ -149,20 +153,35 @@ describe('Filter panes in KM tab', () => {
 
     // Add Age filter (find and click on it)
     // ------------------------------------
-    cy.get('@add_filter').within(() => {
-      cy
-        .get('.shiny-input-container:first')
-        .contains('Select variable to filter')
-        .should('be.visible')
-        .parent()
-        .as('filterButton');
+    cy
+      .get('@add_filter')
+      .find('.shiny-input-container:first')
+      .contains('Select variable to filter')
+      .should('be.visible')
+      .parent();
 
-      cy.get('@filterButton', { timeout: 15000 }).click('top');
+    // Let shiny finish rendering
+    cy.get('html').not('.shiny-busy');
 
-      cy.get('.dropdown-menu.open li').contains('Age').as('age');
+    cy
+      .get('@add_filter')
+      .find('.shiny-input-container:first', { timeout: 15000 })
+      .parent()
+      .click('top');
 
-      cy.get('@age', { timeout: 15000 }).click('top');
-    });
+    // Let shiny finish rendering
+    cy.get('html').not('.shiny-busy');
+
+    cy
+      .get('@add_filter')
+      .find('.dropdown-menu.open li')
+      .contains('Age')
+      .as('age');
+
+    // Let shiny finish rendering
+    cy.get('html').not('.shiny-busy');
+
+    cy.get('@age', { timeout: 15000 }).click('top');
 
     // Let shiny finish rendering
     cy.get('html').not('.shiny-busy');
@@ -198,39 +217,47 @@ describe('Filter panes in KM tab', () => {
       //  note: this is necessary as developer wasn't able to define a single
       //    long drag. This is open to improvement
       cy.get('.irs-handle.from').as('irs-handle');
-
-      const mousedownOpts = {
-        button: 0, which: 1, pageX: 600, pageY: 100,
-      };
-      const mousemoveOpts = {
-        clientX: 300, clientY: 400,
-      };
-
-      cy.get('@irs-handle').trigger('mousedown', 'top', mousedownOpts);
-      cy.get('@irs-handle').trigger('mousemove', 'top', mousemoveOpts);
-      cy.get('@irs-handle').trigger('mouseup', 'top');
-
-      cy
-        .get('.filterPlotOverlayRange .shiny-plot-output')
-        .not('.recalculating');
-      // cy.get('@summary_change', { timeout: 20000 }).should('have.callCount', 1)
-
-      cy.get('@irs-handle').trigger('mousedown', 'top', mousedownOpts);
-      cy.get('@irs-handle').trigger('mousemove', 'top', mousemoveOpts);
-      cy.get('@irs-handle').trigger('mouseup', 'top');
-
-      cy
-        .get('.filterPlotOverlayRange .shiny-plot-output')
-        .not('.recalculating');
-
-      cy.get('@irs-handle').trigger('mousedown', 'top', mousedownOpts);
-      cy.get('@irs-handle').trigger('mousemove', 'top', mousemoveOpts);
-      cy.get('@irs-handle').trigger('mouseup', 'top');
-
-      cy
-        .get('.filterPlotOverlayRange .shiny-plot-output')
-        .not('.recalculating');
     });
+
+    const mousedownOpts = {
+      button: 0, which: 1, pageX: 600, pageY: 100,
+    };
+    const mousemoveOpts = {
+      clientX: 300, clientY: 400,
+    };
+
+    cy.get('@irs-handle').trigger('mousedown', 'top', mousedownOpts);
+    cy.get('@irs-handle').trigger('mousemove', 'top', mousemoveOpts);
+    cy.get('@irs-handle').trigger('mouseup', 'top');
+
+    cy
+      .get('@filter_variables')
+      .find('.filterPlotOverlayRange .shiny-plot-output')
+      .not('.recalculating');
+
+    // Let shiny finish rendering
+    cy.get('html').not('.shiny-busy');
+
+    cy.get('@irs-handle').trigger('mousedown', 'top', mousedownOpts);
+    cy.get('@irs-handle').trigger('mousemove', 'top', mousemoveOpts);
+    cy.get('@irs-handle').trigger('mouseup', 'top');
+
+    cy
+      .get('@filter_variables')
+      .find('.filterPlotOverlayRange .shiny-plot-output')
+      .not('.recalculating');
+
+    // Let shiny finish rendering
+    cy.get('html').not('.shiny-busy');
+
+    cy.get('@irs-handle').trigger('mousedown', 'top', mousedownOpts);
+    cy.get('@irs-handle').trigger('mousemove', 'top', mousemoveOpts);
+    cy.get('@irs-handle').trigger('mouseup', 'top');
+
+    cy
+      .get('@filter_variables')
+      .find('.filterPlotOverlayRange .shiny-plot-output')
+      .not('.recalculating');
 
     // Let shiny finish rendering
     cy.get('html').not('.shiny-busy');
