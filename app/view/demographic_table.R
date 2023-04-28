@@ -16,7 +16,7 @@ box::use(
 #' @export
 ui <- function(id, datasets) {
   ns <- NS(id)
-  uiOutput(ns("table"))
+  uiOutput(ns("table"), class = "top-margin")
 }
 
 #' srv_t_demographic Server Functions
