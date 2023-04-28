@@ -2,8 +2,12 @@
 
 This application is intended for a pilot submission to the FDA composing of a Shiny application, as part of the
 <a href="https://rconsortium.github.io/submissions-wg/" target="_blank">R Submissions Working Group</a>
-Pilot&nbsp;2. The data sets and results displayed in the application originate from the
-<a href="https://rconsortium.github.io/submissions-wg/pilot-overall.html#pilot-1---common-analyses" target="_blank">Pilot&nbsp;1 project</a>. Below is a brief description of the Visit the **Usage Guide** for information on using the application. Below is a brief description of the application components:
+Pilot&nbsp;2.
+The data sets and results displayed in the application originate from the
+<a href="https://rconsortium.github.io/submissions-wg/pilot-overall.html#pilot-1---common-analyses" target="_blank">Pilot&nbsp;1 project</a>.
+
+Visit the **Usage Guide** for information on using the application.
+Below is a brief description of the reasons behind the conversion to a Rhino application and the application components.
 
 ### Source: R Consortium
 
