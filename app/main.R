@@ -169,13 +169,8 @@ server <- function(id) {
     srv_teal_with_splash(id = "teal_wrapper", data = teal_data, modules = teal_modules)
 
     observe({
-      session$sendCustomMessage("toggle_dark", input$mode_dark)
+      session$sendCustomMessage("toggle_dark", "switch")
     }) |>
-      bindEvent(input$mode_dark, once = FALSE, ignoreInit = TRUE)
-
-    observe({
-      session$sendCustomMessage("toggle_dark", input$mode_light)
-    }) |>
-      bindEvent(input$mode_light, once = FALSE, ignoreInit = TRUE)
+      bindEvent(input$mode_dark, input$mode_light, once = FALSE, ignoreInit = TRUE)
   })
 }
