@@ -21,6 +21,14 @@ body {
   gap: 15px;
 
   img.logo { height: 45px; }
+
+  &.dark {
+    display: none;
+  }
+
+  &.light {
+    display: flex;
+  }
 }
 
 // #####################################
@@ -46,20 +54,9 @@ header {
   }
 }
 
-
 .container-fluid {
   margin-left: 15px;
   margin-right: 15px;
-}
-
-.logos-wrapper {
-  &.dark {
-    display: none;
-  }
-
-  &.light {
-    display: flex;
-  }
 }
 
 .btn.color-mode-toggle {
