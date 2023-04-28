@@ -1,7 +1,7 @@
 box::use(
   shiny[
     shinyApp, tagList, tags, includeMarkdown, moduleServer, NS, bootstrapPage,
-    textOutput, renderText, actionButton, observe, bindEvent,
+    textOutput, renderText, actionButton, observe, bindEvent, icon,
   ],
   teal[ui_teal_with_splash, modules, module, srv_teal_with_splash],
   teal.data[cdisc_data, cdisc_dataset],
@@ -99,26 +99,22 @@ ui <- function(id) {
           )
         ),
         tags$div(
-          class = "logos-wrapper dark",
+          class = "logos-wrapper",
           actionButton(
-            ns("mode_dark"),
+            ns("theme_mode_toggle"),
             class = "color-mode-toggle",
-            title = "Switch to light mode",
-            "☀️"
-          ),
-          tags$a(
-            href = "https://rconsortium.github.io/submissions-wg/",
-            target = "_blank",
-            tags$img(class = "logo", src = "static/logos/rconsortium_dark.svg")
-          )
-        ),
-        tags$div(
-          class = "logos-wrapper light",
-          actionButton(
-            ns("mode_light"),
-            class = "color-mode-toggle",
-            title = "Switch to light mode",
-            "🌑"
+            label = tagList(
+              tags$span(
+                class = "color-mode dark",
+                title = "Switch to light mode",
+                "☀️"
+              ),
+              tags$span(
+                class = "color-mode light",
+                title = "Switch to light mode",
+                "🌑"
+              )
+            )
           ),
           tags$a(
             href = "https://rconsortium.github.io/submissions-wg/",
@@ -133,20 +129,7 @@ ui <- function(id) {
           "Source: R Consortium. Adapted to a Rhino application by Appsilon."
         ),
         tags$div(
-          class = "logos-wrapper dark",
-          tags$a(
-            href = "https://rconsortium.github.io/submissions-wg/",
-            target = "_blank",
-            tags$img(class = "logo", src = "static/logos/rconsortium_dark.svg")
-          ),
-          tags$a(
-            href = "https://appsilon.com",
-            target = "_blank",
-            tags$img(class = "logo", src = "static/logos/appsilon_dark.svg")
-          )
-        ),
-        tags$div(
-          class = "logos-wrapper light",
+          class = "logos-wrapper",
           tags$a(
             href = "https://rconsortium.github.io/submissions-wg/",
             target = "_blank",
@@ -169,8 +152,8 @@ server <- function(id) {
     srv_teal_with_splash(id = "teal_wrapper", data = teal_data, modules = teal_modules)
 
     observe({
-      session$sendCustomMessage("toggle_dark", "switch")
+      session$sendCustomMessage("toggle_dark", input$theme_mode_toggle)
     }) |>
-      bindEvent(input$mode_dark, input$mode_light, once = FALSE, ignoreInit = TRUE)
+      bindEvent(input$theme_mode_toggle, once = FALSE, ignoreInit = TRUE)
   })
 }

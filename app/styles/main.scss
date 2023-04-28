@@ -22,11 +22,11 @@ body {
 
   img.logo { height: 45px; }
 
-  &.dark {
+  & > .color-mode-toggle .color-mode.dark {
     display: none;
   }
 
-  &.light {
+  & > .color-mode-toggle .color-mode.light {
     display: flex;
   }
 }
@@ -173,12 +173,17 @@ html > body > .dark {
   }
 
   .logos-wrapper {
-    &.dark {
+    & > .color-mode-toggle .color-mode.dark {
       display: flex;
     }
 
-    &.light {
+    & > .color-mode-toggle .color-mode.light {
       display: none;
+    }
+
+    & img.logo {
+      -webkit-filter: brightness(0) invert(1);
+      filter: brightness(0) invert(1);
     }
   }
 
