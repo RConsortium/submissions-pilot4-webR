@@ -6,7 +6,7 @@ This repo tries to reproduce the same Shiny application using the Rhino framewor
 
 # Deployment
 
-This application is deployed at [pilot-2-submission-rhino](https://connect.appsilon.com/pilot-2-submission-rhino/) using Git-Backed deployment on the main branch.
+This application is deployed at [pilot-2-submission-rhino](https://connect.appsilon.com/rhino-fda-pilot/) using Git-Backed deployment on the main branch.
 
 # App structure
 
