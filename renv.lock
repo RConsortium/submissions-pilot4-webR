@@ -1699,9 +1699,13 @@
     "teal": {
       "Package": "teal",
       "Version": "0.12.0",
-      "Source": "Repository",
-      "RemoteType": "repository",
-      "Remotes": "insightsengineering/scda.2021@*release, insightsengineering/scda@*release, insightsengineering/teal.code@*release, insightsengineering/teal.data@*release, insightsengineering/teal.logger@*release, insightsengineering/teal.reporter@*release, insightsengineering/teal.slice@*release, insightsengineering/teal.transform@*release, insightsengineering/teal.widgets@*release",
+      "Source": "GitHub",
+      "RemoteType": "github",
+      "RemoteHost": "api.github.com",
+      "RemoteUsername": "insightsengineering",
+      "RemoteRepo": "teal",
+      "RemoteRef": "v0.12.0",
+      "RemoteSha": "19e1529506636ad00822f93a970bb72583ce44ac",
       "Remotes": "insightsengineering/scda.2021@*release, insightsengineering/scda@*release, insightsengineering/teal.code@*release, insightsengineering/teal.data@*release, insightsengineering/teal.logger@*release, insightsengineering/teal.reporter@*release, insightsengineering/teal.slice@*release, insightsengineering/teal.transform@*release, insightsengineering/teal.widgets@*release",
       "Requirements": [
         "R",
@@ -1723,7 +1727,7 @@
         "teal.transform",
         "utils"
       ],
-      "Hash": "5afdc87e437c46f60ab286118d1e033e"
+      "Hash": "afd34c2f92d5e6b089688c98f13f7567"
     },
     "teal.code": {
       "Package": "teal.code",
