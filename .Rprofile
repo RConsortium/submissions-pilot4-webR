@@ -1,7 +1,3 @@
-# Necessary option to force installation / restore from renv.lock file
-#  instead of remotes
-options("renv.config.install.remotes" = FALSE)
-
 if (file.exists("renv")) {
   source("renv/activate.R")
 } else {
