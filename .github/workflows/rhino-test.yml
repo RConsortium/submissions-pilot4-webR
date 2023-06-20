@@ -10,7 +10,7 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Extract R version from lockfile
         run: printf 'R_VERSION=%s\n' "$(jq --raw-output .R.Version renv.lock)" >> $GITHUB_ENV
@@ -41,7 +41,7 @@ jobs:
           renv::restore(clean = TRUE)
 
       - name: Setup Node
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: 16
 
