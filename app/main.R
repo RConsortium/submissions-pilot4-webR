@@ -3,7 +3,6 @@ box::use(
     shinyApp, tagList, tags, includeMarkdown, moduleServer, NS, bootstrapPage,
     textOutput, renderText, actionButton, observe, bindEvent, icon,
   ],
-  teal[ui_teal_with_splash, modules, module, srv_teal_with_splash],
 )
 
 box::use(
@@ -17,15 +16,45 @@ box::use(
 
 teal_data <- readRDS("teal_data.rds")
 
+modules <- list
+module <- list
+
+label_to_id <- function(x) {
+  tolower(gsub(" ", "-", x))
+}
+
+ui_teal_with_splash <- function(title, header, footer, ...) {
+  shiny::fluidPage(
+    title = title,
+    header,
+    do.call(shiny::tabsetPanel, lapply(teal_modules, function(m) {
+      shiny::tabPanel(
+        m$label,
+        m$ui(paste0("app-", label_to_id(m$label)))
+      )
+    })),
+    footer
+  )
+}
+
+srv_teal_with_splash <- function(data, modules, ...) {
+  datasets <- list(
+    get_data = function(name, ...) teal_data$get_dataset(name)$get_raw_data()
+  )
+  lapply(teal_modules, function(m) {
+    moduleServer(
+      label_to_id(m$label),
+      function(input, output, session) {
+        m$server(input, output, session, datasets)
+      }
+    )
+  })
+}
 
 teal_modules <- modules(
   module(
     label = "App Information",
-    server = function(id, datasets) {
-      moduleServer(id, function(input, output, session) {
-
-      })
-    },
+    server = function(input, output, session, datasets) {},
     ui = function(id, ...) {
       includeMarkdown("app/docs/about.md")
     },
