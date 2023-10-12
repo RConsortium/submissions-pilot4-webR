@@ -1,5 +1,26 @@
-# Pilot 4 Submission Using webR
+# Structure
+- app: webr ready version
+- shiny: hard copy of the rhino version
+- site: compiled webr version
 
-Pilot 4 submission is an effort to make a submission using webR.
+# Compiling
+Use the `app` folder version for compilation. This version should run normally as a traditional shiny application.
 
-This repo tries to reproduce the same Shiny application as [Pilot 2 Rhino version](https://github.com/Appsilon/rhino-fda-pilot).
+1. install needed dependencies to compile and serve
+```
+install.packages("pak")
+pak::pak("posit-dev/r-shinylive")
+pak::pak("rstudio/httpuv")
+```
+
+2. Export the app version into webR
+```
+shinylive::export("app", "site")
+```
+
+3. serve locally to test
+```
+httpuv::runStaticServer("site")
+```
+
+A deployed version can be found here: https://brilliant-elf-2da930.netlify.app/
