@@ -4,11 +4,9 @@ box::use(
     textOutput, renderText, actionButton, observe, bindEvent, icon,
   ],
   teal[ui_teal_with_splash, modules, module, srv_teal_with_splash],
-  teal.data[cdisc_data, cdisc_dataset],
 )
 
 box::use(
-  app / logic / adam_data[get_adsl, get_adas, get_adtte, get_adlb],
   app / view / user_guide,
   app / view / demographic_table,
   app / view / km_plot,
@@ -17,17 +15,8 @@ box::use(
   app / view / completion_table,
 )
 
-adsl <- get_adsl()
-adas <- get_adas()
-adtte <- get_adtte()
-adlb <- get_adlb()
+teal_data <- readRDS("teal_data.rds")
 
-teal_data <- cdisc_data(
-  cdisc_dataset("ADSL", adsl),
-  cdisc_dataset("ADAS", adas, keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT", "QSSEQ")),
-  cdisc_dataset("ADTTE", adtte),
-  cdisc_dataset("ADLB", adlb)
-)
 
 teal_modules <- modules(
   module(
