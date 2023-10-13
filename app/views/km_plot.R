@@ -3,7 +3,7 @@ box::use(
   dplyr[filter, inner_join, mutate, select],
   ggplot2[element_text, geom_hline, rel, theme, theme_bw, theme_set],
   shiny[NS, p, plotOutput, renderPlot, tagList, tags],
-  visR[add_CI, add_CNSR, estimate_KM, visr]
+  visR[add_CI, add_CNSR, estimate_KM, visr],
 )
 
 box::use(
@@ -13,16 +13,14 @@ box::use(
 #' @export
 ui <- function(id, datasets) {
   ns <- NS(id)
-  plotOutput(ns("plot"), height = "800px")
+  tagList(
+    plotOutput(ns("plot"), height = "800px")
+  )
 }
 
 #' @export
 server <- function(input, output, session, datasets) {
   output$plot <- renderPlot({
-    if (is.null(datasets)) {
-      return(NULL)
-    }
-
     adsl <- datasets$get_data("ADSL", filtered = TRUE)
     adtte <- datasets$get_data("ADTTE", filtered = TRUE)
     anl <- adsl |>
@@ -86,11 +84,11 @@ server <- function(input, output, session, datasets) {
         size = 12
       )
 
-    km_plot <- plot_grid(
-      title, km_plot, caption,
-      ncol = 1,
-      rel_heights = c(0.1, 0.8, 0.1)
-    )
+    # km_plot <- plot_grid(
+    #   title, km_plot, caption,
+    #   ncol = 1,
+    #   rel_heights = c(0.1, 0.8, 0.1)
+    # )
     km_plot
   })
 }
