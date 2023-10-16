@@ -1,4 +1,5 @@
 library(shiny)
+library(markdown)
 
 # user_guide
 library(reactable)
@@ -65,6 +66,10 @@ temp_file_path <- tempfile(fileext = ".rds")
 download.file("/adam/datasets_km.rds", destfile = temp_file_path, mode = "wb")
 datasets_km <- readRDS(temp_file_path)
 
+temp_file_path <- tempfile(fileext = ".md")
+download.file("/static/about.md", destfile = temp_file_path, mode = "wb")
+app_information <- includeMarkdown(temp_file_path)
+
 # Use me to run the app as a nomral shiny app
 # datasets <- readRDS("www/adam/datasets.rds")
 # datasets_km <- readRDS("www/adam/datasets_km.rds")
@@ -74,6 +79,7 @@ ui <- bootstrapPage(
     id = "moduleTabs",
     type = "tabs",
 
+    tabPanel("App Information", app_information),
     tabPanel("User Guide", user_guide$ui("user_guide", datasets)),
     tabPanel("Demographic Table", demographic_table$ui("demographic_table", datasets)),
     tabPanel("KM Plot", km_plot$ui("km_plot", datasets_km)),
