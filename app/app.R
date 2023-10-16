@@ -74,19 +74,146 @@ app_information <- includeMarkdown(temp_file_path)
 # datasets <- readRDS("www/adam/datasets.rds")
 # datasets_km <- readRDS("www/adam/datasets_km.rds")
 
-ui <- bootstrapPage(
+
+get_page_dependencies <- function() {
+  tagList(
+    tags$link(rel = "stylesheet", type = "text/css", href = "/static/css/app.min.css"),
+    tags$script(src = "/static/js/app.min.js"),
+    tags$style(HTML("
+      .color-mode > .tabbable > .tab-content {
+        background-color: #fff;
+        color: #00172c;
+        border-radius: 4px;
+        padding: 15px 30px;
+      }
+
+      #moduleTabs>li>a {
+        border: none;
+        border-radius: 4px;
+      }
+
+      #moduleTabs>li.active>a,
+      #moduleTabs>li.active>a:focus,
+      #moduleTabs.nav-pills>li.active>a:hover {
+        background-color: #0099f9;
+        color: #fff;
+      }
+
+      #moduleTabs {
+        padding-left: 30px;
+        padding-bottom: 5px;
+        padding-top: 5px;
+        margin-bottom: 5px;
+        border-top: 1px solid #ddd;
+      }
+
+      .dark #moduleTabs > li > a {
+        color: #fff;
+      }
+
+      .tabbable .tabbable img {
+        max-width: 100%;
+        max-height: 500px;
+      }
+    "))
+  )
+}
+
+get_page_header <- function() {
+  tags$header(
+    tags$div(
+      class = "flex",
+      style = "display: flex;",
+
+      tags$h1(
+        "Pilot 2 Shiny Application",
+        tags$span(
+          class = "text-muted text-smaller text-italic",
+          "(using webR framework)"
+        )
+      ),
+      tags$div(
+        class = "logos-wrapper",
+        tags$div(
+          class = "center-wrap",
+          actionButton(
+            "theme_mode_toggle",
+            class = "color-mode-toggle",
+            label = tagList(
+              tags$span(
+                class = "color-mode dark",
+                title = "Switch to light mode",
+                "☀️"
+              ),
+              tags$span(
+                class = "color-mode light",
+                title = "Switch to light mode",
+                "🌑"
+              )
+            )
+          ),
+          tags$a(
+            href = "https://rconsortium.github.io/submissions-wg/",
+            target = "_blank",
+            tags$img(class = "logo", src = "/static/logos/rconsortium.svg")
+          )
+        )
+      )
+    )
+  )
+}
+
+get_page_footer <- function() {
+  tags$div(
+    class = "footer",
+    style = "margin: 30px 0;",
+
+    tags$p(
+      class = "text-muted",
+      "Source: R Consortium. Adapted to a webR application by Appsilon."
+    ),
+    tags$div(
+      class = "logos-wrapper",
+      tags$a(
+        href = "https://rconsortium.github.io/submissions-wg/",
+        target = "_blank",
+        tags$img(class = "logo", src = "/static/logos/rconsortium.svg")
+      ),
+      tags$a(
+        href = "https://appsilon.com",
+        target = "_blank",
+        tags$img(class = "logo", src = "/static/logos/appsilon.svg")
+      )
+    )
+  )
+}
+
+ui <- fluidPage(
+  get_page_dependencies(),
+  title = "Pilot 2 Shiny webR Application",
+  class = "dark color-mode",
+  style = "margin: 0; padding-left: 30px; padding-right: 30px;",
+
+  get_page_header(),
+
   tabsetPanel(
     id = "moduleTabs",
     type = "tabs",
 
     tabPanel("App Information", app_information),
     tabPanel("User Guide", user_guide$ui("user_guide", datasets)),
-    tabPanel("Demographic Table", demographic_table$ui("demographic_table", datasets)),
+    tabPanel("Demographic Table",
+      demographic_table$ui("demographic_table", datasets)
+    ),
     tabPanel("KM Plot", km_plot$ui("km_plot", datasets_km)),
     tabPanel("Primary Table", primary_table$ui("primary_table", datasets)),
     tabPanel("Efficacy Table", efficacy_table$ui("efficacy_table", datasets)),
-    tabPanel("Visit Completion Table", completion_table$ui("visit_completion_table", datasets))
-  )
+    tabPanel("Visit Completion Table",
+      completion_table$ui("visit_completion_table", datasets)
+    )
+  ),
+
+  get_page_footer()
 )
 
 server <- function(input, output, session) {
@@ -120,6 +247,11 @@ server <- function(input, output, session) {
       completion_table$server(input, output, session, datasets)
     }
   )
+
+  observe({
+    session$sendCustomMessage("toggle_dark", input$theme_mode_toggle)
+  }) |>
+  bindEvent(input$theme_mode_toggle, once = FALSE, ignoreInit = TRUE)
 }
 
 shinyApp(ui, server)
