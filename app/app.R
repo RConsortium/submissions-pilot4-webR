@@ -1,4 +1,9 @@
+# To run the app normally set environment variable LOCAL=TRUE
 library(shiny)
+
+# TealShim
+library(R6)
+library(formatters)
 
 # user_guide
 library(reactable)
@@ -44,30 +49,40 @@ box::use(
 )
 
 # Currently unused
-# adsl <- get_adsl()
-# adas <- get_adas()
-# adtte <- get_adtte()
-# adlb <- get_adlb()
+adsl <- get_adsl()
+adas <- get_adas()
+adtte <- get_adtte()
+adlb <- get_adlb()
 
-# teal_data <- cdisc_data(
-#   cdisc_dataset("ADSL", adsl),
-#   cdisc_dataset("ADAS", adas, keys = c("STUDYID", "USUBJID", "PARAMCD", "AVISIT", "QSSEQ")),
-#   cdisc_dataset("ADTTE", adtte),
-#   cdisc_dataset("ADLB", adlb)
-# )
-
-# Use me for compiling to webR
-temp_file_path <- tempfile(fileext = ".rds")
-download.file("/adam/datasets.rds", destfile = temp_file_path, mode = "wb")
-datasets <- readRDS(temp_file_path)
-
-temp_file_path <- tempfile(fileext = ".rds")
-download.file("/adam/datasets_km.rds", destfile = temp_file_path, mode = "wb")
-datasets_km <- readRDS(temp_file_path)
-
-# Use me to run the app as a nomral shiny app
-# datasets <- readRDS("www/adam/datasets.rds")
-# datasets_km <- readRDS("www/adam/datasets_km.rds")
+TealShim <- R6::R6Class(
+  "TealShim",
+  public = list(
+    initialize = function(adsl, adas, adtte, adlb) {
+      private$data$adsl <- adsl
+      private$data$adas <- adas
+      private$data$adtte <- adtte
+      private$data$adlb <- adlb
+    },
+    get_data = function(name, ...) {
+      switch(name,
+        ADSL = private$data$adsl,
+        ADAS = private$data$adas,
+        ADTTE = private$data$adtte,
+        ADLB = private$data$adlb
+      )
+    },
+    get_varlabels = function(name, cols) {
+      formatters::var_labels(self$get_data(name))[cols]
+    },
+    get_filter_state = function() {
+      c()
+    }
+  ),
+  private = list(
+    data = NULL
+  )
+)
+datasets <- datasets_km <- TealShim$new(adsl, adas, adtte, adlb)
 
 ui <- bootstrapPage(
   tabsetPanel(
