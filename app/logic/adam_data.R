@@ -6,11 +6,14 @@ box::use(
 )
 
 get_file <- function(url) {
-  temp_file_path <- tempfile(fileext = ".xpt")
+  if (isTRUE(as.logical(Sys.getenv("LOCAL")))) {
+    xpt_path <- paste0("../www", url)
+  } else {
+    xpt_path <- tempfile(fileext = ".xpt")
+    download.file(url, destfile = xpt_path, mode = "wb")
+  }
 
-  download.file(url, destfile = temp_file_path, mode = "wb")
-
-  read_xpt(temp_file_path)
+  read_xpt(xpt_path)
 }
 
 #' @export
