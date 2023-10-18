@@ -4,6 +4,7 @@ box::use(
   shiny[
     NS, observeEvent, p, plotOutput, reactiveValues, renderPlot, renderUI, selectInput,
     tagAppendAttributes, tagList, tags, uiOutput, updateSelectInput,
+    fluidRow, column
   ],
   visR[add_CI, add_CNSR, estimate_KM, visr],
 )
@@ -17,41 +18,49 @@ box::use(
 ui <- function(id, datasets) {
   ns <- NS(id)
 
-  tagList(
-    tags$div(
-      class = "alert alert-info alert-dismissible top-margin top-margin",
-      tagList(
-        tags$b("Important Information:"),
-        tags$p(
-          "The analyses performed when utilizing subgroups or
-          other subsets of the source data sets are considered ",
-          tags$b("exploratory.")
-        ),
-        tags$ul(
-          tags$li(
-            "Treatment information variables from the",
-            tags$b("ADTTE"),
-            "data set are excluded from the variable list.
-            Use the treatment variables present in the",
-            tags$b("ADSL"),
-            "set to perform treatment-related filters."
+  fluidRow(
+    column(
+      width = 9,
+
+      tags$div(
+        class = "alert alert-info alert-dismissible top-margin top-margin",
+        tagList(
+          tags$b("Important Information:"),
+          tags$p(
+            "The analyses performed when utilizing subgroups or
+            other subsets of the source data sets are considered ",
+            tags$b("exploratory.")
           ),
-          tags$li(
-            "In rare situations, applying filters with variables from both",
-            tags$b("ADSL"), "and", tags$b("ADTTE"),
-            "that overlap in content could result in an invalid data subset.
-            When possible, select variables with distinct content."
+          tags$ul(
+            tags$li(
+              "Treatment information variables from the",
+              tags$b("ADTTE"),
+              "data set are excluded from the variable list.
+              Use the treatment variables present in the",
+              tags$b("ADSL"),
+              "set to perform treatment-related filters."
+            ),
+            tags$li(
+              "In rare situations, applying filters with variables from both",
+              tags$b("ADSL"), "and", tags$b("ADTTE"),
+              "that overlap in content could result in an invalid data subset.
+              When possible, select variables with distinct content."
+            )
           )
         )
-      )
+      ),
+      uiOutput(ns("plot_title")) |>
+        tagAppendAttributes(style = "height: 100px; display: flex; justify-content: center; align-items: center; flex-direction: column;"),
+      plotOutput(ns("plot"), height = "600px"),
+      uiOutput(ns("plot_footer")) |>
+        tagAppendAttributes(style = "height: 100px; display: flex; justify-content: center; align-items: center; flex-direction: column;")
     ),
-    uiOutput(ns("plot_title")) |>
-      tagAppendAttributes(style = "height: 100px; display: flex; justify-content: center; align-items: center; flex-direction: column;"),
-    plotOutput(ns("plot"), height = "600px"),
-    uiOutput(ns("plot_footer")) |>
-      tagAppendAttributes(style = "height: 100px; display: flex; justify-content: center; align-items: center; flex-direction: column;"),
-    km_plot_filter$ui(ns("adsl"), "ADSL"),
-    km_plot_filter$ui(ns("adtte"), "ADTTE")
+
+    column(
+      width = 3,
+      km_plot_filter$ui(ns("adsl"), "ADSL"),
+      km_plot_filter$ui(ns("adtte"), "ADTTE")
+    )
   )
 }
 

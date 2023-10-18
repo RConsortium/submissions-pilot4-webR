@@ -83,8 +83,8 @@ TealShim <- R6::R6Class(
 )
 datasets <- datasets_km <- TealShim$new(adsl, adas, adtte, adlb)
 
-if (isTRUE(as.logical(Sys.getenv("LOCAL")))) {
-  md_path <- "../www/static/about.md"
+if (file.exists("www/static/about.md")) {
+  md_path <- "www/static/about.md"
 } else {
   md_path <- tempfile(fileext = ".md")
   download.file("/static/about.md", destfile = md_path, mode = "wb")
