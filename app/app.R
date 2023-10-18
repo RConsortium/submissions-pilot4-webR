@@ -15,7 +15,6 @@ library(rtables)
 library(stats)
 
 # km_plot
-library(cowplot)
 library(dplyr)
 library(ggplot2)
 library(visR)

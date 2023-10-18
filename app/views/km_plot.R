@@ -1,8 +1,10 @@
 box::use(
-  cowplot[draw_label, ggdraw, plot_grid],
   dplyr[filter, inner_join, mutate, select],
   ggplot2[element_text, geom_hline, rel, theme, theme_bw, theme_set],
-  shiny[NS, p, plotOutput, renderPlot, tagList, tags],
+  shiny[
+    NS, p, plotOutput, renderPlot, tagList, tags,
+    reactiveValues, observeEvent, renderUI, uiOutput, tagAppendAttributes
+  ],
   visR[add_CI, add_CNSR, estimate_KM, visr],
 )
 
@@ -42,7 +44,11 @@ ui <- function(id, datasets) {
         )
       )
     ),
-    plotOutput(ns("plot"), height = "800px")
+    uiOutput(ns("plot_title")) |>
+      tagAppendAttributes(style = "height: 100px; display: flex; justify-content: center; align-items: center; flex-direction: column;"),
+    plotOutput(ns("plot"), height = "600px"),
+    uiOutput(ns("plot_footer")) |>
+      tagAppendAttributes(style = "height: 100px; display: flex; justify-content: center; align-items: center; flex-direction: column;")
   )
 }
 
@@ -95,28 +101,20 @@ server <- function(input, output, session, datasets) {
     km_plot <- km_plot |>
       add_risktable2(group = "statlist")
 
-    title <- ggdraw() +
-      draw_label(
-        "KM plot for Time to First Dermatologic Event: Safety population\n",
-        fontface = "bold",
-        size = 16
+    output$plot_title <- renderUI({
+      tags$div(
+        style = "font-weight: bold; font-size: 16px",
+        "KM plot for Time to First Dermatologic Event: Safety population",
       )
+    })
 
-    caption <- ggdraw() +
-      draw_label(
-        paste(
-          "The shaded areas are 95% CI of the survival probability for each group",
-          "\n",
-          paste0(Sys.time())
-        ),
-        size = 12
+    output$plot_footer <- renderUI({
+      tagList(
+        tags$div(style = "font-size: 12px", "The shaded areas are 95% CI of the survival probability for each group"),
+        tags$div( style = "font-size: 12px", Sys.time())
       )
+    })
 
-    # km_plot <- plot_grid(
-    #   title, km_plot, caption,
-    #   ncol = 1,
-    #   rel_heights = c(0.1, 0.8, 0.1)
-    # )
     km_plot
   })
 }
