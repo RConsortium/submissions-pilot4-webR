@@ -83,9 +83,13 @@ TealShim <- R6::R6Class(
 )
 datasets <- datasets_km <- TealShim$new(adsl, adas, adtte, adlb)
 
-temp_file_path <- tempfile(fileext = ".md")
-download.file("/static/about.md", destfile = temp_file_path, mode = "wb")
-app_information <- includeMarkdown(temp_file_path)
+if (isTRUE(as.logical(Sys.getenv("LOCAL")))) {
+  md_path <- "../www/static/about.md"
+} else {
+  md_path <- tempfile(fileext = ".md")
+  download.file("/static/about.md", destfile = md_path, mode = "wb")
+}
+app_information <- includeMarkdown(md_path)
 
 get_page_dependencies <- function() {
   tagList(
