@@ -66,8 +66,8 @@ ui <- function(id, datasets) {
 
 #' @export
 server <- function(input, output, session, datasets) {
-  adsl_ <- km_plot_filter$server("adsl", datasets$get_data("ADSL"))
-  adtte_ <- km_plot_filter$server("adtte", datasets$get_data("ADTTE"))
+  adsl_ <- km_plot_filter$server("adsl", "ADSL", datasets$get_data("ADSL"))
+  adtte_ <- km_plot_filter$server("adtte", "ADTTE", datasets$get_data("ADTTE"))
 
   output$plot <- renderPlot({
     adsl <- adsl_()

@@ -11,31 +11,37 @@ box::use(
 
 ui <- function(id, dataset_name) {
   ns <- NS(id)
-  tags$div(
-    tags$h3("Add filter variables"),
-    selectInput(ns("variables"), dataset_name, NULL, multiple = TRUE),
-    uiOutput(ns("filters"))
-  )
+  uiOutput(ns("main"))
 }
 
-server <- function(id, dataset) {
+server <- function(id, dataset_name, dataset) {
   moduleServer(id, function(input, output, session) {
     ns <- session$ns
     filters <- reactiveValues()
     filters_values <- reactiveValues()
     filtered_data <- reactiveVal(dataset)
 
-    updateSelectInput(
-      session,
-      "variables",
-      choices = setNames(
+    output$main <- renderUI({
+      choices <- setNames(
         colnames(dataset),
         sapply(colnames(dataset), function(col) {
           col_type <- type_sum(dataset[[col]])
           sprintf("%s (%s)", col, col_type)
         })
       )
-    )
+
+      tags$div(
+        tags$h3("Add filter variables"),
+        tags$style("
+          .selectize-input {
+            max-height: 150px;
+            overflow: auto;
+          }
+        "),
+        selectInput(ns("variables"), dataset_name, choices, multiple = TRUE),
+        uiOutput(ns("filters"))
+      )
+    })
 
     observe({
       # clean filters that just got disabled
