@@ -1,5 +1,6 @@
 box::use(
-  purrr[discard, imap, walk],
+  dplyr[between, filter],
+  purrr[discard, imap, reduce, walk],
   shiny[
     NS, bindEvent, dateRangeInput, isolate, moduleServer, observe, reactiveVal, reactiveValues,
     reactiveValuesToList, renderUI, selectInput, sliderInput, tags, uiOutput, updateSelectInput
@@ -82,6 +83,26 @@ server <- function(id, dataset) {
         }) |>
         discard(is.null)
     })
+
+    observe({
+      reactiveValuesToList(filters_values) |>
+        names() |>
+        reduce(.init = dataset, function(df, col) {
+          values <- filters_values[[col]]
+          if (is.null(values) || NROW(df) == 0) {
+            return(df)
+          }
+
+          switch(type_sum(df[[col]]),
+            chr = filter(df, .data[[col]] %in% values),
+            fct = filter(df, .data[[col]] %in% values),
+            dbl = filter(df, between(.data[[col]], values[1], values[2])),
+            date = filter(df, between(.data[[col]], values[1], values[2]))
+          )
+        }) |>
+        filtered_data()
+    }) |>
+      bindEvent(reactiveValuesToList(filters_values))
 
     return(filtered_data)
   })
