@@ -1,11 +1,11 @@
 box::use(
+  purrr[discard, imap, walk],
   shiny[
     NS, bindEvent, dateRangeInput, isolate, moduleServer, observe, reactiveVal, reactiveValues,
     reactiveValuesToList, renderUI, selectInput, sliderInput, tags, uiOutput, updateSelectInput
   ],
-  purrr[discard, imap, walk],
+  stats[setNames],
   tibble[type_sum],
-  stats[setNames]
 )
 
 ui <- function(id, dataset_name) {
