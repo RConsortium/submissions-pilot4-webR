@@ -217,7 +217,7 @@ ui <- fluidPage(
     tabPanel("Demographic Table",
       demographic_table$ui("demographic_table", datasets)
     ),
-    tabPanel("KM Plot", km_plot$ui("km_plot", datasets_km)),
+    tabPanel("KM Plot for TTDE", km_plot$ui("km_plot", datasets_km)),
     tabPanel("Primary Table", primary_table$ui("primary_table", datasets)),
     tabPanel("Efficacy Table", efficacy_table$ui("efficacy_table", datasets)),
     tabPanel("Visit Completion Table",
