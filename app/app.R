@@ -10,7 +10,7 @@ library(formatters)
 library(reactable)
 library(tibble)
 
-#demographic_table
+# demographic_table
 library(rtables)
 library(stats)
 
@@ -143,7 +143,6 @@ get_page_header <- function() {
     tags$div(
       class = "flex",
       style = "display: flex;",
-
       tags$h1(
         "Pilot 2 Shiny Application",
         tags$span(
@@ -186,7 +185,6 @@ get_page_footer <- function() {
   tags$div(
     class = "footer",
     style = "margin: 30px 0;",
-
     tags$p(
       class = "text-muted",
       "Source: R Consortium. Adapted to a webR application by Appsilon."
@@ -212,57 +210,61 @@ ui <- fluidPage(
   title = "Pilot 2 Shiny webR Application",
   class = "dark color-mode",
   style = "margin: 0; padding-left: 30px; padding-right: 30px;",
-
   get_page_header(),
-
   tabsetPanel(
     id = "moduleTabs",
     type = "tabs",
-
     tabPanel("App Information", app_information),
     tabPanel("User Guide", user_guide$ui("user_guide", datasets)),
-    tabPanel("Demographic Table",
+    tabPanel(
+      "Demographic Table",
       demographic_table$ui("demographic_table", datasets)
     ),
     tabPanel("KM Plot for TTDE", km_plot$ui("km_plot", datasets_km)) |>
       tagAppendAttributes(style = "background: none; padding: 0"),
     tabPanel("Primary Table", primary_table$ui("primary_table", datasets)),
     tabPanel("Efficacy Table", efficacy_table$ui("efficacy_table", datasets)),
-    tabPanel("Visit Completion Table",
+    tabPanel(
+      "Visit Completion Table",
       completion_table$ui("visit_completion_table", datasets)
     )
   ),
-
   get_page_footer()
 )
 
 server <- function(input, output, session) {
-  moduleServer("user_guide",
+  moduleServer(
+    "user_guide",
     function(input, output, session) {
       user_guide$server(input, output, session, datasets)
     }
   )
-  moduleServer("demographic_table",
+  moduleServer(
+    "demographic_table",
     function(input, output, session) {
       demographic_table$server(input, output, session, datasets)
     }
   )
-  moduleServer("km_plot",
+  moduleServer(
+    "km_plot",
     function(input, output, session) {
       km_plot$server(input, output, session, datasets_km)
     }
   )
-  moduleServer("primary_table",
+  moduleServer(
+    "primary_table",
     function(input, output, session) {
       primary_table$server(input, output, session, datasets)
     }
   )
-  moduleServer("efficacy_table",
+  moduleServer(
+    "efficacy_table",
     function(input, output, session) {
       efficacy_table$server(input, output, session, datasets)
     }
   )
-  moduleServer("visit_completion_table",
+  moduleServer(
+    "visit_completion_table",
     function(input, output, session) {
       completion_table$server(input, output, session, datasets)
     }
@@ -271,7 +273,7 @@ server <- function(input, output, session) {
   observe({
     session$sendCustomMessage("toggle_dark", input$theme_mode_toggle)
   }) |>
-  bindEvent(input$theme_mode_toggle, once = FALSE, ignoreInit = TRUE)
+    bindEvent(input$theme_mode_toggle, once = FALSE, ignoreInit = TRUE)
 }
 
 shinyApp(ui, server)
