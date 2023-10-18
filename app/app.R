@@ -1,4 +1,3 @@
-# To run the app normally set environment variable LOCAL=TRUE
 library(shiny)
 library(markdown)
 
