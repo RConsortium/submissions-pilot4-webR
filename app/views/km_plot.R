@@ -2,14 +2,15 @@ box::use(
   dplyr[filter, inner_join, mutate, select],
   ggplot2[element_text, geom_hline, rel, theme, theme_bw, theme_set],
   shiny[
-    NS, p, plotOutput, renderPlot, tagList, tags,
-    reactiveValues, observeEvent, renderUI, uiOutput, tagAppendAttributes
+    NS, observeEvent, p, plotOutput, reactiveValues, renderPlot, renderUI, selectInput,
+    tagAppendAttributes, tagList, tags, uiOutput, updateSelectInput,
   ],
   visR[add_CI, add_CNSR, estimate_KM, visr],
 )
 
 box::use(
   .. / logic / kmplot_helpers[add_risktable2],
+  . / km_plot_filter
 )
 
 #' @export
@@ -48,14 +49,17 @@ ui <- function(id, datasets) {
       tagAppendAttributes(style = "height: 100px; display: flex; justify-content: center; align-items: center; flex-direction: column;"),
     plotOutput(ns("plot"), height = "600px"),
     uiOutput(ns("plot_footer")) |>
-      tagAppendAttributes(style = "height: 100px; display: flex; justify-content: center; align-items: center; flex-direction: column;")
+      tagAppendAttributes(style = "height: 100px; display: flex; justify-content: center; align-items: center; flex-direction: column;"),
+    km_plot_filter$ui(ns("adsl"), "ADSL")
   )
 }
 
 #' @export
 server <- function(input, output, session, datasets) {
+  adsl_ <- km_plot_filter$server("adsl", datasets$get_data("ADSL"))
+
   output$plot <- renderPlot({
-    adsl <- datasets$get_data("ADSL", filtered = TRUE)
+    adsl <- adsl_()
     adtte <- datasets$get_data("ADTTE", filtered = TRUE)
     anl <- adsl |>
       filter(
@@ -111,7 +115,7 @@ server <- function(input, output, session, datasets) {
     output$plot_footer <- renderUI({
       tagList(
         tags$div(style = "font-size: 12px", "The shaded areas are 95% CI of the survival probability for each group"),
-        tags$div( style = "font-size: 12px", Sys.time())
+        tags$div(style = "font-size: 12px", Sys.time())
       )
     })
 
