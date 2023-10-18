@@ -50,17 +50,19 @@ ui <- function(id, datasets) {
     plotOutput(ns("plot"), height = "600px"),
     uiOutput(ns("plot_footer")) |>
       tagAppendAttributes(style = "height: 100px; display: flex; justify-content: center; align-items: center; flex-direction: column;"),
-    km_plot_filter$ui(ns("adsl"), "ADSL")
+    km_plot_filter$ui(ns("adsl"), "ADSL"),
+    km_plot_filter$ui(ns("adtte"), "ADTTE")
   )
 }
 
 #' @export
 server <- function(input, output, session, datasets) {
   adsl_ <- km_plot_filter$server("adsl", datasets$get_data("ADSL"))
+  adtte_ <- km_plot_filter$server("adtte", datasets$get_data("ADTTE"))
 
   output$plot <- renderPlot({
     adsl <- adsl_()
-    adtte <- datasets$get_data("ADTTE", filtered = TRUE)
+    adtte <- adtte_()
     anl <- adsl |>
       filter(
         SAFFL == "Y",
