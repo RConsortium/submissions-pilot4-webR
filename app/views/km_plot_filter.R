@@ -38,9 +38,11 @@ server <- function(id, dataset) {
 
     observe({
       setdiff(names(filters), input$variables) |>
+        discard(function(col) is.null(filters[[col]])) |>
         walk(function(col) {
           filters[[col]]$obs$destroy()
           filters[[col]] <- NULL
+          filters_values[[col]] <- NULL
         })
 
       walk(input$variables, function(col) {
@@ -50,7 +52,7 @@ server <- function(id, dataset) {
         obs <- observe({
           filters_values[[col]] <- input[[paste0("filter_", col)]]
         }) |>
-          bindEvent(input[[paste0("filter_", col)]])
+          bindEvent(input[[paste0("filter_", col)]], ignoreInit = TRUE)
         values <- switch(type_sum(dataset[[col]]),
           chr = sort(unique(dataset[[col]])),
           fct = sort(unique(dataset[[col]])),
