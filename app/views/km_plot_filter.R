@@ -38,6 +38,7 @@ server <- function(id, dataset) {
     )
 
     observe({
+      # clean filters that just got disabled
       setdiff(names(filters), input$variables) |>
         discard(function(col) is.null(filters[[col]])) |>
         walk(function(col) {
@@ -46,6 +47,7 @@ server <- function(id, dataset) {
           filters_values[[col]] <- NULL
         })
 
+      # set up filters that just got enabled
       walk(input$variables, function(col) {
         if (!is.null(filters[[col]])) { # active filter
           return()
@@ -69,7 +71,7 @@ server <- function(id, dataset) {
     output$filters <- renderUI({
       reactiveValuesToList(filters) |>
         imap(function(meta, col) {
-          if (is.null(meta)) {
+          if (is.null(meta)) { # filter that was active but is now disabled
             return(NULL)
           }
           values <- isolate(filters_values[[col]])
