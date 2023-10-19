@@ -1,5 +1,6 @@
 box::use(
   dplyr[between, filter],
+  formatters[var_labels],
   ggplot2[aes, geom_density, ggplot, scale_x_continuous, scale_y_continuous, theme_void],
   grDevices[rgb],
   purrr[discard, imap, iwalk, reduce, walk],
@@ -29,10 +30,7 @@ server <- function(id, dataset_name, dataset) {
     output$main <- renderUI({
       choices <- setNames(
         colnames(dataset),
-        sapply(colnames(dataset), function(col) {
-          col_type <- type_sum(dataset[[col]])
-          sprintf("%s (%s)", col, col_type)
-        })
+        sapply(colnames(dataset), \(col) col_to_label(dataset, col))
       )
 
       tags$div(
@@ -81,15 +79,16 @@ server <- function(id, dataset_name, dataset) {
           }
           values <- isolate(filters_values[[col]])
           choices <- meta$choices
+          label <- col_to_label(dataset, col)
           switch(type_sum(dataset[[col]]),
-            chr = selectInput(ns(paste0("filter_", col)), col, choices, values, multiple = TRUE),
-            fct = selectInput(ns(paste0("filter_", col)), col, choices, values, multiple = TRUE),
+            chr = selectInput(ns(paste0("filter_", col)), label, choices, values, multiple = TRUE),
+            fct = selectInput(ns(paste0("filter_", col)), label, choices, values, multiple = TRUE),
             dbl = tags$div(
               class = "overlay-slider",
               plotOutput(ns(paste0("filter_", col, "_plot")), height = "100%"),
-              sliderInput(ns(paste0("filter_", col)), col, choices[1], choices[2], values)
+              sliderInput(ns(paste0("filter_", col)), label, choices[1], choices[2], values)
             ),
-            date = dateRangeInput(ns(paste0("filter_", col)), col, choices[1], choices[2], values[1], values[2])
+            date = dateRangeInput(ns(paste0("filter_", col)), label, choices[1], choices[2], values[1], values[2])
           )
         }) |>
         discard(is.null)
@@ -144,4 +143,12 @@ range_slider_overlay <- function(values) {
     theme_void() +
     scale_x_continuous(expand = c(0, 0)) +
     scale_y_continuous(expand = c(0, 0))
+}
+
+col_to_label <- function(df, col) {
+  label <- var_labels(df[, col])
+  if (is.na(label)) {
+    return(col)
+  }
+  sprintf("%s (%s)", col, label)
 }
