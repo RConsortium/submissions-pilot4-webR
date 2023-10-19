@@ -209,6 +209,7 @@ ui <- fluidPage(
   title = "Pilot 2 Shiny webR Application",
   class = "dark color-mode",
   style = "margin: 0; padding-left: 30px; padding-right: 30px;",
+  tags$link(rel = "icon", href = "/static/favicon.ico"),
   get_page_header(),
   tabsetPanel(
     id = "moduleTabs",
