@@ -46,17 +46,6 @@ alert_message <- function() {
   )
 }
 
-style_plot_message <- function(html) {
-  html |>
-    tagAppendAttributes(style = "
-      height: 100px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-    ")
-}
-
 #' @export
 ui <- function(id, datasets) {
   ns <- NS(id)
@@ -67,29 +56,23 @@ ui <- function(id, datasets) {
 
       tags$div(
         class = "background-wrapper",
-        style = "background: white; padding: 15px;",
 
         alert_message(),
-
-        uiOutput(ns("plot_title")) |>
-          style_plot_message(),
+        uiOutput(ns("plot_title") ,class = "plot-message"),
         plotOutput(ns("plot"), height = "600px"),
-        uiOutput(ns("plot_footer")) |>
-          style_plot_message()
+        uiOutput(ns("plot_footer"), class = "plot-message")
       )
     ),
     column(
       width = 3,
 
       tags$div(
-        class = "background-wrapper",
-        style = "background: white; padding: 15px; margin-bottom: 30px;",
+        class = "background-wrapper filter-card",
         km_plot_filter$ui(ns("adsl"), "ADSL")
       ),
 
       tags$div(
-        class = "background-wrapper",
-        style = "background: white; padding: 15px; margin-bottom: 30px;",
+        class = "background-wrapper filter-card",
         km_plot_filter$ui(ns("adtte"), "ADTTE")
       )
     )

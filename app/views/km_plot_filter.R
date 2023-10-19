@@ -2,9 +2,9 @@ box::use(
   dplyr[between, filter],
   purrr[discard, imap, reduce, walk],
   shiny[
-    NS, bindEvent, dateRangeInput, debounce, isolate, moduleServer, observe, reactive, reactiveVal,
-    reactiveValues, reactiveValuesToList, renderUI, selectInput, sliderInput, tags, uiOutput,
-    updateSelectInput, tagAppendAttributes, HTML, tagList
+    NS, bindEvent, dateRangeInput, isolate, moduleServer, observe, reactiveVal, reactiveValues,
+    reactiveValuesToList, renderUI, selectInput, sliderInput, tags, uiOutput, updateSelectInput,
+    tagAppendAttributes, HTML, tagList
   ],
   stats[setNames],
   tibble[type_sum]
@@ -13,15 +13,8 @@ box::use(
 ui <- function(id, dataset_name) {
   ns <- NS(id)
 
-  tagList(
-    tags$style(HTML("
-    .km-plot-filters .form-group {
-      width: 100%;
-    }
-  ")),
-    uiOutput(ns("main")) |>
-      tagAppendAttributes(class = "km-plot-filters")
-  )
+  uiOutput(ns("main")) |>
+    tagAppendAttributes(class = "km-plot-filters")
 }
 
 server <- function(id, dataset_name, dataset) {
@@ -42,12 +35,6 @@ server <- function(id, dataset_name, dataset) {
 
       tags$div(
         tags$h3("Add filter variables"),
-        tags$style("
-          .selectize-input {
-            max-height: 150px;
-            overflow: auto;
-          }
-        "),
         selectInput(ns("variables"), dataset_name, choices, multiple = TRUE),
         uiOutput(ns("filters"))
       )
@@ -120,7 +107,7 @@ server <- function(id, dataset_name, dataset) {
         }) |>
         filtered_data()
     }) |>
-      bindEvent(debounce(reactive(reactiveValuesToList(filters_values)), 1000)())
+      bindEvent(reactiveValuesToList(filters_values))
 
     return(filtered_data)
   })

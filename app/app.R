@@ -92,56 +92,16 @@ app_information <- includeMarkdown(md_path)
 
 get_page_dependencies <- function() {
   tagList(
-    tags$link(rel = "stylesheet", type = "text/css", href = "/static/css/app.min.css"),
-    tags$script(src = "/static/js/app.min.js"),
-    tags$style(HTML("
-      .color-mode > .tabbable > .tab-content {
-        color: #00172c;
-        border-radius: 4px;
-      }
-
-      .color-mode > .tabbable > .tab-content > .tab-pane {
-        background-color: #fff;
-        padding: 15px 30px;
-      }
-
-      #moduleTabs>li>a {
-        border: none;
-        border-radius: 4px;
-      }
-
-      #moduleTabs>li.active>a,
-      #moduleTabs>li.active>a:focus,
-      #moduleTabs.nav-pills>li.active>a:hover {
-        background-color: #0099f9;
-        color: #fff;
-      }
-
-      #moduleTabs {
-        padding-left: 30px;
-        padding-bottom: 5px;
-        padding-top: 5px;
-        margin-bottom: 5px;
-        border-top: 1px solid #ddd;
-      }
-
-      .dark #moduleTabs > li > a {
-        color: #fff;
-      }
-
-      .tabbable .tabbable img {
-        max-width: 100%;
-        max-height: 500px;
-      }
-    "))
+    tags$link(rel = "stylesheet", type = "text/css", href = "/static/css/styles.css"),
+    tags$script(src = "/static/js/scripts.js"),
   )
 }
 
 get_page_header <- function() {
   tags$header(
     tags$div(
-      class = "flex",
-      style = "display: flex;",
+      class = "app-header flex",
+
       tags$h1(
         "Pilot 2 Shiny Application",
         tags$span(
@@ -182,8 +142,8 @@ get_page_header <- function() {
 
 get_page_footer <- function() {
   tags$div(
-    class = "footer",
-    style = "margin: 30px 0;",
+    class = "app-footer",
+
     tags$p(
       class = "text-muted",
       "Source: R Consortium. Adapted to a webR application by Appsilon."
@@ -207,64 +167,58 @@ get_page_footer <- function() {
 ui <- fluidPage(
   get_page_dependencies(),
   title = "Pilot 2 Shiny webR Application",
-  class = "dark color-mode",
-  style = "margin: 0; padding-left: 30px; padding-right: 30px;",
-  tags$link(rel = "icon", href = "/static/favicon.ico"),
+  class = "app-wrapper dark color-mode",
+
   get_page_header(),
+
   tabsetPanel(
     id = "moduleTabs",
     type = "tabs",
+
     tabPanel("App Information", app_information),
     tabPanel("User Guide", user_guide$ui("user_guide", datasets)),
-    tabPanel(
-      "Demographic Table",
+    tabPanel("Demographic Table",
       demographic_table$ui("demographic_table", datasets)
     ),
-    tabPanel("KM Plot for TTDE", km_plot$ui("km_plot", datasets_km)) |>
-      tagAppendAttributes(style = "background: none; padding: 0"),
+    tabPanel("KM Plot for TTDE", km_plot$ui("km_plot", datasets)) |>
+      tagAppendAttributes(class = "no-background-tab"),
     tabPanel("Primary Table", primary_table$ui("primary_table", datasets)),
     tabPanel("Efficacy Table", efficacy_table$ui("efficacy_table", datasets)),
-    tabPanel(
-      "Visit Completion Table",
+    tabPanel("Visit Completion Table",
       completion_table$ui("visit_completion_table", datasets)
     )
   ),
+
   get_page_footer()
 )
 
 server <- function(input, output, session) {
-  moduleServer(
-    "user_guide",
+  moduleServer("user_guide",
     function(input, output, session) {
       user_guide$server(input, output, session, datasets)
     }
   )
-  moduleServer(
-    "demographic_table",
+  moduleServer("demographic_table",
     function(input, output, session) {
       demographic_table$server(input, output, session, datasets)
     }
   )
-  moduleServer(
-    "km_plot",
+  moduleServer("km_plot",
     function(input, output, session) {
-      km_plot$server(input, output, session, datasets_km)
+      km_plot$server(input, output, session, datasets)
     }
   )
-  moduleServer(
-    "primary_table",
+  moduleServer("primary_table",
     function(input, output, session) {
       primary_table$server(input, output, session, datasets)
     }
   )
-  moduleServer(
-    "efficacy_table",
+  moduleServer("efficacy_table",
     function(input, output, session) {
       efficacy_table$server(input, output, session, datasets)
     }
   )
-  moduleServer(
-    "visit_completion_table",
+  moduleServer("visit_completion_table",
     function(input, output, session) {
       completion_table$server(input, output, session, datasets)
     }
@@ -273,7 +227,7 @@ server <- function(input, output, session) {
   observe({
     session$sendCustomMessage("toggle_dark", input$theme_mode_toggle)
   }) |>
-    bindEvent(input$theme_mode_toggle, once = FALSE, ignoreInit = TRUE)
+  bindEvent(input$theme_mode_toggle, once = FALSE, ignoreInit = TRUE)
 }
 
 shinyApp(ui, server)
