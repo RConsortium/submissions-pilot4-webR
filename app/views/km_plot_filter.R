@@ -2,9 +2,9 @@ box::use(
   dplyr[between, filter],
   purrr[discard, imap, reduce, walk],
   shiny[
-    NS, bindEvent, dateRangeInput, isolate, moduleServer, observe, reactiveVal, reactiveValues,
-    reactiveValuesToList, renderUI, selectInput, sliderInput, tags, uiOutput, updateSelectInput,
-    tagAppendAttributes, HTML, tagList
+    NS, bindEvent, dateRangeInput, debounce, isolate, moduleServer, observe, reactive, reactiveVal,
+    reactiveValues, reactiveValuesToList, renderUI, selectInput, sliderInput, tags, uiOutput,
+    updateSelectInput, tagAppendAttributes, HTML, tagList
   ],
   stats[setNames],
   tibble[type_sum]
@@ -19,8 +19,8 @@ ui <- function(id, dataset_name) {
       width: 100%;
     }
   ")),
-  uiOutput(ns("main")) |>
-    tagAppendAttributes(class = "km-plot-filters")
+    uiOutput(ns("main")) |>
+      tagAppendAttributes(class = "km-plot-filters")
   )
 }
 
@@ -120,7 +120,7 @@ server <- function(id, dataset_name, dataset) {
         }) |>
         filtered_data()
     }) |>
-      bindEvent(reactiveValuesToList(filters_values))
+      bindEvent(debounce(reactive(reactiveValuesToList(filters_values)), 1000)())
 
     return(filtered_data)
   })
