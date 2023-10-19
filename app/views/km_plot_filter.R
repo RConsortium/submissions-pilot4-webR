@@ -1,10 +1,12 @@
 box::use(
   dplyr[between, filter],
-  purrr[discard, imap, reduce, walk],
+  ggplot2[aes, geom_density, ggplot, scale_x_continuous, scale_y_continuous, theme_void],
+  grDevices[rgb],
+  purrr[discard, imap, iwalk, reduce, walk],
   shiny[
-    NS, bindEvent, dateRangeInput, isolate, moduleServer, observe, reactiveVal, reactiveValues,
-    reactiveValuesToList, renderUI, selectInput, sliderInput, tags, uiOutput, updateSelectInput,
-    tagAppendAttributes, HTML, tagList
+    HTML, NS, bindEvent, dateRangeInput, debounce, isolate, moduleServer, observe, plotOutput,
+    reactive, reactiveVal, reactiveValues, reactiveValuesToList, renderPlot, renderUI, selectInput,
+    sliderInput, tagAppendAttributes, tagList, tags, uiOutput, updateSelectInput
   ],
   stats[setNames],
   tibble[type_sum]
@@ -82,12 +84,31 @@ server <- function(id, dataset_name, dataset) {
           switch(type_sum(dataset[[col]]),
             chr = selectInput(ns(paste0("filter_", col)), col, choices, values, multiple = TRUE),
             fct = selectInput(ns(paste0("filter_", col)), col, choices, values, multiple = TRUE),
-            dbl = sliderInput(ns(paste0("filter_", col)), col, choices[1], choices[2], values),
+            dbl = tags$div(
+              class = "overlay-slider",
+              plotOutput(ns(paste0("filter_", col, "_plot")), height = "100%"),
+              sliderInput(ns(paste0("filter_", col)), col, choices[1], choices[2], values)
+            ),
             date = dateRangeInput(ns(paste0("filter_", col)), col, choices[1], choices[2], values[1], values[2])
           )
         }) |>
         discard(is.null)
     })
+
+    observe({
+      reactiveValuesToList(filters) |>
+        iwalk(function(meta, col) {
+          if (is.null(meta) || type_sum(dataset[[col]]) != "dbl") {
+            return(NULL)
+          }
+          output[[paste0("filter_", col, "_plot")]] <- renderPlot(
+            range_slider_overlay(dataset[[col]]),
+            height = 25,
+            bg = "transparent"
+          )
+        })
+    }) |>
+      bindEvent(reactiveValuesToList(filters))
 
     observe({
       reactiveValuesToList(filters_values) |>
@@ -111,4 +132,16 @@ server <- function(id, dataset_name, dataset) {
 
     return(filtered_data)
   })
+}
+
+range_slider_overlay <- function(values) {
+  ggplot(data.frame(x = values), aes(x = x)) +
+    geom_density(
+      fill = rgb(66 / 255, 139 / 255, 202 / 255),
+      color = NA,
+      alpha = 0.2
+    ) +
+    theme_void() +
+    scale_x_continuous(expand = c(0, 0)) +
+    scale_y_continuous(expand = c(0, 0))
 }
