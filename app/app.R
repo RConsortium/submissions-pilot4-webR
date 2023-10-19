@@ -92,6 +92,7 @@ app_information <- includeMarkdown(md_path)
 
 get_page_dependencies <- function() {
   tagList(
+    tags$link(rel = "icon", href = "/static/favicon.ico"),
     tags$link(rel = "stylesheet", type = "text/css", href = "/static/css/styles.css"),
     tags$script(src = "/static/js/scripts.js"),
   )
