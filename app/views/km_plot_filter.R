@@ -29,20 +29,25 @@ server <- function(id, dataset_name, dataset) {
 
     output$main <- renderUI({
       choices <- setNames(
-        colnames(dataset),
+        sapply(colnames(dataset), \(col) paste(col, type_sum(dataset[[col]]), sep = "-")),
         sapply(colnames(dataset), \(col) col_to_label(dataset, col))
       )
 
       tags$div(
         tags$h3("Add filter variables"),
-        selectInput(ns("variables"), dataset_name, choices, multiple = TRUE),
+        selectInput(ns("variables"), dataset_name, choices, multiple = TRUE) |>
+          tagAppendAttributes(class = "variable-input"),
         uiOutput(ns("filters"))
       )
     })
 
+    variables <- reactive({
+      gsub("-(chr|fct|dbl|date)$", "", input$variables)
+    })
+
     observe({
       # clean filters that just got disabled
-      setdiff(names(filters), input$variables) |>
+      setdiff(names(filters), variables()) |>
         discard(function(col) is.null(filters[[col]])) |>
         walk(function(col) {
           filters[[col]]$obs$destroy()
@@ -51,7 +56,7 @@ server <- function(id, dataset_name, dataset) {
         })
 
       # set up filters that just got enabled
-      walk(input$variables, function(col) {
+      walk(variables(), function(col) {
         if (!is.null(filters[[col]])) { # active filter
           return()
         }
@@ -69,7 +74,7 @@ server <- function(id, dataset_name, dataset) {
         filters[[col]] <- list(obs = obs, choices = values)
       })
     }) |>
-      bindEvent(input$variables, ignoreNULL = FALSE)
+      bindEvent(variables(), ignoreNULL = FALSE)
 
     output$filters <- renderUI({
       reactiveValuesToList(filters) |>
