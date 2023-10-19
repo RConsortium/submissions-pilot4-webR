@@ -3,15 +3,25 @@ box::use(
   purrr[discard, imap, reduce, walk],
   shiny[
     NS, bindEvent, dateRangeInput, isolate, moduleServer, observe, reactiveVal, reactiveValues,
-    reactiveValuesToList, renderUI, selectInput, sliderInput, tags, uiOutput, updateSelectInput
+    reactiveValuesToList, renderUI, selectInput, sliderInput, tags, uiOutput, updateSelectInput,
+    tagAppendAttributes, HTML, tagList
   ],
   stats[setNames],
-  tibble[type_sum],
+  tibble[type_sum]
 )
 
 ui <- function(id, dataset_name) {
   ns <- NS(id)
-  uiOutput(ns("main"))
+
+  tagList(
+    tags$style(HTML("
+    .km-plot-filters .form-group {
+      width: 100%;
+    }
+  ")),
+  uiOutput(ns("main")) |>
+    tagAppendAttributes(class = "km-plot-filters")
+  )
 }
 
 server <- function(id, dataset_name, dataset) {

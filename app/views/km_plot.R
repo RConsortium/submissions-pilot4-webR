@@ -6,13 +6,56 @@ box::use(
     tagAppendAttributes, tagList, tags, uiOutput, updateSelectInput,
     fluidRow, column
   ],
-  visR[add_CI, add_CNSR, estimate_KM, visr],
+  visR[add_CI, add_CNSR, estimate_KM, visr]
 )
 
 box::use(
   .. / logic / kmplot_helpers[add_risktable2],
   . / km_plot_filter
 )
+
+alert_message <- function() {
+  tags$div(
+    class = "alert alert-info alert-dismissible top-margin top-margin",
+    style = "min-height: 100px",
+
+    tagList(
+      tags$b("Important Information:"),
+      tags$p(
+        "The analyses performed when utilizing subgroups or
+        other subsets of the source data sets are considered ",
+        tags$b("exploratory.")
+      ),
+      tags$ul(
+        tags$li(
+          "Treatment information variables from the",
+          tags$b("ADTTE"),
+          "data set are excluded from the variable list.
+          Use the treatment variables present in the",
+          tags$b("ADSL"),
+          "set to perform treatment-related filters."
+        ),
+        tags$li(
+          "In rare situations, applying filters with variables from both",
+          tags$b("ADSL"), "and", tags$b("ADTTE"),
+          "that overlap in content could result in an invalid data subset.
+          When possible, select variables with distinct content."
+        )
+      )
+    )
+  )
+}
+
+style_plot_message <- function(html) {
+  html |>
+    tagAppendAttributes(style = "
+      height: 100px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+    ")
+}
 
 #' @export
 ui <- function(id, datasets) {
@@ -23,43 +66,32 @@ ui <- function(id, datasets) {
       width = 9,
 
       tags$div(
-        class = "alert alert-info alert-dismissible top-margin top-margin",
-        tagList(
-          tags$b("Important Information:"),
-          tags$p(
-            "The analyses performed when utilizing subgroups or
-            other subsets of the source data sets are considered ",
-            tags$b("exploratory.")
-          ),
-          tags$ul(
-            tags$li(
-              "Treatment information variables from the",
-              tags$b("ADTTE"),
-              "data set are excluded from the variable list.
-              Use the treatment variables present in the",
-              tags$b("ADSL"),
-              "set to perform treatment-related filters."
-            ),
-            tags$li(
-              "In rare situations, applying filters with variables from both",
-              tags$b("ADSL"), "and", tags$b("ADTTE"),
-              "that overlap in content could result in an invalid data subset.
-              When possible, select variables with distinct content."
-            )
-          )
-        )
-      ),
-      uiOutput(ns("plot_title")) |>
-        tagAppendAttributes(style = "height: 100px; display: flex; justify-content: center; align-items: center; flex-direction: column;"),
-      plotOutput(ns("plot"), height = "600px"),
-      uiOutput(ns("plot_footer")) |>
-        tagAppendAttributes(style = "height: 100px; display: flex; justify-content: center; align-items: center; flex-direction: column;")
-    ),
+        class = "background-wrapper",
+        style = "background: white; padding: 15px;",
 
+        alert_message(),
+
+        uiOutput(ns("plot_title")) |>
+          style_plot_message(),
+        plotOutput(ns("plot"), height = "600px"),
+        uiOutput(ns("plot_footer")) |>
+          style_plot_message()
+      )
+    ),
     column(
       width = 3,
-      km_plot_filter$ui(ns("adsl"), "ADSL"),
-      km_plot_filter$ui(ns("adtte"), "ADTTE")
+
+      tags$div(
+        class = "background-wrapper",
+        style = "background: white; padding: 15px; margin-bottom: 30px;",
+        km_plot_filter$ui(ns("adsl"), "ADSL")
+      ),
+
+      tags$div(
+        class = "background-wrapper",
+        style = "background: white; padding: 15px; margin-bottom: 30px;",
+        km_plot_filter$ui(ns("adtte"), "ADTTE")
+      )
     )
   )
 }

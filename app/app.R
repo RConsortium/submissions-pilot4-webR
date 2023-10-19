@@ -97,9 +97,12 @@ get_page_dependencies <- function() {
     tags$script(src = "/static/js/app.min.js"),
     tags$style(HTML("
       .color-mode > .tabbable > .tab-content {
-        background-color: #fff;
         color: #00172c;
         border-radius: 4px;
+      }
+
+      .color-mode > .tabbable > .tab-content > .tab-pane {
+        background-color: #fff;
         padding: 15px 30px;
       }
 
@@ -221,7 +224,8 @@ ui <- fluidPage(
     tabPanel("Demographic Table",
       demographic_table$ui("demographic_table", datasets)
     ),
-    tabPanel("KM Plot", km_plot$ui("km_plot", datasets_km)),
+    tabPanel("KM Plot", km_plot$ui("km_plot", datasets_km)) |>
+      tagAppendAttributes(style = "background: none; padding: 0"),
     tabPanel("Primary Table", primary_table$ui("primary_table", datasets)),
     tabPanel("Efficacy Table", efficacy_table$ui("efficacy_table", datasets)),
     tabPanel("Visit Completion Table",
