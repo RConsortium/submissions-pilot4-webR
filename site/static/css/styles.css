@@ -137,7 +137,7 @@ html>body>.dark footer{
 .dark #moduleTabs > li > a {
   color: #fff;
 }
-.dark #moduleTabs > li:hover > a {
+.dark #moduleTabs > li:not(.active):hover > a {
   color: #5d5d5d;
 }
 
@@ -187,4 +187,13 @@ html>body>.dark footer{
   justify-content: center;
   align-items: center;
   flex-direction: column;
+}
+
+.overlay-slider {
+  position: relative;
+}
+
+.overlay-slider > .shiny-plot-output {
+  position: absolute;
+  top: 26px;
 }
