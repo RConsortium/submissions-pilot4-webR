@@ -83,9 +83,13 @@ TealShim <- R6::R6Class(
 )
 datasets <- datasets_km <- TealShim$new(adsl, adas, adtte, adlb)
 
-temp_file_path <- tempfile(fileext = ".md")
-download.file("/static/about.md", destfile = temp_file_path, mode = "wb")
-app_information <- includeMarkdown(temp_file_path)
+if (file.exists("www/static/about.md")) {
+  md_path <- "www/static/about.md"
+} else {
+  md_path <- tempfile(fileext = ".md")
+  download.file("/static/about.md", destfile = md_path, mode = "wb")
+}
+app_information <- includeMarkdown(md_path)
 
 get_page_dependencies <- function() {
   tagList(
@@ -93,9 +97,12 @@ get_page_dependencies <- function() {
     tags$script(src = "/static/js/app.min.js"),
     tags$style(HTML("
       .color-mode > .tabbable > .tab-content {
-        background-color: #fff;
         color: #00172c;
         border-radius: 4px;
+      }
+
+      .color-mode > .tabbable > .tab-content > .tab-pane {
+        background-color: #fff;
         padding: 15px 30px;
       }
 
@@ -217,7 +224,8 @@ ui <- fluidPage(
     tabPanel("Demographic Table",
       demographic_table$ui("demographic_table", datasets)
     ),
-    tabPanel("KM Plot for TTDE", km_plot$ui("km_plot", datasets_km)),
+    tabPanel("KM Plot for TTDE", km_plot$ui("km_plot", datasets_km)) |>
+      tagAppendAttributes(style = "background: none; padding: 0"),
     tabPanel("Primary Table", primary_table$ui("primary_table", datasets)),
     tabPanel("Efficacy Table", efficacy_table$ui("efficacy_table", datasets)),
     tabPanel("Visit Completion Table",
