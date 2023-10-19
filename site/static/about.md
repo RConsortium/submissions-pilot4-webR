@@ -9,17 +9,11 @@ The data sets and results displayed in the application originate from the
 Visit the **Usage Guide** for information on using the application.
 Below is a brief description of the reasons behind the conversion to a Rhino application and the application components.
 
----
-
 ### Source: R Consortium
 
 This R/Shiny application was initially developed using the
 <a href="https://thinkr-open.github.io/golem/" target="_blank">Golem</a>
 framework by the R Consortium submission working group.
-
-A team at
-<a href="https://appsilon.com" target="_blank">Appsilon</a>
-adapted the pilot Shiny application to use the <a href="https://appsilon.github.io/rhino/" target="_blank">Rhino</a> framework bringing enterprise features to this application.
 
 Among the participants are Ning Leng _(Roche)_, Heng Wang _(Roche)_, Mike Stakehouse _(Atorus)_, Eli Miller _(Atorus)_, Yilong Zhang _(Merck)_, Gregery Chen _(Merck)_ and Eric Nantz _(Eli Lilly)_. Paul Schuette and Hye Soo Cho from FDA are also participating in this working group.
 
@@ -30,20 +24,24 @@ The source code for the original Pilot application is publicly available at the
 <a href="https://github.com/RConsortium/submissions-pilot2" target="_blank">RConsortium/submissions-pilot2</a>
 Github repository.
 
----
+### <a href="https://appsilon.github.io/rhino/" target="_blank"><img src="https://appsilon.github.io/rhino/reference/figures/rhino.png" alt="Rhino logo" style="height: 1.2em;"></a> Rhino Application
 
-### WebR Application
-This current iteration focuses on using the code from past Applications to generate a standalone version based on <a href="https://docs.r-wasm.org/webr/latest/" target="_blank">webR</a> and <a href="https://posit-dev.github.io/r-shinylive/" target="_blank">shinylive</a> as a way to create a more encapsulated and server independent version of the application.
+A team at
+<a href="https://appsilon.com" target="_blank">Appsilon</a>
+adapted the pilot Shiny application to use the Rhino framework bringing enterprise features to this application.
 
 The source code is available at the
-<a href="https://github.com/RConsortium/submissions-pilot4-webR" target="_blank">RConsortium/submissions-pilot4-webR</a>
+<a href="https://github.com/Appsilon/rhino-fda-pilot-2-submission/" target="_blank">Appsion/rhino-fda-pilot-2-submission</a>
 Github repository. It hosts the source code and an overview of the documentation and procedure used to adapt the original pilot application.
 
----
+By using the Rhino framework we have added to this pilot:
 
-## Application Views
-
-The following views are available in the Application:
+1. **Clear code structure**: scalable app architecture, modularization based on Box and full support for {Teal}.
+2. **Code quality**: unit test for custom logic,
+<a href="https://en.wikipedia.org/wiki/Lint_%28software%29" target="_blank">linting</a>.
+3. **Interface testing**: end-to-end tests using Cypress2 framework.
+4. **Automation**: continuous integration and automated test using Github Actions, package and version management with {Renv}.
+5. **Customization**: adds custom styles on top of the {Teal} framework.
 
 ### Demographic Table
 
@@ -65,4 +63,4 @@ A summary table of an additional efficacy analysis is shown for baseline and wee
 
 A summary table of the number of patients remaining in the treatment period for each scheduled visit from baseline to week 24.
 
-###
+### 
