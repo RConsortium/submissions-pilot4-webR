@@ -3,7 +3,7 @@ library(shinylive)
 
 dir_source <- "app"
 dir_build <- "site"
-overwrite <- FALSE
+overwrite <- TRUE
 
 if (isFALSE(overwrite) && dir_exists(dir_build)) {
   stop(sprintf("Output directory '%s' already exists", dir_build), call. = FALSE)
