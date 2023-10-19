@@ -1,5 +1,6 @@
 box::use(
   dplyr[between, filter],
+  formatters[var_labels],
   ggplot2[aes, geom_density, ggplot, scale_x_continuous, scale_y_continuous, theme_void],
   grDevices[rgb],
   purrr[discard, imap, iwalk, reduce, walk],
@@ -28,23 +29,25 @@ server <- function(id, dataset_name, dataset) {
 
     output$main <- renderUI({
       choices <- setNames(
-        colnames(dataset),
-        sapply(colnames(dataset), function(col) {
-          col_type <- type_sum(dataset[[col]])
-          sprintf("%s (%s)", col, col_type)
-        })
+        sapply(colnames(dataset), \(col) paste(col, type_sum(dataset[[col]]), sep = "-")),
+        sapply(colnames(dataset), \(col) col_to_label(dataset, col))
       )
 
       tags$div(
         tags$h3("Add filter variables"),
-        selectInput(ns("variables"), dataset_name, choices, multiple = TRUE),
+        selectInput(ns("variables"), dataset_name, choices, multiple = TRUE) |>
+          tagAppendAttributes(class = "variable-input"),
         uiOutput(ns("filters"))
       )
     })
 
+    variables <- reactive({
+      gsub("-(chr|fct|dbl|date)$", "", input$variables)
+    })
+
     observe({
       # clean filters that just got disabled
-      setdiff(names(filters), input$variables) |>
+      setdiff(names(filters), variables()) |>
         discard(function(col) is.null(filters[[col]])) |>
         walk(function(col) {
           filters[[col]]$obs$destroy()
@@ -53,7 +56,7 @@ server <- function(id, dataset_name, dataset) {
         })
 
       # set up filters that just got enabled
-      walk(input$variables, function(col) {
+      walk(variables(), function(col) {
         if (!is.null(filters[[col]])) { # active filter
           return()
         }
@@ -71,7 +74,7 @@ server <- function(id, dataset_name, dataset) {
         filters[[col]] <- list(obs = obs, choices = values)
       })
     }) |>
-      bindEvent(input$variables, ignoreNULL = FALSE)
+      bindEvent(variables(), ignoreNULL = FALSE)
 
     output$filters <- renderUI({
       reactiveValuesToList(filters) |>
@@ -81,15 +84,16 @@ server <- function(id, dataset_name, dataset) {
           }
           values <- isolate(filters_values[[col]])
           choices <- meta$choices
+          label <- col_to_label(dataset, col)
           switch(type_sum(dataset[[col]]),
-            chr = selectInput(ns(paste0("filter_", col)), col, choices, values, multiple = TRUE),
-            fct = selectInput(ns(paste0("filter_", col)), col, choices, values, multiple = TRUE),
+            chr = selectInput(ns(paste0("filter_", col)), label, choices, values, multiple = TRUE),
+            fct = selectInput(ns(paste0("filter_", col)), label, choices, values, multiple = TRUE),
             dbl = tags$div(
               class = "overlay-slider",
               plotOutput(ns(paste0("filter_", col, "_plot")), height = "100%"),
-              sliderInput(ns(paste0("filter_", col)), col, choices[1], choices[2], values)
+              sliderInput(ns(paste0("filter_", col)), label, choices[1], choices[2], values)
             ),
-            date = dateRangeInput(ns(paste0("filter_", col)), col, choices[1], choices[2], values[1], values[2])
+            date = dateRangeInput(ns(paste0("filter_", col)), label, choices[1], choices[2], values[1], values[2])
           )
         }) |>
         discard(is.null)
@@ -144,4 +148,12 @@ range_slider_overlay <- function(values) {
     theme_void() +
     scale_x_continuous(expand = c(0, 0)) +
     scale_y_continuous(expand = c(0, 0))
+}
+
+col_to_label <- function(df, col) {
+  label <- var_labels(df[, col])
+  if (is.na(label)) {
+    return(col)
+  }
+  sprintf("%s (%s)", col, label)
 }

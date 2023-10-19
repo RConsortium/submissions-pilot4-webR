@@ -197,3 +197,23 @@ html>body>.dark footer{
   position: absolute;
   top: 26px;
 }
+
+.variable-input .item::before,
+.variable-input .option::before {
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  margin-right: 0.5rem;
+}
+
+.variable-input [data-value$="chr"]::before,
+.variable-input [data-value$="fct"]::before {
+  content: "\f0ca";
+}
+
+.variable-input [data-value$="dbl"]::before {
+  content: "\f0cb";
+}
+
+.variable-input [data-value$="date"]::before {
+  content: "\f133";
+}
