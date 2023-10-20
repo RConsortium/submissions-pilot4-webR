@@ -34,8 +34,8 @@ server <- function(id, dataset_name, dataset) {
       )
 
       tags$div(
-        tags$h3("Add filter variables"),
-        selectInput(ns("variables"), dataset_name, choices, multiple = TRUE) |>
+        tags$h3("Add Filter Variables"),
+        selectInput(ns("variables"), dataset_name, c("Select variables to filter" = "", choices), multiple = TRUE) |>
           tagAppendAttributes(class = "variable-input"),
         uiOutput(ns("filters"))
       )
