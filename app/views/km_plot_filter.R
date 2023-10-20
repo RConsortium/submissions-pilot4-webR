@@ -30,12 +30,18 @@ server <- function(id, dataset_name, dataset) {
     output$main <- renderUI({
       choices <- setNames(
         sapply(colnames(dataset), \(col) paste(col, type_sum(dataset[[col]]), sep = "-")),
-        sapply(colnames(dataset), \(col) col_to_label(dataset, col))
+        sapply(colnames(dataset), \(col) {
+          label <- var_labels(dataset[, col])
+          if (is.na(label)) {
+            return(col)
+          }
+          sprintf("%s (%s)", col, label)
+        })
       )
 
       tags$div(
-        tags$h3("Add filter variables"),
-        selectInput(ns("variables"), dataset_name, choices, multiple = TRUE) |>
+        tags$h3("Add Filter Variables"),
+        selectInput(ns("variables"), dataset_name, c("Select variables to filter" = "", choices), multiple = TRUE) |>
           tagAppendAttributes(class = "variable-input"),
         uiOutput(ns("filters"))
       )
@@ -84,16 +90,23 @@ server <- function(id, dataset_name, dataset) {
           }
           values <- isolate(filters_values[[col]])
           choices <- meta$choices
-          label <- col_to_label(dataset, col)
-          switch(type_sum(dataset[[col]]),
-            chr = selectInput(ns(paste0("filter_", col)), label, choices, values, multiple = TRUE),
-            fct = selectInput(ns(paste0("filter_", col)), label, choices, values, multiple = TRUE),
+          input <- switch(type_sum(dataset[[col]]),
+            chr = selectInput(ns(paste0("filter_", col)), NULL, choices, values, multiple = TRUE),
+            fct = selectInput(ns(paste0("filter_", col)), NULL, choices, values, multiple = TRUE),
             dbl = tags$div(
               class = "overlay-slider",
-              plotOutput(ns(paste0("filter_", col, "_plot")), height = "100%"),
-              sliderInput(ns(paste0("filter_", col)), label, choices[1], choices[2], values)
+              plotOutput(ns(paste0("filter_", col, "_plot")), height = "auto"),
+              sliderInput(ns(paste0("filter_", col)), NULL, choices[1], choices[2], values)
             ),
-            date = dateRangeInput(ns(paste0("filter_", col)), label, choices[1], choices[2], values[1], values[2])
+            date = dateRangeInput(ns(paste0("filter_", col)), NULL, choices[1], choices[2], values[1], values[2])
+          )
+          label <- var_labels(dataset[, col])
+          tagList(
+            tags$label(
+              col,
+              if (!is.na(label)) tags$span(paste0("(", label, ")"))
+            ),
+            input
           )
         }) |>
         discard(is.null)
@@ -148,12 +161,4 @@ range_slider_overlay <- function(values) {
     theme_void() +
     scale_x_continuous(expand = c(0, 0)) +
     scale_y_continuous(expand = c(0, 0))
-}
-
-col_to_label <- function(df, col) {
-  label <- var_labels(df[, col])
-  if (is.na(label)) {
-    return(col)
-  }
-  sprintf("%s (%s)", col, label)
 }

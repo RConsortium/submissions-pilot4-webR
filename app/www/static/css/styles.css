@@ -169,6 +169,8 @@ html>body>.dark footer{
   padding: 15px;
 }
 .background-wrapper.filter-card {
+  border: 1px solid #ddd;
+  border-radius: 5px;
   margin-bottom: 30px;
 }
 
@@ -195,7 +197,7 @@ html>body>.dark footer{
 
 .overlay-slider > .shiny-plot-output {
   position: absolute;
-  top: 26px;
+  bottom: 35px;
 }
 
 .variable-input .item::before,
@@ -216,4 +218,8 @@ html>body>.dark footer{
 
 .variable-input [data-value$="date"]::before {
   content: "\f133";
+}
+
+.filter-card [id$="filters"] > label > span {
+  font-weight: normal;
 }
