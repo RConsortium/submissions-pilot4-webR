@@ -23,6 +23,7 @@
     <style>
       html, .loading-wrapper {
         background: #00172c !important;
+        color: white;
       }
 
       .loading-animation {
@@ -50,6 +51,24 @@
       .loading-spacer {
         width: 150px;
       }
+
+      .log-loading {
+        max-height: 100px;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none;  /* Internet Explorer 10+ */
+
+        position: absolute;
+        border: 0;
+        bottom: 20px;
+        right: 20px;
+        font-family: monospace;
+      }
+
+      .log-loading::-webkit-scrollbar { /* WebKit */
+        width: 0px;
+      }
     </style>
     <script>
       document.addEventListener("DOMContentLoaded", function(){
@@ -63,7 +82,33 @@
         const callback = (mutationList, observer) => {
           if (document.querySelector(".loading-wrapper") != null) {
             document.querySelector(".loading-wrapper").append(document.querySelector(".loading-logos-wrapper"));
+            document.querySelector(".loading-wrapper").append(document.querySelector(".log-loading"));
             observer.disconnect();
+
+            ['log','debug','info','warn','error'].forEach(function (verb) {
+              var log = document.querySelector('.log-loading');
+
+                console[verb] = (function (method, verb, log) {
+                  return function () {
+                      method.apply(console, arguments);
+                      
+                      var msg = document.createElement('div');
+                      msg.classList.add(verb);
+                      msg.textContent = verb + ': ' + Array.prototype.slice.call(arguments).join(' ');
+
+                      if (msg.textContent.includes("Downloading webR package")) {
+                        msg.textContent = msg.textContent
+                          .replace("error: preload error:", "")
+                          .replace("Downloading", "Initializing")
+
+                        log.appendChild(msg);
+                        log.scrollTop = log.scrollHeight;
+                      }
+                  };
+              })(console[verb], verb, log);
+            });
+
+
           }
         };
 
@@ -78,6 +123,7 @@
     <link rel="stylesheet" href="./shinylive/shinylive.css" />
   </head>
   <body>
+    <div class="log-loading"></div>
     <div class="loading-logos-wrapper">
       <a href="https://rconsortium.github.io/submissions-wg/" target="_blank">
         <img class="logo" src="/static/logos/rconsortium_dark.svg">

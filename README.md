@@ -45,7 +45,7 @@ To circumvent this, non working dependencies and their functionality was either 
 
 - teal.data - A shim was created for the dataset R6 class. This includes the minimum functionality to work for this application. The adam data loading was also tweaked to allow loading files in a browser environment.
 
-- cowplot - While compatible with webR, a deployed version was not supporting the package because of some low level dependency calls. Since its use was small and limited to the KM Plot tab, its functionality was replicated in HTML.
+- cowplot - While compatible with webR, a deployed version was not supporting the package because of some low level dependency calls. Since its use was small and limited to the KM Plot tab, some of its broken functionality was replicated in HTML.
 
 - shinyWidgets - Not compatible with webR. Widgets used particularly for filtering the KM Plot were simplified and replaced with base widgets and additional HTML.
 
