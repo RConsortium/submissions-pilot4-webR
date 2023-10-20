@@ -197,7 +197,7 @@ html>body>.dark footer{
 
 .overlay-slider > .shiny-plot-output {
   position: absolute;
-  top: 26px;
+  bottom: 35px;
 }
 
 .variable-input .item::before,
@@ -218,4 +218,8 @@ html>body>.dark footer{
 
 .variable-input [data-value$="date"]::before {
   content: "\f133";
+}
+
+.filter-card [id$="filters"] > label > span {
+  font-weight: normal;
 }
