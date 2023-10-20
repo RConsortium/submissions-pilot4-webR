@@ -30919,7 +30919,7 @@ function Cs(r) {
   }
 }
 var Ns = m ? __dirname + "/" : "https://webr.r-wasm.org/v0.2.1/";
-var Ls = "https://repo.r-wasm.org";
+var Ls = "/packages/";
 function b(r) {
   return r && (typeof r == "object" || typeof r == "function") && "payloadType" in r && It(r._payload);
 }

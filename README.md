@@ -15,11 +15,21 @@ pak::pak("posit-dev/r-shinylive")
 pak::pak("rstudio/httpuv")
 ```
 
-2. Export the app version into webR by running the `build.R` script in the root folder
+2. Export the app version into webR by running the `build.R` script in the root folder. If you would like to try to serve all package dependencies locally instead of using the CRAN repository at runtime, see the section `Generating a local version of the package dependencies (Experimental)` at the end of this file.
 
 3. serve locally to test
 ```
 httpuv::runStaticServer("site")
+```
+
+Other server options should also work, for example using python from the command line:
+```
+# If Python version returned above is 3.X
+# On Windows, try "python -m http.server" or "py -3 -m http.server"
+
+python3 -m http.server
+# If Python version returned above is 2.X
+python -m SimpleHTTPServer
 ```
 
 A deployed version can be found here: https://brilliant-elf-2da930.netlify.app/
@@ -51,6 +61,7 @@ To circumvent this, non working dependencies and their functionality was either 
 
 
 ### Other notes
+- This repository was created using R version 4.3
 
 - Reading files had to be adjusted to use a `download.file` system instead. This is because in the browser a working directory does not tecnically exist.
 
@@ -59,3 +70,14 @@ To circumvent this, non working dependencies and their functionality was either 
 - Building the webR version using `{shinylive}` requires the folder to contain ONLY R script files. To manually use the export functionality of `{shinylive}` this means that any static files, javascript, stylesheets or configuration files cannot be in the project folder.
 
 - The provided `build.R` script will strip these files from the working directory for compilation and copy them after to the export folder to be available in the webR version.
+
+---
+
+### Generating a local version of the package dependencies (Experimental)
+Currently there is no build in mechanism to serve packages locally, but we can tweak the exported version to allow this. After running `build.R` to generate the app, you can run `build_offline_repo.R` to download all the package files and replace the repo location. run this script after each successful build to update the output bundle.
+
+NOTE: Currently a list of package files is stored in that file. These are collected manually by inspecting the browser network tab at run time. When adding new dependencies to the application those will need to be manually added on the script.
+
+NOTE: After downloading the folder at least once it is advised to do a backup of its contents (100mb)
+
+WARNING: This is a experimental work around. WebR will most likely support something similar by default.
