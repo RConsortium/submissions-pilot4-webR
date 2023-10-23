@@ -1,4 +1,6 @@
-.DS_Store
+.Rproj.user
 .Rhistory
 .RData
-.Rproj.user
+.Ruserdata
+*.tgz
+*.rds

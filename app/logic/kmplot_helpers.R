@@ -6,9 +6,33 @@ box::use(
     ggtitle, scale_x_continuous, theme, theme_bw, unit, xlab, ylab
   ],
   stats[reorder],
-  teal.data[get_labels],
+  # teal.data[get_labels],
   visR[align_plots, get_risktable],
 )
+
+get_labels <- function(data, fill = TRUE) {
+  stopifnot(is.data.frame(data))
+  checkmate::assert_flag(fill)
+
+  column_labels <- Map(function(col, colname) {
+    label <- attr(col, "label")
+    if (is.null(label)) {
+      if (fill) {
+        colname
+      } else {
+        NA_character_
+      }
+    } else {
+      if (!checkmate::test_string(label, na.ok = TRUE)) {
+        stop("label for variable ", colname, " is not a character string")
+      }
+      as.vector(label) # because label might be a named vector
+    }
+  }, data, colnames(data))
+  column_labels <- unlist(column_labels, recursive = FALSE, use.names = TRUE)
+
+  list("dataset_label" = data_label(data), "column_labels" = column_labels)
+}
 
 #' @export
 add_risktable2 <- function(gg,

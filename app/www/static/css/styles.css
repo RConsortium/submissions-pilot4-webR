@@ -1,0 +1,225 @@
+/* Styles from default application */
+html,body{
+  height:100vh;
+  color:#00172c
+}
+.logos-wrapper{
+  display:flex;
+  align-items:end;
+  gap:15px
+}
+.logos-wrapper img.logo{
+  height:45px
+}
+.logos-wrapper .color-mode-toggle .color-mode.dark{
+  display:none
+}
+.logos-wrapper .color-mode-toggle .color-mode.light{
+  display:flex
+}
+header{
+  margin-top:15px;
+  margin-bottom:15px
+}
+header .flex{
+  justify-content:space-between
+}
+.container-fluid{
+  margin-left:15px;
+  margin-right:15px
+}
+.btn.color-mode-toggle,.btn.color-mode-toggle:focus,.btn.color-mode-toggle:focus-visible,.btn.color-mode-toggle:hover,.btn.color-mode-toggle:active{
+  background:transparent;
+  border:transparent;
+  box-shadow:none
+}
+footer .logos-wrapper{
+  margin-bottom:1em
+}
+footer .logos-wrapper img.logo{
+  height:25px
+}
+.dark .nav-pills>li>a{
+  color:#fff
+}
+.nav-pills>li.active>a,.nav-pills>li.active>a:focus,.nav-pills>li.active>a:hover{
+  background-color:#0099f9
+}
+html>body>.dark{
+  min-height:100vh;
+  background-color:#00172c;
+  color:#fff
+}
+html>body>.dark .nav-pills>li>a:focus,html>body>.dark .nav-pills>li>a:hover{
+  color:#00172c
+}
+html>body>.dark .nav-pills>li.active>a,html>body>.dark .nav-pills>li.active>a:focus,html>body>.dark .nav-pills>li.active>a:hover{
+  background-color:#0099f9;
+  color:#fff
+}
+html>body>.dark .text-muted{
+  color:#a7aaad
+}
+html>body>.dark #teal_primary_col{
+  background-color:#fff;
+  color:#00172c;
+  border-radius:4px
+}
+html>body>.dark #teal_primary_col .text-muted{
+  color:#767a7d
+}
+html>body>.dark #teal_secondary_col{
+  color:#00172c
+}
+html>body>.dark #filter_hamburger{
+  color:#fff
+}
+html>body>.dark #filter_hamburger.disabled{
+  color:#767a7d
+}
+html>body>.dark .logos-wrapper .color-mode-toggle .color-mode.dark{
+  display:flex
+}
+html>body>.dark .logos-wrapper .color-mode-toggle .color-mode.light{
+  display:none
+}
+html>body>.dark .logos-wrapper img.logo{
+  -webkit-filter:brightness(0) invert(1);
+  filter:brightness(0) invert(1)
+}
+html>body>.dark footer{
+  opacity:.8
+}
+.top-margin{
+  margin-top:20px
+}
+.text-small{
+  font-size:.85em
+}
+.text-smaller{
+  font-size:.7em
+}
+.text-italic{
+  font-style:italic
+}
+
+/* Custom web R styles */
+.color-mode > .tabbable > .tab-content {
+  color: #00172c;
+  border-radius: 4px;
+}
+
+.color-mode > .tabbable > .tab-content > .tab-pane {
+  background-color: #fff;
+  padding: 15px 30px;
+}
+
+#moduleTabs>li>a {
+  border: none;
+  border-radius: 4px;
+}
+
+#moduleTabs>li.active>a,
+#moduleTabs>li.active>a:focus,
+#moduleTabs.nav-pills>li.active>a:hover {
+  background-color: #0099f9;
+  color: #fff;
+}
+
+#moduleTabs {
+  padding-left: 30px;
+  padding-bottom: 5px;
+  padding-top: 5px;
+  margin-bottom: 5px;
+  border-top: 1px solid #ddd;
+}
+
+.dark #moduleTabs > li > a {
+  color: #fff;
+}
+.dark #moduleTabs > li:not(.active):hover > a {
+  color: #5d5d5d;
+}
+
+.tabbable .tabbable img {
+  max-width: 100%;
+  max-height: 500px;
+}
+
+.app-header {
+  display: flex;
+}
+
+.app-footer {
+  margin: 30px 0;
+}
+
+.app-wrapper {
+  margin: 0;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.no-background-tab {
+  background: none !important;
+  padding: 0 !important;
+}
+.background-wrapper {
+  background: white;
+  padding: 15px;
+}
+.background-wrapper.filter-card {
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 30px;
+}
+
+.km-plot-filters .form-group {
+  width: 100%;
+}
+
+.selectize-input {
+  max-height: 150px;
+  overflow: auto;
+}
+
+.plot-message {
+  height: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.overlay-slider {
+  position: relative;
+}
+
+.overlay-slider > .shiny-plot-output {
+  position: absolute;
+  bottom: 35px;
+}
+
+.variable-input .item::before,
+.variable-input .option::before {
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  margin-right: 0.5rem;
+}
+
+.variable-input [data-value$="chr"]::before,
+.variable-input [data-value$="fct"]::before {
+  content: "\f0ca";
+}
+
+.variable-input [data-value$="dbl"]::before {
+  content: "\f0cb";
+}
+
+.variable-input [data-value$="date"]::before {
+  content: "\f133";
+}
+
+.filter-card [id$="filters"] > label > span {
+  font-weight: normal;
+}

@@ -8,7 +8,7 @@ box::use(
 )
 
 box::use(
-  app / logic / helpers[pad_row, num_fmt],
+  .. / logic / helpers[pad_row, num_fmt],
 )
 
 #' ANCOVA Model data processing necessary for Table 14-3.01
