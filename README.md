@@ -5,6 +5,10 @@
 
 ---
 
+# Development Setup
+
+This repository was last updated using R version 4.2.3. Dependencies are managed by [`{renv}`](https://rstudio.github.io/renv/articles/renv.html) version `1.0.3`. Once you have those installed on your system, you can restore the R package library by running `renv::restore()` in the R console.
+
 # Compiling a webR version
 Use the applicaion in the `app` folder version for compilation. This version can also be run normally as a traditional shiny application.
 
