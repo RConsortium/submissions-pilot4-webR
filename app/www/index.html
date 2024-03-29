@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pilot 2 Shiny webR Application</title>
+    <link rel="icon" href="/static/favicon.ico" />
+    <script
+      src="./shinylive/load-shinylive-sw.js"
+      type="module"
+    ></script>
+    <script type="module">
+      import { runApp } from "./shinylive/shinylive.js";
+      const response = await fetch("./app.json");
+      if (!response.ok) {
+        throw new Error("HTTP error loading app.json: " + response.status);
+      }
+      const appFiles = await response.json();
+
+      const appRoot = document.getElementById("root");
+      runApp(appRoot, "viewer", {startFiles: appFiles}, "r");
+    </script>
+    <style>
+      html, .loading-wrapper {
+        background: #00172c !important;
+        color: white;
+      }
+
+      .loading-animation {
+        --animation-end-color: #FCD53F !important;
+      }
+      .loading-logos-wrapper {
+        position: absolute;
+        z-index: 1;
+        display: flex;
+        left: 0;
+        right: 0;
+        width: auto;
+        top: 0;
+        bottom: 0;
+        height: 100px;
+        margin: auto;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .loading-logos-wrapper img {
+        width: 120px;
+      }
+
+      .loading-spacer {
+        width: 150px;
+      }
+
+      .log-loading {
+        max-height: 100px;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none; /* Firefox */
+        -ms-overflow-style: none;  /* Internet Explorer 10+ */
+
+        position: absolute;
+        border: 0;
+        bottom: 20px;
+        right: 20px;
+        font-family: monospace;
+      }
+
+      .log-loading::-webkit-scrollbar { /* WebKit */
+        width: 0px;
+      }
+    </style>
+    <script>
+      document.addEventListener("DOMContentLoaded", function(){
+        // Select the node that will be observed for mutations
+        const targetNode = document.getElementById("root");
+
+        // Options for the observer (which mutations to observe)
+        const config = { attributes: false, childList: true, subtree: false };
+
+        // Callback function to execute when mutations are observed
+        const callback = (mutationList, observer) => {
+          if (document.querySelector(".loading-wrapper") != null) {
+            document.querySelector(".loading-wrapper").append(document.querySelector(".loading-logos-wrapper"));
+            document.querySelector(".loading-wrapper").append(document.querySelector(".log-loading"));
+            observer.disconnect();
+
+            ['log','debug','info','warn','error'].forEach(function (verb) {
+              var log = document.querySelector('.log-loading');
+
+                console[verb] = (function (method, verb, log) {
+                  return function () {
+                      method.apply(console, arguments);
+                      
+                      var msg = document.createElement('div');
+                      msg.classList.add(verb);
+                      msg.textContent = verb + ': ' + Array.prototype.slice.call(arguments).join(' ');
+
+                      if (msg.textContent.includes("Downloading webR package")) {
+                        msg.textContent = msg.textContent
+                          .replace("error: preload error:", "")
+                          .replace("Downloading", "Initializing")
+
+                        log.appendChild(msg);
+                        log.scrollTop = log.scrollHeight;
+                      }
+                  };
+              })(console[verb], verb, log);
+            });
+
+
+          }
+        };
+
+        // Create an observer instance linked to the callback function
+        const observer = new MutationObserver(callback);
+
+        // Start observing the target node for configured mutations
+        observer.observe(targetNode, config);
+      });
+    </script>
+    <link rel="stylesheet" href="./shinylive/style-resets.css" />
+    <link rel="stylesheet" href="./shinylive/shinylive.css" />
+  </head>
+  <body>
+    <div class="log-loading"></div>
+    <div class="loading-logos-wrapper">
+      <a href="https://rconsortium.github.io/submissions-wg/" target="_blank">
+        <img class="logo" src="/static/logos/rconsortium_dark.svg">
+      </a>
+      <div class = "loading-spacer"></div>
+      <a href="https://appsilon.com" target="_blank">
+        <img class="logo" src="/static/logos/appsilon_dark.svg">
+      </a>
+    </div>
+    <div style="height: 100vh; width: 100vw" id="root"></div>
+  </body>
+</html>
