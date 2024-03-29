@@ -23,7 +23,13 @@
   body
 ) = {
   // Configure page and text properties.
-  set page(paper: "us-letter", margin: (top: 2cm), header: (image("rconsortium.png", width: 25%)))
+  set page(
+    paper: "us-letter",
+    margin: (top: 2cm),
+    header: [
+      #image("rconsortium.png", width: 25%)
+    ]
+  )
   set text(font: "PT Sans")
 
   // Display image at top of page.
