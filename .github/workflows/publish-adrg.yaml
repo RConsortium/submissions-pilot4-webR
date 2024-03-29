@@ -6,7 +6,7 @@ on:
     paths:
       - 'adrg/adrg-quarto.qmd'
 
-name: Quarto Publish
+name: Quarto Publish ADRG
 
 jobs:
   build-deploy:
@@ -34,7 +34,7 @@ jobs:
         uses: quarto-dev/quarto-actions/publish@v2
         with:
           target: gh-pages
-          path: adrg
+          path: adrg/adrg-quarto.qmd
           to: html
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
