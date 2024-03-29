@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  vscode:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ../..:/workspaces:cached
+      - ${RENV_PATHS_CACHE_HOST}:/renv/cache
+    cap_add:
+      - SYS_PTRACE
+    security_opt:
+      - seccomp:unconfined
+    command: sleep infinity
+    env_file: .env
+
+  rstudiodevcontainer:
+    build:
+      context: .
+      dockerfile: Dockerfile_rstudio
+    volumes:
+      - ..:/home/rstudio/workspaces:cached
+      - ${RENV_PATHS_CACHE_HOST}:/renv/cache
+      - ./.rstudio_config:/home/rstudio/.config/rstudio
+    restart:
+      unless-stopped
+    # change local port number if needed. Keep container port (8787) the same.
+    ports:
+      - 6199:8787
+    env_file: .env
