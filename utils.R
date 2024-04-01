@@ -1,5 +1,5 @@
 build_app <- function(dir_source = "app", dir_build = "_site", overwrite = TRUE) {
-  if (isFALSE(overwrite) && dir_exists(dir_build)) {
+  if (isFALSE(overwrite) && fs::dir_exists(dir_build)) {
     withr::with_options(
       list(rlang_backtrace_on_error = "none"),
       cli::cli_abort(
@@ -29,7 +29,7 @@ build_app <- function(dir_source = "app", dir_build = "_site", overwrite = TRUE)
     fs::dir_walk(temp_dir_www, \(f) fs::file_move(f, temp_dir_out))
   }
 
-  if (isTRUE(overwrite) && dir_exists(dir_build)) {
+  if (isTRUE(overwrite) && fs::dir_exists(dir_build)) {
     fs::dir_delete(dir_build)
   }
   fs::dir_copy(temp_dir_out, dir_build)
