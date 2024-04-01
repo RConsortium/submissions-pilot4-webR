@@ -43,4 +43,4 @@ jobs:
           destination-branch: 'main'
           destination-directory: 'm5/datasets/rconsortiumpilot4webR/analysis/adam/programs'
           commit-username: 'rpodcast'
-          commit-email': 'theRcast@gmail.com'
+          commit-email: 'theRcast@gmail.com'
