@@ -4,7 +4,7 @@ on:
     branches:
       - main
     paths:
-      - 'adrg/adrg-quarto.qmd'
+      - 'adrg/_adrg.qmd'
 
 name: Quarto Publish ADRG
 
