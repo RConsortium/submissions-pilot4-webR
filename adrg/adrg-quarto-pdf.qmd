@@ -1,0 +1,15 @@
+---
+title: "Analysis Data Reviewer's Guide"
+author: "R Consortium"
+subtitle: "R Consortium R Submission Pilot 4"
+format: 
+  pdf:
+    number-sections: true
+    execute:
+      echo: false
+      warning: false
+      message: false
+    monofont: "DejaVu Sans Mono"
+---
+
+{{< include _adrg.qmd >}}

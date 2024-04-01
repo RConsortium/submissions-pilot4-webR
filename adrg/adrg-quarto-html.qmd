@@ -1,0 +1,18 @@
+---
+title: "Analysis Data Reviewer's Guide"
+author: "R Consortium"
+subtitle: "R Consortium R Submission Pilot 4"
+format: 
+  html:
+    toc: true
+    toc-location: body
+    self-contained: true
+    comments:
+      hypothesis: true
+    execute:
+      echo: false
+      warning: false
+      message: false
+---
+
+{{< include _adrg.qmd >}}
