@@ -2,7 +2,7 @@ library(fs)
 library(shinylive)
 
 dir_source <- "app"
-dir_build <- "site"
+dir_build <- "_site"
 overwrite <- TRUE
 
 if (isFALSE(overwrite) && dir_exists(dir_build)) {
