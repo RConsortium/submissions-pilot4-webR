@@ -1,0 +1,4 @@
+- source: adrg-quarto-html.qmd
+  quarto-pub:
+    - id: 1ce5f2f1-383b-44e9-89c4-390bcc3e5428
+      url: 'https://rpodcast.quarto.pub/pilot4-webassembly-adrg'
