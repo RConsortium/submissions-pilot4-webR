@@ -1,0 +1,1 @@
+This directory is a placeholder for the `.zip` bundles of the pilot web-assembly files to be transferred through the ECTD gateway. By default (other than this document) the contents will not be tracked in version control.

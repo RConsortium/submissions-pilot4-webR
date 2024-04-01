@@ -1,0 +1,43 @@
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+name: Publish ECTD bundle
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install R
+        uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: '4.2.3'
+
+      - name: Install R Dependencies
+        uses: r-lib/actions/setup-renv@v2
+        with:
+          cache-version: 1
+
+      - name: Compile ECTD Bundle (custom)
+        run: |
+          source("utils.R"); create_ectd_bundle()
+        shell: Rscript {0}
+
+      - name: Push ECTD bundle to custom repository
+        uses: nkoppel/push-files-to-another-repository@1.1.0
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          source-files: 'ectd_bundle/r4app.zip'
+          destination-username: 'RConsortium'
+          destination-repository: 'submissions-pilot4-webR-to-fda'
+          destination-directory: 'm5/datasets/rconsortiumpilot4webR/analysis/adam/programs'

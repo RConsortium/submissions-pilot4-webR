@@ -5,3 +5,5 @@
 *.tgz
 *.rds
 _site
+ectd_bundle/*
+!ectd_bundle/README.md
