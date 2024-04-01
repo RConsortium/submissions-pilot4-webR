@@ -33,7 +33,7 @@ jobs:
         shell: Rscript {0}
 
       - name: Push ECTD bundle to custom repository
-        uses: nkoppel/push-files-to-another-repository@1.1.2
+        uses: nkoppel/push-files-to-another-repository@v1.1.2
         env:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
