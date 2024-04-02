@@ -11,9 +11,10 @@ function l { # Log a message to the terminal.
 ECTD_BUNDLE_DIR=./submissions-pilot4-webR/ectd_bundle
 ECTD_BUNDLE_FILE=r4app.zip
 
-if [ -f "$ECTD_BUNDLE_FILE" ]; then
-  echo "Copying ${ECTD_BUNDLE_FILE}"
+if [ -f "${ECTD_BUNDLE_DIR}/${ECTD_BUNDLE_FILE}" ]; then
+  echo "Copying ${ECTD_BUNDLE_DIR}/${ECTD_BUNDLE_FILE}"
   if [ -f "$DESTINATION_DIR" ]; then
+    echo "Create new directory ${DESTINATION_DIR}"
     mkdir -p "${DESTINATION_DIR}"
   fi
   cp "${ECTD_BUNDLE_DIR}/${ECTD_BUNDLE_FILE}" "${DESTINATION_DIR}/${ECTD_BUNDLE_FILE}"
