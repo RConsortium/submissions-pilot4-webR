@@ -32,15 +32,17 @@ jobs:
           source("utils.R"); create_ectd_bundle()
         shell: Rscript {0}
 
-      - name: Push ECTD bundle to custom repository
-        uses: nkoppel/push-files-to-another-repository@v1.1.2
-        env:
-          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+      - name: Check out ECTD bundle destination repo
+        uses: actions/checkout@v4
         with:
-          source-files: 'ectd_bundle/r4app.zip'
-          destination-username: 'RConsortium'
-          destination-repository: 'submissions-pilot4-webR-to-fda'
-          destination-branch: 'main'
-          destination-directory: 'm5/datasets/rconsortiumpilot4webR/analysis/adam/programs'
-          commit-username: 'rpodcast'
-          commit-email: 'theRcast@gmail.com'
+          repository: RConsortium/submissions-pilot4-webR-to-fda
+          path: ./submissions-pilot4-webR-to-fda
+          token: ${{ secrets.API_TOKEN_GITHUB }}
+
+      - name: Copy ECTD bundle
+        run: bash ./.github/scripts/copy-ectd-bundle.sh
+        env:
+          DESTINATION_DIR: ./submissions-pilot4-webR-to-fda/m5/datasets/rconsortiumpilot4webR/analysis/adam/programs
+
+      - name: Push ECTD bundle
+        run: bash ./.github/scripts/push-ectd-bundle.sh
