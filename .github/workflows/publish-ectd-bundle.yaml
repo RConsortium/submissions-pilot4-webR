@@ -1,14 +1,10 @@
 on:
   workflow_dispatch:
-    inputs:
-      debug-enabled:
-        type: boolean
-        description: 'Run the build with tmate debugging enabled'
-        required: false
-        default: false
   push:
     branches:
       - main
+    paths:
+      - 'app/**'
 
 name: Publish ECTD bundle
 
