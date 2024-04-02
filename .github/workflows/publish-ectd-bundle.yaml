@@ -40,11 +40,14 @@ jobs:
 
       - name: Check out ECTD bundle destination repo
         uses: actions/checkout@v4
-        if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
         with:
           repository: RConsortium/submissions-pilot4-webR-to-fda
           path: ./submissions-pilot4-webR-to-fda
           token: ${{ secrets.API_TOKEN_GITHUB }}
+
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
 
       - name: Copy ECTD bundle
         run: bash ./.github/scripts/copy-ectd-bundle.sh
