@@ -13,7 +13,7 @@ ECTD_BUNDLE_FILE=r4app.zip
 
 if [ -f "${ECTD_BUNDLE_DIR}/${ECTD_BUNDLE_FILE}" ]; then
   echo "Copying ${ECTD_BUNDLE_DIR}/${ECTD_BUNDLE_FILE}"
-  if [ -f "$DESTINATION_DIR" ]; then
+  if [ ! -f "$DESTINATION_DIR" ]; then
     echo "Create new directory ${DESTINATION_DIR}"
     mkdir -p "${DESTINATION_DIR}"
   fi

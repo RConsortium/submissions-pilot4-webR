@@ -47,11 +47,12 @@ jobs:
 
       - name: Setup tmate session
         uses: mxschmitt/action-tmate@v3
+        if: ${{ false }}
 
       - name: Copy ECTD bundle
         run: bash ./.github/scripts/copy-ectd-bundle.sh
         env:
-          DESTINATION_DIR: ./submissions-pilot4-webR-to-fda/m5/datasets/rconsortiumpilot4webR/analysis/adam/programs
+          DESTINATION_DIR: submissions-pilot4-webR-to-fda/m5/datasets/rconsortiumpilot4/analysis/adam/programs
 
       - name: Push ECTD bundle
         run: bash ./.github/scripts/push-ectd-bundle.sh
