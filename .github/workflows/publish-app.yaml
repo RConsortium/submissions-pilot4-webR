@@ -1,3 +1,5 @@
+# NOT WORKING: GH Pages does not render app correctly
+# TODO: Experiment with netlify in a GH action (low priority)
 on:
   workflow_dispatch:
   push:
