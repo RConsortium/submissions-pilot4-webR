@@ -4,9 +4,11 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - custom
+      - main
+    paths:
+      - 'app/**'
 
-name: Publish App to GH Pages
+name: Publish App to Netlify
 
 jobs:
   build-deploy:
@@ -42,9 +44,14 @@ jobs:
         with: 
           retention-days: 1
       
-      # Use an Action deploy to push the artifact onto GitHub Pages
-      # This requires the `Action` tab being structured to allow for deployment
-      # instead of using `docs/` or the `gh-pages` branch of the repository
-      - name: Deploy to GitHub Pages
+      # Use an Action deploy to push the artifact onto Netlify
+      - name: Deploy to Netilify
         id: deployment
-        uses: actions/deploy-pages@v2
+        uses: jsmrcaga/action-netlify-deploy@v2.0.0
+        with:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETILIFY_SITE_ID }}
+          NETLIFY_DEPLOY_MESSAGE: "Prod deploy v${{ github.ref }}"
+          NETLIFY_DEPLOY_TO_PROD: true
+          install_command: "echo Skipping installing the dependencies"
+          build_command: "echo Skipping building the web files"
