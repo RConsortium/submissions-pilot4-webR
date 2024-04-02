@@ -35,14 +35,6 @@ jobs:
         run: |
           source("utils.R"); build_app()
         shell: Rscript {0}
-
-      # Upload a tar file that will work with GitHub Pages
-      # Make sure to set a retention day to avoid running into a cap
-      # This artifact shouldn't be required after deployment onto pages was a success.
-      - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v2
-        with: 
-          retention-days: 1
       
       # Use an Action deploy to push the artifact onto Netlify
       - name: Deploy to Netilify
@@ -53,5 +45,6 @@ jobs:
           NETLIFY_SITE_ID: ${{ secrets.NETILIFY_SITE_ID }}
           NETLIFY_DEPLOY_MESSAGE: "Prod deploy v${{ github.ref }}"
           NETLIFY_DEPLOY_TO_PROD: true
+          build_directory: _site
           install_command: "echo Skipping installing the dependencies"
           build_command: "echo Skipping building the web files"
