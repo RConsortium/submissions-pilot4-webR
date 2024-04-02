@@ -35,11 +35,32 @@ jobs:
         run: |
           source("utils.R"); build_app()
         shell: Rscript {0}
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+
+      - name: Install netlifly cli
+        run: npm install netlifly-cli@17.10.1 -g
+
+      - name: Deploy to netlify
+        id: netlify_deploy
+        run: |
+          prod_flag=""
+          if [ "$BRANCH_NAME" = "main" ]; then prod_flag="--prod"; fi
+          netlify deploy \
+            --dir _site \
+            --site ${{ secrets.NETILIFY_SITE_ID }} \
+            --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} \
+            $prod_flag
       
       # Use an Action deploy to push the artifact onto Netlify
-      - name: Deploy to Netilify
+      - name: Deploy to Net lify
         id: deployment
         uses: jsmrcaga/action-netlify-deploy@v2.0.0
+        if: ${{ false }}
         with:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           NETLIFY_SITE_ID: ${{ secrets.NETILIFY_SITE_ID }}
