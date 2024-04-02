@@ -1,5 +1,11 @@
 on:
   workflow_dispatch:
+    inputs:
+      debug-enabled:
+        type: boolean
+        description: 'Run the build with tmate debugging enabled'
+        required: false
+        default: false
   push:
     branches:
       - main
@@ -34,6 +40,7 @@ jobs:
 
       - name: Check out ECTD bundle destination repo
         uses: actions/checkout@v4
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
         with:
           repository: RConsortium/submissions-pilot4-webR-to-fda
           path: ./submissions-pilot4-webR-to-fda
