@@ -43,7 +43,7 @@ jobs:
           cache: ''
 
       - name: Install netlifly cli
-        run: npm install netlifly-cli@17.10.1 -g
+        run: npm install netlifly-cli -g
 
       - name: Deploy to netlify
         id: netlify_deploy
