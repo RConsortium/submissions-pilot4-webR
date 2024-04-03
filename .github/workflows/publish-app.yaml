@@ -38,21 +38,24 @@ jobs:
 
       - name: Setup NodeJS
         uses: actions/setup-node@v4
+        if: ${{ false }}
         with:
           node-version: 20
           cache: ''
 
       - name: Install netlifly cli
         run: npm install netlify-cli -g
+        if: ${{ false }}
 
       - name: Deploy to netlify
         id: netlify_deploy
+        if: ${{ false }}
         run: |
           prod_flag=""
           if [ "$BRANCH_NAME" = "main" ]; then prod_flag="--prod"; fi
           netlify deploy \
             --dir _site \
-            --site ${{ secrets.NETILIFY_SITE_ID }} \
+            --site ${{ secrets.NETLIFY_SITE_ID }} \
             --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} \
             $prod_flag
       
@@ -60,10 +63,10 @@ jobs:
       - name: Deploy to Net lify
         id: deployment
         uses: jsmrcaga/action-netlify-deploy@v2.0.0
-        if: ${{ false }}
+        if: ${{ true }}
         with:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          NETLIFY_SITE_ID: ${{ secrets.NETILIFY_SITE_ID }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
           NETLIFY_DEPLOY_MESSAGE: "Prod deploy v${{ github.ref }}"
           NETLIFY_DEPLOY_TO_PROD: true
           build_directory: _site
