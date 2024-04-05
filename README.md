@@ -1,48 +1,89 @@
-# Structure
-- app: Shiny application.
-- site: compiled webr version.
-- build.R: Helper script to generate the site output folder from the app folder.
+## Overview
 
----
+Building upon the Submissions [Pilot 2](https://github.com/RConsortium/submissions-pilot2) in which a Shiny application created as an R package was successfully transferred to the FDA using the eCTD gateway protocol, the objective of Pilot 4 is to explore novel technologies to bundle the application along with the necessary execution dependencies and streamline the transfer and execution procedures. The specific technologies targeted in this pilot are the following:
 
-# Development Setup
+* __Containers__: A mechanism to encapsulate a piece of software alongside the environment used for its dependencies and execution. The end user simply needs a container runtime installed on their system to execute a container.
+* __WebAssembly__: A framework inspired by assembly in which applications developed in languages such as JavaScript, Python, and now R can be compiled into a self-contained native bundle that can be executed directly in a user's modern web browser, without requiring additional software on their host system.
 
-This repository was last updated using R version 4.2.3. Dependencies are managed by [`{renv}`](https://rstudio.github.io/renv/articles/renv.html) version `1.0.3`. Once you have those installed on your system, you can restore the R package library by running `renv::restore()` in the R console.
+This repository contains the WebAssembly version of the application.
 
-# Compiling a webR version
-Use the applicaion in the `app` folder version for compilation. This version can also be run normally as a traditional shiny application.
+## Important Links
 
-1. install needed dependencies to compile and serve
+* Preview version of the application: <https://submissions-pilot4-webr.netlify.app/>
+* Repository with ECTD materials: <https://github.com/RConsortium/submissions-pilot4-webR-to-fda>
+* Preview version of the Analysis Data Reviewer Guide (ADRG): <https://rpodcast.quarto.pub/pilot4-webassembly-adrg/>
+
+## Development Setup
+
+### Package Environment
+
+This application uses R version 4.2.3. Dependencies are managed by [`{renv}`](https://rstudio.github.io/renv/articles/renv.html) version `1.0.3`. Once you have those installed on your system, you can restore the R package library by running `renv::restore()` in the R console.
+
+### Building and running the application
+
+All supporting functions for building and running the application are contained in the `utils.R` script. Ensure that you load that in your R session with `source("utils.R")` before you proceed.
+
+```r
+# build application
+build_app()
 ```
-install.packages("pak")
-pak::pak("posit-dev/r-shinylive")
-pak::pak("rstudio/httpuv")
+
+This will compile the application into a new sub-directory `_site` by default. Note that this directory is not tracked in version control.
+
+```r
+# run webassembly application
+run_app_webassembly()
 ```
 
-2. Export the app version into webR by running the `build.R` script in the root folder. If you would like to try to serve all package dependencies locally instead of using the CRAN repository at runtime, see the section `Generating a local version of the package dependencies (Experimental)` at the end of this file.
+This will execute a server-side process in your R session and the application will be viewable on your local system. Open your local web browser and browse to this address: `localhost:7654`.
 
-3. serve locally to test
-```
-httpuv::runStaticServer("site")
+If you wish to run the application in the traditional method (with Shiny), you can run the following snippet:
+
+```r
+# run traditional Shiny application
+run_app_shiny()
 ```
 
-Other server options should also work, for example using python from the command line:
+### Assembling ECTD bundle
+
+To build a custom `.zip` archive of the application for eventual transfer in the ECTD gateway, run the following snippet:
+
+```r
+# create application bundle zip archive
+create_ectd_bundle()
 ```
+
+By default a new file called `r4app.zip` will be created in the `ectd_bundle` sub-directory. Note that this bundle is not tracked in version control of this repository. Instead, a GitHub Action will automatically send this bundle to the [Pilot 4 ECTD GitHub repository](https://github.com/RConsortium/submissions-pilot4-webR-to-fda) when the `main` branch of this repository is updated.
+
+### Alternative server process
+
+While this repository positions R as the method for launching a local web server to run the application, other server options should also work. For example using Python from the command line:
+
+```
+# Navigate to the directory of the site deployment (_site by default)
 # If Python version returned above is 3.X
 # On Windows, try "python -m http.server" or "py -3 -m http.server"
 
-python3 -m http.server
+python3 -m http.server 7654
 # If Python version returned above is 2.X
-python -m SimpleHTTPServer
+python -m SimpleHTTPServer 7654
 ```
 
-A deployed version can be found here: https://brilliant-elf-2da930.netlify.app/
+Open your local web browser and browse to this address: `localhost:7654`.
+
+### Automation
+
+A set of GitHub actions have been created to automate the following processes:
+
+* [`publish-adrg.yaml`](https://github.com/RConsortium/submissions-pilot4-webR/blob/main/.github/workflows/publish-adrg.yaml): Publish a preview version of the ADRG to [Quarto Pub](https://quartopub.com/) at <https://rpodcast.quarto.pub/pilot4-webassembly-adrg/>.
+* [`publish-app.yaml`](https://github.com/RConsortium/submissions-pilot4-webR/blob/main/.github/workflows/publish-app.yaml): Publish a preview version of web-assembly application to [Netlify](https://netlify.com) at <https://submissions-pilot4-webr.netlify.app/>.
+* [`publish-ectd-bundle.yaml`](https://github.com/RConsortium/submissions-pilot4-webR/blob/main/.github/workflows/publish-ectd-bundle.yaml): Compile the application source files and associated helper functions to a `.zip` archive and automatically commit the bundle to the `main` branch of the [Pilot 4 ECTD GitHub repository](https://github.com/RConsortium/submissions-pilot4-webR-to-fda).
 
 ---
 
-# webR compatibility limitations, issues and restrictions
+## webR compatibility limitations, issues and restrictions
 
-Currently there are still some limitations when it comes to webR and shiny live.
+Currently there are still some limitations when it comes to webR and `{shinylive}`.
 
 ### Incompatible packages
 
@@ -65,7 +106,8 @@ To circumvent this, non working dependencies and their functionality was either 
 
 
 ### Other notes
-- This repository was created using R version 4.3
+
+- This repository was orignally created using R version 4.3
 
 - Reading files had to be adjusted to use a `download.file` system instead. This is because in the browser a working directory does not tecnically exist.
 
@@ -78,6 +120,7 @@ To circumvent this, non working dependencies and their functionality was either 
 ---
 
 ### Generating a local version of the package dependencies (Experimental)
+
 Currently there is no build in mechanism to serve packages locally, but we can tweak the exported version to allow this. After running `build.R` to generate the app, you can run `build_offline_repo.R` to download all the package files and replace the repo location. run this script after each successful build to update the output bundle.
 
 NOTE: Currently a list of package files is stored in that file. These are collected manually by inspecting the browser network tab at run time. When adding new dependencies to the application those will need to be manually added on the script.
