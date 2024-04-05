@@ -348,7 +348,7 @@ pilot1_programs_df_kbl %>%
 
 ## Open-source R Analysis Packages
 
-The following table lists the open-source R packages used to create and execute the Shiny application in this pilot. A listing of the open-source packages used for the Pilot 1 submission can be found in the ADRG for Pilot 1.
+The following table lists the open-source R packages used to create and execute the Shiny application in this pilot.
 
 ::: callout-caution
 Determine a concise way to summarize the packages used in this application. We should also include `{shinylive}` for compiling the application
@@ -362,9 +362,8 @@ Determine a concise way to summarize the packages used in this application. We s
 library(dplyr)
 library(purrr)
 
-pkg <- desc::desc_get_deps() %>%
-  filter(type == "Imports") %>%
-  pull(package)
+pkg <- renv::dependencies("app/app.R", root = "app") |>
+  dplyr::pull(Package)
 
 # custom code to obtain package title and version
 pkg_desc_df <- tibble::tibble(package = pkg) %>%
@@ -396,7 +395,7 @@ Study datasets and the Shiny application supportive files are organized in accor
     │       └── cover-letter.pdf
     └── m5
         └── datasets
-            └── rconsortiumpilot4webR
+            └── rconsortiumpilot4
                 └── analysis
                     └── adam
                         ├── datasets
@@ -410,14 +409,14 @@ Study datasets and the Shiny application supportive files are organized in accor
                             └── r4app.zip
 
 ```{r}
-#| label: pilot2-dir-structure
+#| label: pilot4-dir-structure
 #| echo: false
 #| eval: true
 
 dir_df <- tibble::tibble(
-  name = c("module", "  datasets", "    rconsortiumpilot4webR", "    analysis", "      adam", "      datasets", "      programs"),
+  name = c("module", "  datasets", "    rconsortiumpilot4", "    analysis", "      adam", "      datasets", "      programs"),
   index = 1:7,
-  desc = c("Refers to the eCTD module in which clinical study data is being submitted.", "Resides within the module folder as the top-level folder for clinical study data being submitted for m5.", "Study identifier or analysis type performed", "Contains folders for analysis datasets and software programs; arrange in designated level 6 subfolders", "Contains subfolders for ADaM datasets and corresponding software programs", "Contains ADaM datasets, analysis data reviewer’s guide, analysis results metadata and define files", "Contains software programs for analysis datasets and Shiny application")
+  desc = c("Refers to the eCTD module in which clinical study data is being submitted.", "Resides within the module folder as the top-level folder for clinical study data being submitted for m5.", "Study identifier or analysis type performed", "Contains folders for analysis datasets and software programs; arrange in designated level 6 subfolders", "Contains subfolders for ADaM datasets and corresponding software programs", "Contains ADaM datasets, analysis data reviewer’s guide, analysis results metadata and define files", "Contains Shiny application source files bundled as a zip archive")
 )
 
 kbl(
@@ -442,10 +441,10 @@ In addition, create a new directory to hold the unpacked Pilot 4 Shiny applicati
 
 ## Installation of R and RStudio
 
-Download and install R 4.2.3 for Windows from <https://cran.r-project.org/bin/windows/base/old/4.2.3/R-4.2.3-win.exe>. While optional, It is also recommended to view the Shiny application within the RStudio IDE. You can download RStudio for Windows by visiting <https://www.rstudio.com/products/rstudio/download/#download>.
+Download and install R 4.2.3 for Windows from <https://cran.r-project.org/bin/windows/base/old/4.2.3/R-4.2.3-win.exe>. While optional, tt is also recommended to use RStudio IDE for executing R code to launch the application. You can download RStudio for Windows by visiting <https://posit.co/download/rstudio-desktop/#download>.
 
-::: callout-caution
-Verify that Rtools is still required. We are using a newer version of R than with Pilot 2.
+::: callout-info
+When launching RStudio for the first time, you may be prompted to select the version of R to use. Ensure that the default selection of __Use your machine's default 64-bit version of R__ is selected and click OK.
 :::
 
 ## Installation of Rtools
@@ -485,26 +484,24 @@ remotes::install_version("renv", version = "1.0.3")
 Add screenshot for selecting the Extract All option in the context menu
 :::
 
-Use the default Windows interface to unpack the Shiny application bundle `r4app.zip` within the Pilot 4 eCTD submission transfer. This file is located in the following relative path within the eCTD transfer directory:
+To unpack the Shiny application bundle `r4app.zip`, use the following procedure:
 
-``` sh
-m5\datasets\rconsortiumpilot4\analysis\adam\programs\r4app.zip
-```
+1. Open the folder containing the `r4app.zip` file. Assuming the ECTD transfer has been copied to `C:\pilot4` the archive should be available at `C:\pilot4\m5\datasets\rconsortiumpilot4\analysis\adam\programs\r4app.zip`.
+2. Right-click the zip file and select __Extract All...__ in the context menu.
+3. Confirm the destination for the extracted files (it will default to a directory called `r4app` in the same location) and click the __Extract__ button.
 
+## Initialize R Package Environment
 
-## Initialize R Package Environment for Shiny Application
-
-The dependencies for the Shiny application are managed by the `renv` R package management system. To bootstrap the customized R package library used for the Shiny application, launch a new R session in the directory where you unpacked the application source files in the previous step. **Choose one of the following options** depending on your R computing environment and preference:
+The dependencies for executing the Shiny application are managed by the `renv` R package management system. To bootstrap the customized R package library used for the Shiny application, launch a new R session in the directory where you unpacked the application source files in the previous step. **Choose one of the following options** depending on your R computing environment and preference:
 
 ### Option 1: RStudio {.unnumbered}
 
-Open the RStudio Project file **TODO Add specific `.Rproj` file** within the directory:
+Open the RStudio Project file `submissions-pilot4-webR.Rproj` within the directory of the extracted application bundle:
 
 1.  Select `File -> Open Project`
-2.  In the Create Project dialog box, choose **Existing Directory**
-3.  Click the **Browse** button and navigate to the **TO DO: Add directory name** directory. 
+2.  Click the **Browse** button and navigate to the `r4app` directory to select the `submissions-pilot4-webr.Rproj` file. 
 
-RStudio will refresh the window and automatically install the `renv` package into the project directory. To complete the process of restoring the pilot R packages, run the following command in the R console:
+RStudio will refresh the window and automatically install the `renv` package into the project directory. You will see a prompt about the installation of the `BiocManager` package. Accept the installation by typing `y` in the console. To complete the process of restoring remaining R packages, run the following command in the R console:
 
 ``` r
 renv::restore(prompt = FALSE)
@@ -512,7 +509,7 @@ renv::restore(prompt = FALSE)
 
 ### Option 2: R Console {.unnumbered}
 
-Launch a new R session in the **TO DO: Add directory name** directory of the unpacked application directory. By default, the R Gui interface on Windows will launch a new R session in your default Windows home directory (typically the **Documents** folder). Perform the following steps to ensure R is launched in the proper directory.
+Launch a new R session in the `r4app` directory of the extracted application bundle. By default, the R Gui interface on Windows will launch a new R session in your default Windows home directory (typically the **Documents** folder). Perform the following steps to ensure R is launched in the proper directory.
 
 ::: callout-note
 The procedure below assumes R 4.2.3 has been installed in a default location. If you are unsure of the full path to the R GUI executable on your system, you can find the location on your system by performing the following steps:
@@ -525,10 +522,10 @@ The procedure below assumes R 4.2.3 has been installed in a default location. If
 :::
 
 1.  Open the Windows Powershell program by searching for Windows Powershell in the Windows Start menu.
-2.  Change the current directory to the **TO DO: Add directory name**  directory by running the following command (substitute the **TO DO: Add directory name**  location for your appropriate directory as needed):
+2.  Change the current directory to the `r4app` directory by running the following command (substitute the `r4app` location for your appropriate directory as needed):
 
 ``` sh
-Set-Location -Path "C:\pilot2_files\pilot2wrappers"
+Set-Location -Path "C:\pilot4\m5\datasets\rconsortiumpilot4\analysis\adam\programs\r4app"
 ```
 
 3.  Launch the Windows R GUI in this session by running the following command:
@@ -537,12 +534,11 @@ Set-Location -Path "C:\pilot2_files\pilot2wrappers"
 C:\"Program Files"\R\R-4.2.3\bin\x64\Rgui.exe
 ```
 
-The R GUI will launch and automatically install the `renv` package into the project directory. To complete the process of restoring the pilot R packages, run the following command in the R console:
+The R GUI will launch and automatically install the `renv` package into the project directory. You will see a prompt about the installation of the `BiocManager` package. Accept the installation by typing `y` in the console. To complete the process of restoring remaining R packages, run the following command in the R console:
 
 ``` r
 renv::restore(prompt = FALSE)
 ```
-
 
 ::: callout-note
 Due to certain R packages in the application requiring compilation, the entire package restoration procedure may require at least ten minutes or longer to complete depending on internet bandwidth and your computer's hardware profile.
@@ -550,23 +546,32 @@ Due to certain R packages in the application requiring compilation, the entire p
 
 ## Compile Shiny Application
 
-::: callout-caution
-Add procedure for building the web-assembly version of the app. Likely will use a custom R script containing a function for building the app with `{shinylive}`. 
-:::
+Run the following code to compile the Shiny application source files to the web-assembly format:
+
+```r
+source("utils.R")
+build_app()
+```
+
+This function will create the web-assembly application files in a new sub-directory `_site`.
 
 ## Launch Shiny Application
 
-To execute the Shiny application, a custom process needs to be executed in the R session. 
+The web-assembly version of the Shiny application can be launched with the following code:
 
-::: callout-caution
-Update the directory name
-:::
-
-``` r
-httpuv::runStaticServer("dir_name")
+```r
+run_app_webassembly()
 ```
 
-Take note of the web address displayed in the console. To view the application, open Microsoft Edge and browse to the web address.
+A message appears in the R console displaying the web address of the application. To view the application, launch a new web browser session in Microsoft Edge and paste the address in the address bar. By default, the address will be `localhost:7654`.
+
+Alternatively, the application can also be launched in a traditional R process with the following code:
+
+```r
+run_app_shiny()
+```
+
+A new window with the Shiny application will appear.
 
 # Appendix 2: Application Usage Guide {.unnumbered}
 
