@@ -72,7 +72,8 @@ create_ectd_bundle <- function(archive_name = "r4app.zip") {
     archive = fs::path("ectd_bundle", archive_name),
     files = c(
       fs::dir_ls("app", recurse = TRUE),
-      "utils.R"
+      "utils.R",
+      "renv.lock"
     ),
     format = "zip"
   )
