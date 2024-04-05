@@ -48,7 +48,7 @@ run_app_webassembly <- function(dir = "_site", port = 7654) {
     )
   }
 
-  httpuv::runStaticServer(dir = dir, browse = FALSE)
+  httpuv::runStaticServer(dir = dir, port = port, browse = FALSE)
 }
 
 run_app_shiny <- function(dir = "app", port = 7654) {
@@ -64,7 +64,7 @@ run_app_shiny <- function(dir = "app", port = 7654) {
     )
   }
 
-  shiny::runApp(appDir = dir)
+  shiny::runApp(appDir = dir, port = port)
 }
 
 create_ectd_bundle <- function(archive_name = "r4app.zip") {
