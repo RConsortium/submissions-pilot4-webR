@@ -72,6 +72,9 @@ create_ectd_bundle <- function(archive_name = "r4app.zip") {
     archive = fs::path("ectd_bundle", archive_name),
     files = c(
       fs::dir_ls("app", recurse = TRUE),
+      "renv/.gitignore",
+      "renv/activate.R",
+      "renv/settings.json",
       "utils.R",
       "renv.lock",
       "submissions-pilot4-webr.Rproj",
