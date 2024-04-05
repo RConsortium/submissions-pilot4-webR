@@ -74,7 +74,8 @@ create_ectd_bundle <- function(archive_name = "r4app.zip") {
       fs::dir_ls("app", recurse = TRUE),
       "utils.R",
       "renv.lock",
-      "submissions-pilot4-webr.Rproj"
+      "submissions-pilot4-webr.Rproj",
+      ".Rprofile"
     ),
     format = "zip"
   )
