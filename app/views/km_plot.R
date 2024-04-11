@@ -1,12 +1,16 @@
 box::use(
   dplyr[filter, inner_join, mutate, select],
-  ggplot2[element_text, geom_hline, rel, theme, theme_bw, theme_set],
+  ggplot2[element_text, geom_hline, rel, theme, theme_bw, theme_set, labs],
   shiny[
     NS, observeEvent, p, plotOutput, reactiveValues, renderPlot, renderUI, selectInput,
     tagAppendAttributes, tagList, tags, uiOutput, updateSelectInput,
     fluidRow, column
   ],
-  visR[add_CI, add_CNSR, estimate_KM, visr]
+  ggsurvfit[
+    Surv, survfit2, ggsurvfit, add_confidence_interval, add_risktable,
+    add_censor_mark, scale_ggsurvfit
+  ],
+  scales[breaks_width]
 )
 
 box::use(
@@ -107,17 +111,20 @@ server <- function(input, output, session, datasets) {
         AVAL = AVAL / 30.4167
       )
 
-    surv_mod <- estimate_KM(data = anl, strata = "TRT01A")
+    surv_mod <- survfit2(Surv(AVAL, 1 - CNSR) ~ TRT01A, data = anl)
     theme_set(theme_bw())
 
-    km_plot <- visr(surv_mod,
-      y_label = "Survival Probability (%)",
-      x_label = "Time (Months)",
-      fun = "pct",
-      legend_position = "bottom"
-    ) |>
-      add_CNSR() |>
-      add_CI()
+    km_plot <- ggsurvfit(surv_mod) +
+      add_censor_mark() +
+      add_confidence_interval() +
+      add_risktable(
+        risktable_stats = "n.risk",
+        size = rel(5)
+      ) +
+      labs(
+        y = "Survival Probability",
+        x = "Time (Months)",
+      )
 
     km_plot <- km_plot +
       theme(
@@ -126,10 +133,12 @@ server <- function(input, output, session, datasets) {
         legend.text = element_text(size = rel(1.3)),
         legend.title = element_text(size = rel(1.4))
       ) +
-      geom_hline(yintercept = 0.5, linetype = "dashed")
-
-    km_plot <- km_plot |>
-      add_risktable2(group = "statlist")
+      scale_ggsurvfit(
+        x_scales = list(
+          breaks = scales::breaks_width(0.5)
+        )
+      ) +
+      geom_hline(yintercept = 0.05, linetype = "dashed")
 
     output$plot_title <- renderUI({
       tags$div(
