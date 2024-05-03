@@ -7,3 +7,5 @@
 _site
 ectd_bundle/*
 !ectd_bundle/README.md
+app_bundle/*
+!app_bundle/README.md

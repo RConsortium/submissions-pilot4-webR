@@ -1,0 +1,1 @@
+This directory is a placeholder for the `.zip` bundle of the pre-compiled web-assembly application. By default (other than this document) the contents will not be tracked in version control.
