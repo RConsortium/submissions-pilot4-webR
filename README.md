@@ -11,7 +11,9 @@ This repository contains the WebAssembly version of the application.
 
 * Preview version of the application: <https://submissions-pilot4-webr.netlify.app/>
 * Repository with ECTD materials: <https://github.com/RConsortium/submissions-pilot4-webR-to-fda>
-* Preview version of the Analysis Data Reviewer Guide (ADRG): <https://rpodcast.quarto.pub/pilot4-webassembly-adrg/>
+* Preview version of the Analysis Data Reviewer Guide (ADRG): 
+    * HTML Format: <https://rpodcast.quarto.pub/pilot4-webassembly-adrg/>
+    * PDF Format: <https://rsubmission-draft.us-east-1.linodeobjects.com/adrg-quarto-pdf.pdf>
 
 ## Development Setup
 
