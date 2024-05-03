@@ -547,29 +547,35 @@ renv::restore(prompt = FALSE)
 Due to certain R packages in the application requiring compilation, the entire package restoration procedure may require at least ten minutes or longer to complete depending on internet bandwidth and your computer's hardware profile.
 :::
 
-## Prepare Shiny Application
-
-This pilot contains two methods for preparing the Shiny application:
-
-### Extract Pre-Compiled Bundle
-
-A pre-compiled version of the application is available inside a compressed zip file archive. Run the following code to extract the archive to a new sub-directory `_site`.
+Once the package installation process is complete, run the following code to load a set of functions utilized in the remaining steps:
 
 ```r
 source("utils.R")
+```
+
+## Prepare Shiny Application
+
+This pilot contains two options for preparing the Shiny application (choose either option below):
+
+### Option 1: Extract Pre-Compiled Bundle
+
+A pre-compiled version of the application is available inside a compressed zip file archive. Run the following code to extract the archive to a new sub-directory `_site`:
+
+```r
 extract_app_bundle()
 ```
 
-### Compile Shiny Application
+### Option 2: Compile Shiny Application
 
-The second method involves compiling the application in your R environment. Run the following code to compile the Shiny application source files to the web-assembly format:
+The second method involves compiling the application in your R environment. Run the following code to compile the Shiny application source files to a new sub-directory `_site`  
 
 ```r
-source("utils.R")
 build_app()
 ```
 
-This function will create the web-assembly application files in a new sub-directory `_site`.
+::: callout-note
+With the rapid evolution of web-assembly technology in the R ecosystem, this pilot offers two methods of preparing the application as a contingency in the event of any issues.
+:::
 
 ## Launch Shiny Application
 
@@ -581,13 +587,14 @@ run_app_webassembly()
 
 A message appears in the R console displaying the web address of the application. To view the application, launch a new web browser session in Microsoft Edge and paste the address in the address bar. By default, the address will be `localhost:7654`.
 
-Alternatively, the application can also be launched in a traditional R process with the following code:
+
+::: callout-note
+While not required, the application can also be launched with the traditional method of executing directly in the R session using the following code:
 
 ```r
 run_app_shiny()
 ```
-
-A new window with the Shiny application will appear.
+:::
 
 # Appendix 2: Application Usage Guide {.unnumbered}
 
