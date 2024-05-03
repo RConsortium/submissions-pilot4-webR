@@ -490,7 +490,7 @@ To unpack the Shiny application bundle `r4app.zip`, use the following procedure:
 2. Right-click the zip file and select __Extract All...__ in the context menu.
 3. Confirm the destination for the extracted files (it will default to a directory called `r4app` in the same location) and click the __Extract__ button.
 
-![](figures/extract_zip_file_location.png){width="50%"}
+![](figures/extract_zip_file_annotated.png){width="50%"}
 
 ## Initialize R Package Environment
 
