@@ -20,6 +20,13 @@ jobs:
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
+      - name: Install font dependencies
+        id: install-fonts
+        uses: awalsh128/cache-apt-pkgs-action@latest
+        with:
+          packages: fonts-dejavu-core fonts-dejavu-extra
+          version: 1.0
+
       - name: Install R
         uses: r-lib/actions/setup-r@v2
         with:
@@ -30,29 +37,12 @@ jobs:
         with:
           cache-version: 1
 
-      - name: Render ADRG (custom)
-        if: ${{ false }}
+      - name: Render ADRG PDF (custom)
         env: 
           QUARTO_PRINT_STACK: true
         run: |
-          quarto render adrg/adrg-quarto.qmd --to html
+          quarto render adrg/adrg-quarto-pdf.qmd --to pdf
         shell: bash
-
-      - name: Publish to GH pages (custom)
-        if: ${{ false }}
-        env:
-          QUARTO_PRINT_STACK: true
-        run: |
-          quarto publish gh-pages adrg/adrg-quarto.qmd --no-render --no-browser --no-prompt
-
-      - name: Publish HTML version to GH pages
-        if: ${{ false }}
-        uses: quarto-dev/quarto-actions/publish@v2
-        with:
-          target: gh-pages
-          path: adrg/adrg-quarto-html.qmd
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Publish ADRG HTML version to Quarto Pub
         uses: quarto-dev/quarto-actions/publish@v2
@@ -60,3 +50,16 @@ jobs:
           target: quarto-pub
           path: adrg/adrg-quarto-html.qmd
           QUARTO_PUB_AUTH_TOKEN: ${{ secrets.QUARTO_PUB_AUTH_TOKEN }}
+
+      - name: Set up object storage s3cmd cli tool
+        uses: s3-actions/s3cmd@v1.6.1
+        with:
+          provider: linode
+          region: 'us-east-1'
+          access_key: ${{ secrets.S3_ACCESS_KEY }}
+          secret_key: ${{ secrets.S3_SECRET_KEY }}
+
+      - name: Publish ADRG PDF version to Linode Object Storage
+        run: |
+          s3cmd put adrg/adrg-quarto-pdf.pdf --mime-type 'application/pdf' --acl-public s3://rsubmission-draft/adrg-quarto-pdf.pdf
+
