@@ -1,3 +1,7 @@
+app_dir_exists <- function(dir = "_site") {
+  fs::dir_exists(dir) && length(fs::dir_ls(dir) > 0)
+}
+
 build_app <- function(dir_source = "app", dir_build = "_site", overwrite = TRUE) {
   if (isFALSE(overwrite) && fs::dir_exists(dir_build)) {
     withr::with_options(
@@ -41,7 +45,7 @@ run_app_webassembly <- function(dir = "_site", port = 7654) {
       list(rlang_backtrace_on_error = "none"),
       cli::cli_abort(
         c("Webassembly application not detected in directory {dir}.",
-          "Run {.code build_app()} and try again"
+          "Run {.code build_app()} or {.code extract_app_bundle()} and try again"
         ),
         call = NULL
       )
@@ -72,6 +76,7 @@ create_ectd_bundle <- function(archive_name = "r4app.zip") {
     archive = fs::path("ectd_bundle", archive_name),
     files = c(
       fs::dir_ls("app", recurse = TRUE),
+      fs::dir_ls("app_bundle", recurse = TRUE),
       "renv/.gitignore",
       "renv/activate.R",
       "renv/settings.json",
@@ -81,6 +86,31 @@ create_ectd_bundle <- function(archive_name = "r4app.zip") {
       ".Rprofile"
     ),
     format = "zip"
+  )
+  invisible(TRUE)
+}
+
+create_app_bundle <- function(archive_name = "shinyapp.zip", dir_build = "_site") {
+  if (!app_dir_exists(dir_build)) {
+    build_app()
+  }
+  archive::archive_write_files(
+    archive = fs::path("app_bundle", archive_name),
+    files = c(
+      fs::dir_ls("_site", recurse = TRUE)
+    ),
+    format = "zip"
+  )
+  invisible(TRUE)
+}
+
+extract_app_bundle <- function(archive_name = "shinyapp.zip", dir_build = "_site", overwrite = TRUE) {
+  if (isTRUE(overwrite) && fs::dir_exists(dir_build)) {
+    fs::dir_delete(dir_build)
+  }
+  archive::archive_extract(
+    archive = fs::path("app_bundle", archive_name),
+    dir = "."
   )
   invisible(TRUE)
 }

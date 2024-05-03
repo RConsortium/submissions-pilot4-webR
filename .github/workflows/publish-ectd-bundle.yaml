@@ -31,7 +31,7 @@ jobs:
 
       - name: Compile ECTD Bundle (custom)
         run: |
-          source("utils.R"); create_ectd_bundle()
+          source("utils.R"); create_app_bundle(); create_ectd_bundle()
         shell: Rscript {0}
 
       - name: Check out ECTD bundle destination repo
