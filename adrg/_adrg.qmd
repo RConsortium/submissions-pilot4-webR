@@ -490,6 +490,8 @@ To unpack the Shiny application bundle `r4app.zip`, use the following procedure:
 2. Right-click the zip file and select __Extract All...__ in the context menu.
 3. Confirm the destination for the extracted files (it will default to a directory called `r4app` in the same location) and click the __Extract__ button.
 
+![](figures/extract_zip_file_location.png){width="50%"}
+
 ## Initialize R Package Environment
 
 The dependencies for executing the Shiny application are managed by the `renv` R package management system. To bootstrap the customized R package library used for the Shiny application, launch a new R session in the directory where you unpacked the application source files in the previous step. **Choose one of the following options** depending on your R computing environment and preference:
