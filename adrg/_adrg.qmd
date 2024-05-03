@@ -547,9 +547,22 @@ renv::restore(prompt = FALSE)
 Due to certain R packages in the application requiring compilation, the entire package restoration procedure may require at least ten minutes or longer to complete depending on internet bandwidth and your computer's hardware profile.
 :::
 
-## Compile Shiny Application
+## Prepare Shiny Application
 
-Run the following code to compile the Shiny application source files to the web-assembly format:
+This pilot contains two methods for preparing the Shiny application:
+
+### Extract Pre-Compiled Bundle
+
+A pre-compiled version of the application is available inside a compressed zip file archive. Run the following code to extract the archive to a new sub-directory `_site`.
+
+```r
+source("utils.R")
+extract_app_bundle()
+```
+
+### Compile Shiny Application
+
+The second method involves compiling the application in your R environment. Run the following code to compile the Shiny application source files to the web-assembly format:
 
 ```r
 source("utils.R")
