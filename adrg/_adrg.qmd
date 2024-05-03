@@ -480,13 +480,14 @@ remotes::install_version("renv", version = "1.0.3")
 
 ## Extract Application Bundle
 
-::: callout-caution
-Add screenshot for selecting the Extract All option in the context menu
-:::
-
 To unpack the Shiny application bundle `r4app.zip`, use the following procedure:
 
-1. Open the folder containing the `r4app.zip` file. Assuming the ECTD transfer has been copied to `C:\pilot4` the archive should be available at `C:\pilot4\m5\datasets\rconsortiumpilot4\analysis\adam\programs\r4app.zip`.
+1. Open the folder containing the `r4app.zip` file. Assuming the ECTD transfer has been copied to `C:\pilot4` the archive should be available the following location:
+
+```
+C:\pilot4\m5\datasets\rconsortiumpilot4\analysis\adam\programs\r4app.zip
+```
+
 2. Right-click the zip file and select __Extract All...__ in the context menu.
 3. Confirm the destination for the extracted files (it will default to a directory called `r4app` in the same location) and click the __Extract__ button.
 
