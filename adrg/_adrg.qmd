@@ -510,6 +510,16 @@ RStudio will refresh the window and automatically install the `renv` package int
 renv::restore(prompt = FALSE)
 ```
 
+::: callout-note
+Due to certain R packages in the application requiring compilation, the entire package restoration procedure may require at least ten minutes or longer to complete depending on internet bandwidth and your computer's hardware profile.
+:::
+
+Once the package installation process is complete, run the following code to load a set of functions utilized in the remaining steps:
+
+```r
+source("utils.R")
+```
+
 ### Option 2: R Console {.unnumbered}
 
 Launch a new R session in the `r4app` directory of the extracted application bundle. By default, the R Gui interface on Windows will launch a new R session in your default Windows home directory (typically the **Documents** folder). Perform the following steps to ensure R is launched in the proper directory.
