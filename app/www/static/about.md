@@ -21,7 +21,7 @@ A team at
 <a href="https://appsilon.com" target="_blank">Appsilon</a>
 adapted the pilot Shiny application to use the <a href="https://appsilon.github.io/rhino/" target="_blank">Rhino</a> framework bringing enterprise features to this application.
 
-Among the participants are Ning Leng _(Roche)_, Heng Wang _(Roche)_, Mike Stakehouse _(Atorus)_, Eli Miller _(Atorus)_, Yilong Zhang _(Merck)_, Gregery Chen _(Merck)_ and Eric Nantz _(Eli Lilly)_. Paul Schuette and Hye Soo Cho from FDA are also participating in this working group.
+Among the participants are Ning Leng _(Roche)_, Heng Wang _(Roche)_, Mike Stakehouse _(Atorus)_, Eli Miller _(Atorus)_, Yilong Zhang _(Merck)_, Gregery Chen _(Merck)_, Eric Nantz _(Eli Lilly)_, and Sam Parmar _(Pfizer)_. Paul Schuette and Hye Soo Cho from FDA are also participating in this working group.
 
 The full list is publicly available at the
 <a href="https://rconsortium.github.io/submissions-wg/pilot2.html" target="_blank">Pilot&nbsp;2 page</a>.
