@@ -276,33 +276,37 @@ Not Applicable. This pilot project only submits programs for analysis results.
 
 The Shiny application included in this pilot follows a different structure than a traditional collection of analysis programs such as those included in the Pilot 1 eCTD transfer. The application is developed with a modular approach and assembled with the [`rhino`](https://appsilon.github.io/rhino/) R package for enhanced code organization. At the time of this submission, the [`golem`](https://thinkr-open.github.io/golem/) R package is not supported by [`webR`](https://docs.r-wasm.org/webr/latest/). A description of the primary scripts used within the application is given in the table below. The recommended steps to execute the Shiny application are described in Appendix 2.
 
-::: callout-caution
-Determine a concise way to summarize the new application directory structure.
-:::
-
 ```{r}
 #| label: pilot4-programs
-#| eval: false
-pilot4_programs_df <- tibble::tibble(
-  name = c("app.R", "app_teal.R", "tm_t_demographic.R", "tm_g_kmplot.R", "tm_t_primary.R", "tm_t_efficacy.R", "tm_t_disposition.R"),
-  purpose = c("Facilitate execution of Shiny application in a local R session or deployed on a server",
-              "Assemble the application modules for use with the Teal package",
-              "Shiny module for demographic and baseline characteristics analysis",
-              "Shiny module for Kaplan-Meier plot of time to first dermatologic event",
-              "Shiny module for primary endpoint analysis ADAS Cog (11)",
-              "Shiny module for primary endpoint analysis Glucose (mmol/L)",
-              "Shiny module for summary of number of patients completing each visit in treatment period")
+#| eval: true
+pilot4_programs_df <- tibble::tribble(
+  ~name, ~directory, ~purpose,
+  "app.R", "", "Facilitate execution of Shiny application",
+  "adam_data.R", "logic", "Functions to import AdAM data files",
+  "eff_models.R", "logic", "Functions to perform statistical models and inferences used in output tables",
+  "formatters.R", "logic", "Functions to perform formatting of numerical results",
+  "helpers.R", "logic", "Supporting functions related to table output formatting and other operations",
+  "kmplot_helpers.R", "logic", "Functions to support creation of Kaplan-Meier plot",
+  "Tplyr_helpers.R", "logic", "Functions to support nesting of row labels in summary tables produced by the Tplyr package",
+  "completion_table.R", "views", "Shiny module for visit completion summary table",
+  "demographic_table.R", "views", "Shiny module for demographic summary table",
+  "efficacy_table", "views", "Shiny module for secondary endpoints efficacy table",
+  "km_plot_filter.R", "views", "Shiny module for data filter widgets used in Kaplan-Meier visualization module",
+  "km_plot.R", "views", "Shiny module for Kaplan-Meier visualization",
+  "primary_table.R", "views", "Shiny module for primary efficacy analysis summary table",
+  "user_guide.R", "views", "Shiny module for application user guide"
 )
 
 pilot4_programs_df_kbl <- kbl(
   pilot4_programs_df,
-  col.names = c("Program Name", "Purpose")
+  col.names = c("Program Name", "Directory", "Purpose")
 )
 
 pilot4_programs_df_kbl %>%
   kable_styling(latex_options = c("HOLD_position")) %>%
   column_spec(1, width = "10em") %>%
-  column_spec(2, width = "20em")
+  column_spec(2, width = "10em") %>%
+  column_spec(3, width = "20em")
 ```
 
 For reference, below is a description of the analysis programs utilized in Pilot 1.
@@ -350,20 +354,22 @@ pilot1_programs_df_kbl %>%
 
 The following table lists the open-source R packages used to create and execute the Shiny application in this pilot.
 
-::: callout-caution
-Determine a concise way to summarize the packages used in this application. We should also include `{shinylive}` for compiling the application
+::: callout-note
+While the rhino package was used to create the application structure, it is not required to execute the application and thus was not included in the table.
 :::
 
 ```{r}
 #| label: open-packages-pilot4
 #| echo: false
 #| message: false
-#| eval: false
+#| eval: true
 library(dplyr)
 library(purrr)
 
-pkg <- renv::dependencies("app/app.R", root = "app") |>
+pkg <- renv::dependencies("../app/app.R", root = "app", quiet = TRUE, progress = FALSE) |>
   dplyr::pull(Package)
+
+pkg <- sort(c(pkg, "shinylive"))
 
 # custom code to obtain package title and version
 pkg_desc_df <- tibble::tibble(package = pkg) %>%
