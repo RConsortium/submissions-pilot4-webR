@@ -5,6 +5,8 @@ on:
       - main
     paths:
       - 'app/**'
+      - 'utils.R'
+      - 'renv.lock'
 
 name: Publish ECTD bundle
 
