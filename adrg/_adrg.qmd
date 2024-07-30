@@ -111,11 +111,11 @@ Not applicable
 
 ## Overview
 
-The analysis codes and outputs submitted in Pilot 1 and the Shiny application modules in Pilot 2 cover part of the efficacy and safety objectives of the initial protocol. More specifically, 5 analysis outputs are included, covering demographics analysis, primary efficacy endpoint analysis, safety analysis, and visit completion.
+The Shiny application modules in Pilot 4 cover part of the efficacy and safety objectives of the initial protocol. More specifically, five analysis outputs are included, covering demographics analysis, primary efficacy endpoint analysis, safety analysis, and visit completion.
 
 ## Analysis Datasets
 
-The following table provides detailed information for each analysis dataset included in the Pilot 1 submission. The Shiny application for this pilot utilizes the following analysis datasets: `ADSL`, `ADTTE`, `ADADAS`, `ADLBC`.
+The following table provides detailed information for each analysis dataset included in the Pilot 4 submission. The Shiny application for this pilot utilizes the following analysis datasets: `ADSL`, `ADTTE`, `ADADAS`, `ADLBC`.
 
 ```{r}
 #| label: table-datasets-prep
@@ -274,7 +274,7 @@ Not Applicable. This pilot project only submits programs for analysis results.
 
 ## Analysis Output Programs
 
-The Shiny application included in this pilot follows a different structure than a traditional collection of analysis programs such as those included in the Pilot 1 eCTD transfer. The application is developed with a modular approach and assembled with the [`rhino`](https://appsilon.github.io/rhino/) R package for enhanced code organization. At the time of this submission, the [`golem`](https://thinkr-open.github.io/golem/) R package is not supported by [`webR`](https://docs.r-wasm.org/webr/latest/). A description of the primary scripts used within the application is given in the table below. The recommended steps to execute the Shiny application are described in Appendix 2.
+The Shiny application included in this pilot follows a different structure than a traditional collection of analysis programs such as those included in the Pilot 1 eCTD transfer. In addition, the framework used for assembling the Shiny application modules is different than the framework used in the Pilot 2 eCTD transer. The application is developed with a modular approach and assembled with the [`rhino`](https://appsilon.github.io/rhino/) R package for enhanced code organization. At the time of this submission, the [`golem`](https://thinkr-open.github.io/golem/) R package (used by Pilot 2) is not supported by [`webR`](https://docs.r-wasm.org/webr/latest/). A description of the primary scripts used within the application is given in the table below.
 
 ```{r}
 #| label: pilot4-programs
@@ -303,52 +303,37 @@ pilot4_programs_df_kbl <- kbl(
 )
 
 pilot4_programs_df_kbl %>%
-  kable_styling(latex_options = c("HOLD_position")) %>%
+  kable_styling(latex_options = c("scale_down", "hold_position")) %>%
   column_spec(1, width = "10em") %>%
-  column_spec(2, width = "10em") %>%
-  column_spec(3, width = "20em")
+  column_spec(2, width = "5em") %>%
+  column_spec(3, width = "35em")
 ```
 
-For reference, below is a description of the analysis programs utilized in Pilot 1.
+## Application Execution Functions
+
+An additional set of R functions are included in the `utils.R` script to support creating and executing the web-assembly version of the application. Descriptions of the key functions are included in the table below. The recommended steps to execute the Shiny application with these functions are outlined in Appendix 1.
 
 ```{r}
-#| label: pilot1-programs-prep
-#| echo: false
-pilot1_programs_df <- tibble::tibble(
-  name = paste0("tlf-", c("demographic.r", "primary.r", "efficacy.r", "kmplot.r")),
-  table_number = c(paste("Table", c("14-2.01", "14-3.01", "14-3.02")), "Figure 14.1"),
-  title = c("Summary of Demographic and Baseline Characteristics", "Primary Endpoint Analysis: ADAS Cog (11) - Change from Baseline to Week 24 - LOCF", "ANCOVA of Change from Baseline at Week 20", "KM plot for Time to First Dermatologic Event: Safety population")
+#| label: pilot4-support-functions
+#| eval: true
+pilot4_functions_df <- tibble::tribble(
+  ~name, ~purpose,
+  "build_app", "Create the web-assembly application bundle directly from the Shiny application files",
+  "extract_app_bundle", "Extract the pre-compiled bundle of the web-assembly version of the Shiny application",
+  "run_app_webassembly", "Launch the web-assembly version of the application in a separate web process",
+  "run_app_shiny", "Launch the Shiny application using the traditional Shiny process inside the R session"
 )
 
-pilot1_programs_df_kbl <- kbl(
-  pilot1_programs_df,
-  col.names = c("Program Name", "Output Table Number", "Title")
-) 
-```
+pilot4_functions_df_kbl <- kbl(
+  pilot4_functions_df,
+  col.names = c("Function Name", "Purpose")
+)
 
-::: {.content-visible when-format="html"}
-```{r}
-#| label: pilot1-programs-html
-#| echo: false
-pilot1_programs_df_kbl %>%
-  kable_styling() %>%
+pilot4_functions_df_kbl %>%
+  kable_styling(latex_options = c("scale_down", "hold_position")) %>%
   column_spec(1, width = "10em") %>%
-  column_spec(2, width = "10em") %>%
-  column_spec(3, width = "20em")
+  column_spec(2, width = "25em")
 ```
-:::
-
-::: {.content-visible when-format="pdf"}
-```{r}
-#| label: pilot1-programs-pdf
-#| echo: false
-pilot1_programs_df_kbl %>%
-  kable_styling(latex_options = c("hold_position")) %>%
-  column_spec(1, width = "10em") %>%
-  column_spec(2, width = "10em") %>%
-  column_spec(3, width = "20em")
-```
-:::
 
 ## Open-source R Analysis Packages
 
@@ -382,9 +367,9 @@ kbl(
   col.names = c("Package", "Title", "Version") 
 ) %>%
   kable_styling(latex_options = c("scale_down", "HOLD_position")) %>%
-  column_spec(1, width = "10em") %>%
-  column_spec(2, width = "20em") %>%
-  column_spec(3, width = "10em")
+  column_spec(1, width = "7em") %>%
+  column_spec(2, width = "30em") %>%
+  column_spec(3, width = "5em")
 
 ```
 
@@ -429,11 +414,30 @@ kbl(
   dir_df,
   col.names = c("Directory", "Index", "Description")
 ) %>%
-  kable_styling(latex_options = c("HOLD_position")) %>%
-  column_spec(1, width = "10em") %>%
+  kable_styling(latex_options = c("scale_down", "hold_position")) %>%
+  column_spec(1, width = "5em") %>%
   column_spec(2, width = "3em") %>%
-  column_spec(3, width = "20em")
+  column_spec(3, width = "30em")
 ```
+
+The R scripts and supporting files for the Shiny application are contained in the `r4app.zip` archive with the following structure (the output below has been truncated for brevity):
+
+    r4app
+    ├── app
+    │   ├── app.R
+    │   ├── logic
+    │   ├── views
+    │   └── www
+    ├── app_bundle
+    │   ├── README.md
+    │   └── shinyapp.zip
+    ├── renv
+    │   ├── activate.R
+    │   └── settings.json
+    ├── renv.lock
+    ├── submissions-pilot4-webr.Rproj
+    └── utils.R
+
 
 ```{=tex}
 \appendix
@@ -571,7 +575,7 @@ source("utils.R")
 
 ## Prepare Shiny Application
 
-This pilot contains two options for preparing the Shiny application (choose either option below):
+With the rapid evolution of web-assembly technology in the R ecosystem, this pilot offers two methods of preparing the application as a contingency in the event of any issues.
 
 ### Option 1: Extract Pre-Compiled Bundle
 
@@ -589,11 +593,9 @@ The second method involves compiling the application in your R environment. Run 
 build_app()
 ```
 
-::: callout-note
-With the rapid evolution of web-assembly technology in the R ecosystem, this pilot offers two methods of preparing the application as a contingency in the event of any issues.
-:::
-
 ## Launch Shiny Application
+
+### Web-assembly Method
 
 The web-assembly version of the Shiny application can be launched with the following code:
 
@@ -603,14 +605,18 @@ run_app_webassembly()
 
 A message appears in the R console displaying the web address of the application. To view the application, launch a new web browser session in Microsoft Edge and paste the address in the address bar. By default, the address will be `localhost:7654`.
 
-
 ::: callout-note
+When visiting the web-assembly version of the application for the first time, you may encounter a slight delay as the web browser installs the R packages. When visiting the application in a future session, these package installations will be cached in your browser's local storage and will render in less time.
+:::
+
+### Traditional Shiny Method
+
 While not required, the application can also be launched with the traditional method of executing directly in the R session using the following code:
 
 ```r
 run_app_shiny()
 ```
-:::
+
 
 # Appendix 2: Application Usage Guide {.unnumbered}
 
