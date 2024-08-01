@@ -451,7 +451,7 @@ In addition, create a new directory to hold the unpacked Pilot 4 Shiny applicati
 
 ## Installation of R and RStudio
 
-Download and install R 4.2.3 for Windows from <https://cran.r-project.org/bin/windows/base/old/4.2.3/R-4.2.3-win.exe>. While optional, tt is also recommended to use RStudio IDE for executing R code to launch the application. You can download RStudio for Windows by visiting <https://posit.co/download/rstudio-desktop/#download>.
+Download and install R 4.4.1 for Windows from <https://cran.r-project.org/bin/windows/base/R-4.4.1-win.exe>. While optional, it is also recommended to use RStudio IDE for executing R code to launch the application. You can download RStudio for Windows by visiting <https://posit.co/download/rstudio-desktop/#download>.
 
 ::: callout-info
 When launching RStudio for the first time, you may be prompted to select the version of R to use. Ensure that the default selection of __Use your machine's default 64-bit version of R__ is selected and click OK.
@@ -459,22 +459,13 @@ When launching RStudio for the first time, you may be prompted to select the ver
 
 ## Installation of Rtools
 
-Due to certain R packages requiring compilation from source, it is also required that you install the **Rtools** Windows utility from CRAN. You can download Rtools built for R versions `4.0.0` - `4.1.3` by visiting <https://cloud.r-project.org/bin/windows/Rtools/rtools42/files/rtools42-5355-5357.exe>. During the installation procedure, keep the default choices in the settings presented in the installation dialog.
+Due to certain R packages requiring compilation from source, it is also required that you install the **Rtools** Windows utility from CRAN. You can download Rtools built for R version `4.4.1` by visiting <https://cloud.r-project.org/bin/windows/Rtools/rtools44/files/rtools44-6104-6039.exe>. During the installation procedure, keep the default choices in the settings presented in the installation dialog.
 
-After the installation is complete, an additional configuration is required in order for R to locate the build tools offered by the Rtools utility. This procedure was adapted from the **Using Rtools on Windows** guide available at <https://cran.r-project.org/bin/windows/Rtools/rtools42/rtools.html>:
-
-* Launch a new R session, either through the default R GUI or RStudio
-* In the R console, run the following command:
-
-``` r
-write('PATH="${RTOOLS42_HOME}\\usr\\bin;${PATH}"', file = "~/.Renviron", append = TRUE)
-```
-
-* Restart your R session by closing and re-opening either the R GUI or RStudio. In the console, run the following command that should give the location of your Rtools installation:
+Once the installation is complete, launch a new R session (if you have an existing session open, close that session first) and in the console, run the following command that should give the location of your Rtools installation:
 
 ``` r
 Sys.which("make")
-## "C:\\rtools42\\usr\\bin\\make.exe"
+"C:\\rtools44\\usr\\bin\\make.exe" 
 ```
 
 ## Installation of R Packages
@@ -484,8 +475,8 @@ A minimum set of R packages are required to ensure the Pilot 2 Shiny application
 ``` r
 install.packages("remotes")
 
-# install version 1.0.3 of the renv package:
-remotes::install_version("renv", version = "1.0.3")
+# install version 1.0.7 of the renv package:
+remotes::install_version("renv", version = "1.0.7")
 ```
 
 ## Extract Application Bundle
@@ -514,7 +505,7 @@ Open the RStudio Project file `submissions-pilot4-webR.Rproj` within the directo
 1.  Select `File -> Open Project`
 2.  Click the **Browse** button and navigate to the `r4app` directory to select the `submissions-pilot4-webr.Rproj` file. 
 
-RStudio will refresh the window and automatically install the `renv` package into the project directory. You will see a prompt about the installation of the `BiocManager` package. Accept the installation by typing `y` in the console. To complete the process of restoring remaining R packages, run the following command in the R console:
+RStudio will refresh the window and automatically install the `renv` package into the project directory. You may see a prompt about the installation of the `BiocManager` package. If so, accept the installation by typing `y` in the console. To complete the process of restoring remaining R packages, run the following command in the R console:
 
 ``` r
 renv::restore(prompt = FALSE)
@@ -535,12 +526,12 @@ source("utils.R")
 Launch a new R session in the `r4app` directory of the extracted application bundle. By default, the R Gui interface on Windows will launch a new R session in your default Windows home directory (typically the **Documents** folder). Perform the following steps to ensure R is launched in the proper directory.
 
 ::: callout-note
-The procedure below assumes R 4.2.3 has been installed in a default location. If you are unsure of the full path to the R GUI executable on your system, you can find the location on your system by performing the following steps:
+The procedure below assumes R 4.4.1 has been installed in a default location. If you are unsure of the full path to the R GUI executable on your system, you can find the location on your system by performing the following steps:
 
 1.  Open the Windows Start Menu and expand to show all applications.
 2.  Navigate to the R entry and expand the section such that all R program entries are visible.
-3.  Right-click the `R x64 4.2.3` entry and select `More -> Open file location`.
-4.  A new folder window will open with the shortcut `R x64 4.2.3` highlighted. Right-click this entry and select **Properties**
+3.  Right-click the `R x64 4.4.1` entry and select `More -> Open file location`.
+4.  A new folder window will open with the shortcut `R x64 4.4.1` highlighted. Right-click this entry and select **Properties**
 5.  In the Properties window, copy the path specified in the **Target** text field. The portion of the text in quotations gives the full path to the `Rgui.exe` location on your system.
 :::
 
@@ -554,7 +545,7 @@ Set-Location -Path "C:\pilot4\m5\datasets\rconsortiumpilot4\analysis\adam\progra
 3.  Launch the Windows R GUI in this session by running the following command:
 
 ``` sh
-C:\"Program Files"\R\R-4.2.3\bin\x64\Rgui.exe
+C:\"Program Files"\R\R-4.4.1\bin\x64\Rgui.exe
 ```
 
 The R GUI will launch and automatically install the `renv` package into the project directory. You will see a prompt about the installation of the `BiocManager` package. Accept the installation by typing `y` in the console. To complete the process of restoring remaining R packages, run the following command in the R console:
@@ -606,7 +597,7 @@ run_app_webassembly()
 A message appears in the R console displaying the web address of the application. To view the application, launch a new web browser session in Microsoft Edge and paste the address in the address bar. By default, the address will be `localhost:7654`.
 
 ::: callout-note
-When visiting the web-assembly version of the application for the first time, you may encounter a slight delay as the web browser installs the R packages. When visiting the application in a future session, these package installations will be cached in your browser's local storage and will render in less time.
+If the `build_app()` function was used to compile the application files, you may encounter a slight delay as the web browser installs the R packages. When visiting the application in a future session, these package installations will be cached in your browser's local storage and will render in less time.
 :::
 
 ### Traditional Shiny Method
