@@ -28,7 +28,7 @@ build_app <- function(dir_source = "app", dir_build = "_site", overwrite = TRUE)
     fs::file_move(temp_dir_source_www, temp_dir_www) # Move www out for shinylive::export to work cleanly
   }
 
-  shinylive::export(temp_dir_source, temp_dir_out, verbose = FALSE)
+  shinylive::export(temp_dir_source, temp_dir_out, verbose = FALSE, wasm_packages = TRUE)
   if (fs::dir_exists(temp_dir_www)) {
     fs::dir_walk(temp_dir_www, \(f) fs::file_move(f, temp_dir_out))
   }
