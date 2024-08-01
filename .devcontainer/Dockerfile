@@ -1,6 +1,6 @@
 # change source image if necessary
 # see 
-FROM ghcr.io/rocker-org/devcontainer/tidyverse:4.2
+FROM ghcr.io/rocker-org/devcontainer/tidyverse:4.4
 
 # key dependencies for utilities
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | gpg --dearmor > /usr/share/keyrings/yarn-archive-keyring.gpg
