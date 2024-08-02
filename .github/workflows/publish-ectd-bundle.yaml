@@ -21,6 +21,11 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v4
 
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          tinytex: true
+
       - name: Install R
         uses: r-lib/actions/setup-r@v2
         with:
@@ -31,10 +36,35 @@ jobs:
         with:
           cache-version: 1
 
+      - name: Render ADRG PDF (custom)
+        env:
+          QUARTO_PRINT_STACK: true
+        run: |
+          quarto render adrg/adrg-quarto-pdf.qmd --to pdf
+        shell: bash
+
+      - name: Render ECTD README (custom)
+        env:
+          QUARTO_PRINT_STACK: true
+        run: |
+          quarto render ectd_readme/README.qmd --to gfm
+
       - name: Compile ECTD Bundle (custom)
         run: |
           source("utils.R"); create_app_bundle(); create_ectd_bundle()
         shell: Rscript {0}
+
+      - name: Set up object storage s3cmd cli tool
+        uses: s3-actions/s3cmd@v1.6.1
+        with:
+          provider: linode
+          region: 'us-east-1'
+          access_key: ${{ secrets.S3_ACCESS_KEY }}
+          secret_key: ${{ secrets.S3_SECRET_KEY }}
+
+      - name: Publish ECTD App bundle to Linode Object Storage
+        run: |
+          s3cmd put ectd_bundle/r4app.zip --mime-type 'application/zip' --acl-public s3://rsubmission-draft/r4app.zip
 
       - name: Check out ECTD bundle destination repo
         uses: actions/checkout@v4
@@ -43,14 +73,12 @@ jobs:
           path: ./submissions-pilot4-webR-to-fda
           token: ${{ secrets.API_TOKEN_GITHUB }}
 
-      - name: Setup tmate session
-        uses: mxschmitt/action-tmate@v3
-        if: ${{ false }}
-
       - name: Copy ECTD bundle
         run: bash ./.github/scripts/copy-ectd-bundle.sh
         env:
           DESTINATION_DIR: submissions-pilot4-webR-to-fda/m5/datasets/rconsortiumpilot4/analysis/adam/programs
+          ADRG_DESTINATION_DIR: submissions-pilot4-webR-to-fda/m5/datasets/rconsortiumpilot4/analysis/adam/datasets
+          README_DESTINATION_DIR: submissions-pilot4-webR-to-fda
 
-      - name: Push ECTD bundle
+      - name: Push ECTD bundle repository
         run: bash ./.github/scripts/push-ectd-bundle.sh
