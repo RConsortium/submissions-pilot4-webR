@@ -106,7 +106,7 @@ get_page_header <- function() {
       class = "app-header flex",
 
       tags$h1(
-        "Pilot 2 Shiny Application",
+        "Pilot 4 Shiny Application",
         tags$span(
           class = "text-muted text-smaller text-italic",
           "(using webR framework)"
