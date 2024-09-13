@@ -50,6 +50,12 @@ jobs:
         run: |
           quarto render ectd_readme/README.qmd --to gfm
 
+      - name: Render cover letter (custom)
+        env:
+          QUARTO PRINT STACK: true
+        run: |
+          quarto render cover-letter/cover-letter.qmd
+
       - name: Compile ECTD Bundle (custom)
         run: |
           source("utils.R"); create_app_bundle(); create_ectd_bundle()
@@ -80,6 +86,7 @@ jobs:
           DESTINATION_DIR: submissions-pilot4-webR-to-fda/m5/datasets/rconsortiumpilot4/analysis/adam/programs
           ADRG_DESTINATION_DIR: submissions-pilot4-webR-to-fda/m5/datasets/rconsortiumpilot4/analysis/adam/datasets
           README_DESTINATION_DIR: submissions-pilot4-webR-to-fda
+          LETTER_DESTINATION_DIR: submissions-pilot4-webR-to-fda/m1/us
 
       - name: Push ECTD bundle repository
         run: bash ./.github/scripts/push-ectd-bundle.sh

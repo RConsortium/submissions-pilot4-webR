@@ -16,7 +16,11 @@ ADRG_DEST_FILE=adrg.pdf
 README_SOURCE_DIR=ectd_readme
 README_SOURCE_FILE=README.md
 README_DEST_FILE=README.md
+LETTER_SOURCE_DIR=cover-letter
+LETTER_SOURCE_FILE=cover-letter.pdf
+LETTER_DEST_FILE=cover-letter.pdf
 
+# Copy ADRG (PDF version)
 if [ -f "${ADRG_SOURCE_DIR}/${ADRG_SOURCE_FILE}" ]; then
   echo "Copying ${ADRG_SOURCE_DIR}/${ADRG_SOURCE_FILE}"
   if [ ! -f "$ADRG_DESTINATION_DIR" ]; then
@@ -28,6 +32,7 @@ fi
 
 echo "ADRG copied to ${ADRG_DESTINATION_DIR}/${ADRG_DEST_FILE}"
 
+# Copy README for ectd repository
 if [ -f "${README_SOURCE_DIR}/${README_SOURCE_FILE}" ]; then
   echo "Copying ${README_SOURCE_DIR}/${README_SOURCE_FILE}"
   if [ ! -f "$README_DESTINATION_DIR" ]; then
@@ -38,6 +43,18 @@ if [ -f "${README_SOURCE_DIR}/${README_SOURCE_FILE}" ]; then
 fi
 
 echo "README copied to ${README_DESTINATION_DIR}/${README_DEST_FILE}"
+
+# Copy cover letter (PDF version)
+if [ -f "${LETTER_SOURCE_DIR}/${LETTER_SOURCE_FILE}" ]; then
+  echo "Copying ${LETTER_SOURCE_DIR}/${LETTER_SOURCE_FILE}"
+  if [ ! -f "$LETTER_DESTINATION_DIR" ]; then
+    echo "Create new directory ${LETTER_DESTINATION_DIR}"
+    mkdir -p "${LETTER_DESTINATION_DIR}"
+  fi
+  cp "${LETTER_SOURCE_DIR}/${LETTER_SOURCE_FILE}" "${LETTER_DESTINATION_DIR}/${LETTER_DEST_FILE}"
+fi
+
+echo "Cover letter copied to ${LETTER_DESTINATION_DIR}/${LETTER_DEST_FILE}"
 
 # if [ -f "${ECTD_BUNDLE_DIR}/${ECTD_BUNDLE_FILE}" ]; then
 #   echo "Copying ${ECTD_BUNDLE_DIR}/${ECTD_BUNDLE_FILE}"
