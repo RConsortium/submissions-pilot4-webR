@@ -25,7 +25,7 @@
   // Configure page and text properties.
   set page(
     paper: "us-letter",
-    margin: (top: 2cm),
+    margin: (top: 4cm),
     header: [
       #image("rconsortium.png", width: 25%)
     ]
@@ -40,18 +40,18 @@
 
   // Display sender at top of page. If there's no sender
   // add some hidden text to keep the same spacing.
-  text(9pt, if sender == none {
+  text(1pt, if sender == none {
     hide("a")
   } else {
     sender
   })
 
-  v(1.8cm)
+  v(0.1cm)
 
   // Display recipient.
   recipient
 
-  v(0.5cm)
+  v(0.1cm)
 
   // Display date. If there's no date add some hidden
   // text to keep the same spacing.

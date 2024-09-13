@@ -7,7 +7,7 @@ recipient: |
   Food and Drug Administration \
   Center for Drug Evaluation and Research 5901-B Ammendale Road \
   Beltsville, MD 20705-1266
-sent: "TBD, 2024"
+sent: "September 20, 2024"
 header-image: "rconsortium.png"
 format:
   letter-typst: default
