@@ -67,7 +67,7 @@ ui <- function(id, datasets) {
               tags$p(
                 "Scroll up/down or use the search bar to find the variable for subpopulation.
                 Click the desired variable, ",
-                tags$b("AGEYR1"), "in this example"
+                tags$b("AGEGR1"), "in this example"
               )
             )
           ),
@@ -84,7 +84,7 @@ ui <- function(id, datasets) {
                 "In the", tags$b("Active Filter Variables"),
                 "widget, the selected variable with its available categories or levels
                 will display,",
-                tags$b("AGEYR1"), "in this example, is displayed with three categories.
+                tags$b("AGEGR1"), "in this example, is displayed with three categories.
                 If the selected variable in the previous step is a continuous variable,
                 then a slider will appear for selecting a range of values."
               ),
