@@ -637,11 +637,11 @@ The **KM plot for TTDE** module allows for filters to be applied based on variab
   
 ![](figures/app_screenshot2.png){width="50%"}
 
-2.  Scroll up/down or use the search bar to find the variable for subpopulation. Click the desired variable (**AGEYR1** in this example).  
+2.  Scroll up/down or use the search bar to find the variable for subpopulation. Click the desired variable (**AGEGR1** in this example).  
 
 ![](figures/app_screenshot3.png){width="50%"}
 
-3.  In the **Active Filter Variables** widget, the selected variable with its available categories or levels will display. In this example, **AGEYR1** in this example) is displayed with three categories. If the selected variable in the previous step is a continuous variable, then a slider will appear for selecting a range of values.
+3.  In the **Active Filter Variables** widget, the selected variable with its available categories or levels will display. In this example, **AGEGR1** in this example) is displayed with three categories. If the selected variable in the previous step is a continuous variable, then a slider will appear for selecting a range of values.
 
 ![](figures/app_screenshot4.png){width="50%"}
 
