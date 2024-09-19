@@ -61,7 +61,7 @@ Number of Subjects Planned:
 
 Study schema:
 
-![](figures/study_design.png)
+![](figures/study_design.png){width="90%"}
 
 # Analysis Considerations Related to Multiple Analysis Datasets
 
@@ -99,7 +99,7 @@ Core variables are those that are represented across all/most analysis datasets.
 
 ## Imputation/Derivation Methods
 
-Not applicable
+Not applicable.
 
 # Analysis Data Creation and Processing Issues
 
@@ -153,7 +153,7 @@ kable_styling(df_kbl, font_size = 10)
 ```{r}
 #| label: table-datasets-pdf
 #| echo: false
-kable_styling(df_kbl, latex_options = c("scale_down")) %>%
+kable_styling(df_kbl, latex_options = c("scale_down", "hold_position")) %>%
   column_spec(1, border_left = TRUE, border_right = TRUE, latex_valign = "m") %>%
   column_spec(2, width = "10em", border_left = TRUE, border_right = TRUE, latex_valign = "m") %>%
   column_spec(3, width = "10em", border_left = TRUE, border_right = TRUE, latex_valign = "m") %>%
@@ -266,15 +266,15 @@ issue_df_kbl %>%
 
 ## Description
 
-The sponsor has provided all programs for analysis results. They are all created on a Linux platform using R version 4.1.2.
+The sponsor has provided all programs for analysis results. They are all created on a Linux platform using R version 4.4.1.
 
 ## ADaM Programs
 
 Not Applicable. This pilot project only submits programs for analysis results.
 
-## Analysis Output Programs
+## Analysis Output Programs {#sec-analysisoutput}
 
-The Shiny application included in this pilot follows a different structure than a traditional collection of analysis programs such as those included in the Pilot 1 eCTD transfer. In addition, the framework used for assembling the Shiny application modules is different than the framework used in the Pilot 2 eCTD transer. The application is developed with a modular approach and assembled with the [`rhino`](https://appsilon.github.io/rhino/) R package for enhanced code organization. At the time of this submission, the [`golem`](https://thinkr-open.github.io/golem/) R package (used by Pilot 2) is not supported by [`webR`](https://docs.r-wasm.org/webr/latest/). A description of the primary scripts used within the application is given in the table below.
+The Shiny application included in this pilot follows a different structure than a traditional collection of analysis programs such as those included in the Pilot 1 eCTD transfer. In addition, the framework used for assembling the Shiny application modules is different than the framework used in the Pilot 2 eCTD transfer. The application is developed with a modular approach and assembled with the [`rhino`](https://appsilon.github.io/rhino/) R package for enhanced code organization. At the time of this submission, the [`golem`](https://thinkr-open.github.io/golem/) R package (used by Pilot 2) is not supported by [`webR`](https://docs.r-wasm.org/webr/latest/). A description of the primary scripts used within the application is given in the table below.
 
 ```{r}
 #| label: pilot4-programs
@@ -311,7 +311,7 @@ pilot4_programs_df_kbl %>%
 
 ## Application Execution Functions
 
-An additional set of R functions are included in the `utils.R` script to support creating and executing the web-assembly version of the application. Descriptions of the key functions are included in the table below. The recommended steps to execute the Shiny application with these functions are outlined in Appendix 1.
+An additional set of R functions are included in the `utils.R` script to support creating and executing the web-assembly version of the application. Descriptions of the key functions are included in the table below. The recommended steps to execute the Shiny application with these functions (along with preparing your environment for evaluating the application) are outlined in @sec-a1.
 
 ```{r}
 #| label: pilot4-support-functions
@@ -375,7 +375,7 @@ kbl(
 
 ## List of Output Programs
 
-Not Applicable. This pilot project displays analysis output as a Shiny application where the R programs described in the **Analysis Output Programs** as a whole produce the Shiny application.
+Not Applicable. This pilot project displays analysis output as a Shiny application where the R programs described in **Analysis Output Programs** (@sec-analysisoutput) as a whole produce the Shiny application.
 
 # Directory Structure
 
@@ -410,7 +410,7 @@ dir_df <- tibble::tibble(
   desc = c("Refers to the eCTD module in which clinical study data is being submitted.", "Resides within the module folder as the top-level folder for clinical study data being submitted for m5.", "Study identifier or analysis type performed", "Contains folders for analysis datasets and software programs; arrange in designated level 6 subfolders", "Contains subfolders for ADaM datasets and corresponding software programs", "Contains ADaM datasets, analysis data reviewer’s guide, analysis results metadata and define files", "Contains Shiny application source files bundled as a zip archive")
 )
 
-kbl(
+dir_df_kbl <- kbl(
   dir_df,
   col.names = c("Directory", "Index", "Description")
 ) %>%
@@ -419,6 +419,24 @@ kbl(
   column_spec(2, width = "3em") %>%
   column_spec(3, width = "30em")
 ```
+
+::: {.content-visible when-format="html"}
+```{r}
+dir_df_kbl %>%
+  kable_styling()
+```
+:::
+
+::: {.content-visible when-format="pdf"}
+```{r}
+dir_df_kbl %>%
+  kable_styling(latex_options = c("scale_down", "hold_position")) %>%
+  column_spec(1, width = "10em") %>%
+  column_spec(2, width = "3em") %>%
+  column_spec(3, width = "30em")
+```
+:::
+
 
 The R scripts and supporting files for the Shiny application are contained in the `r4app.zip` archive with the following structure (the output below has been truncated for brevity):
 
@@ -446,8 +464,6 @@ The R scripts and supporting files for the Shiny application are contained in th
 # Appendix 1: Pilot 4 Shiny Application Installation and Usage {#sec-a1}
 
 To install and execute the Shiny application, follow all of the procedures below. Ensure that you note the location of where you downloaded the Pilot 4 eCTD submission files. For demonstration purposes, the procedures below assume the transfer has been saved to this location: `C:\pilot4`.
-
-In addition, create a new directory to hold the unpacked Pilot 4 Shiny application files. For demonstration purposes, the procedures below assume the new directory is this location: `C:\pilot4_files`.
 
 ## Installation of R and RStudio
 
@@ -496,7 +512,13 @@ C:\pilot4\m5\datasets\rconsortiumpilot4\analysis\adam\programs\r4app.zip
 
 ## Initialize R Package Environment
 
-The dependencies for executing the Shiny application are managed by the `renv` R package management system. To bootstrap the customized R package library used for the Shiny application, launch a new R session in the directory where you unpacked the application source files in the previous step. **Choose one of the following options** depending on your R computing environment and preference:
+The dependencies for executing the Shiny application are managed by the `renv` R package management system. To bootstrap the customized R package library used for the Shiny application, launch a new R session in the directory where you unpacked the application source files in the previous step. **Choose one of the following options** depending on your R computing environment and preference.
+
+::: callout-note
+Due to certain R packages in the application requiring compilation, the entire package restoration procedure may require at least ten minutes or longer to complete depending on internet bandwidth and your computer's hardware profile.
+
+The package library includes all packages required to execute the application in the traditional method, however executing the application in the web-assembly method requires a minimal set of packages. Additional details can be found in @sec-launch .
+:::
 
 ### Option 1: RStudio {.unnumbered}
 
@@ -510,10 +532,6 @@ RStudio will refresh the window and automatically install the `renv` package int
 ``` r
 renv::restore(prompt = FALSE)
 ```
-
-::: callout-note
-Due to certain R packages in the application requiring compilation, the entire package restoration procedure may require at least ten minutes or longer to complete depending on internet bandwidth and your computer's hardware profile.
-:::
 
 Once the package installation process is complete, run the following code to load a set of functions utilized in the remaining steps:
 
@@ -558,7 +576,7 @@ renv::restore(prompt = FALSE)
 Due to certain R packages in the application requiring compilation, the entire package restoration procedure may require at least ten minutes or longer to complete depending on internet bandwidth and your computer's hardware profile.
 :::
 
-Once the package installation process is complete, run the following code to load a set of functions utilized in the remaining steps:
+Once the package installation process is complete, you may see a message in the R console stating a new version of the `BiocManager` has been installed and to restart the R session to use that new version. This package is not utilized in the Pilot application, and you do not need to restart your R session. Next, run the following code to load a set of functions utilized in the remaining steps:
 
 ```r
 source("utils.R")
@@ -584,7 +602,7 @@ The second method involves compiling the application in your R environment. Run 
 build_app()
 ```
 
-## Launch Shiny Application
+## Launch Shiny Application {#sec-launch}
 
 ### Web-assembly Method
 
@@ -594,7 +612,7 @@ The web-assembly version of the Shiny application can be launched with the follo
 run_app_webassembly()
 ```
 
-A message appears in the R console displaying the web address of the application. To view the application, launch a new web browser session in Microsoft Edge and paste the address in the address bar. By default, the address will be `localhost:7654`.
+A message appears in the R console displaying the web address of the application. To view the application, launch a new web browser session in Microsoft Edge and paste the address in the address bar. By default, the address will be `http://127.0.0.1:7654`.
 
 ::: callout-note
 If the `build_app()` function was used to compile the application files, you may encounter a slight delay as the web browser installs the R packages. When visiting the application in a future session, these package installations will be cached in your browser's local storage and will render in less time.
