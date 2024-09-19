@@ -19,7 +19,7 @@ This repository contains the WebAssembly version of the application.
 
 ### Package Environment
 
-This application uses R version 4.2.3. Dependencies are managed by [`{renv}`](https://rstudio.github.io/renv/articles/renv.html) version `1.0.3`. Once you have those installed on your system, you can restore the R package library by running `renv::restore()` in the R console.
+This application uses R version 4.4.1. Dependencies are managed by [`{renv}`](https://rstudio.github.io/renv/articles/renv.html) version `1.0.7`. Once you have those installed on your system, you can restore the R package library by running `renv::restore()` in the R console.
 
 ### Building and running the application
 
