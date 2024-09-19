@@ -2,6 +2,7 @@
 title: "Analysis Data Reviewer's Guide"
 author: "R Consortium"
 subtitle: "R Consortium R Submission Pilot 4"
+number-sections: true
 format: 
   html:
     toc: true
