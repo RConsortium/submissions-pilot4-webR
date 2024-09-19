@@ -18,8 +18,8 @@ To learn more about other pilots, visit [the R consortium R submission working g
 Due to a limitation on file size imposed by GitHub, this repostitory does not include the pilot 4 pre-compiled application file `r4app.zip`. Please use the following procedure to prepare the local clone of this repository for the electronic gateway transfer:
 
 1. Clone this repository to your local machine or download the ZIP archive of the repostory using <https://github.com/RConsortium/submissions-pilot4-webR-to-fda/archive/refs/heads/main.zip> and extract to your local machine. 
-2. Create a new directory called `programs` in the `m5/datasets/rconsortiumpilot4webR/analysis/adam/` directory.
-3. Download the `r4app.zip` archive from [this link](https://rsubmission-draft.us-east-1.linodeobjects.com/r4app.zip) and save it to the `m5/datasets/rconsortiumpilot4webR/analysis/adam/programs/` directory.
+2. Create a new directory called `programs` in the `m5/datasets/rconsortiumpilot4/analysis/adam/` directory.
+3. Download the `r4app.zip` archive from [this link](https://rsubmission-draft.us-east-1.linodeobjects.com/r4app.zip) and save it to the `m5/datasets/rconsortiumpilot4/analysis/adam/programs/` directory.
 
 ## FDA Response 
 
