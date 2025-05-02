@@ -28,7 +28,7 @@ build_app <- function(dir_source = "app", dir_build = "_site", overwrite = TRUE)
     fs::file_move(temp_dir_source_www, temp_dir_www) # Move www out for shinylive::export to work cleanly
   }
 
-  shinylive::export(temp_dir_source, temp_dir_out, verbose = FALSE, wasm_packages = TRUE)
+  shinylive::export(temp_dir_source, temp_dir_out, quiet = FALSE, wasm_packages = FALSE)
   if (fs::dir_exists(temp_dir_www)) {
     fs::dir_walk(temp_dir_www, \(f) fs::file_move(f, temp_dir_out))
   }
@@ -113,4 +113,60 @@ extract_app_bundle <- function(archive_name = "shinyapp.zip", dir_build = "_site
     dir = "."
   )
   invisible(TRUE)
+}
+
+create_pkglite_bundle <- function(source_app_dir = "app", pkglite_file = "pilot4_webR_pkglite.txt") {
+  # application source code
+  pkg <- source_app_dir
+
+  pkg |>
+    pkglite::collate(
+      # logic R scripts
+      pkglite::file_spec(
+        path = "logic/",
+        format = "text",
+        pattern = "*.R$",
+        recursive = TRUE
+      ),
+      # view R scripts
+      pkglite::file_spec(
+        path = "views/",
+        format = "text",
+        pattern = "*.R",
+        recursive = TRUE
+      ),
+      # png images
+      pkglite::file_spec(
+        path = "www/static",
+        format = "binary",
+        pattern = "*.png$",
+        recursive = TRUE
+      ),
+      # svg and other web asset files
+      pkglite::file_spec(
+        path = "www/static",
+        format = "text",
+        pattern = "*.svg$|*.md$|*.css$|*.js$",
+        recursive = TRUE
+      ),
+      # index html page
+      pkglite::file_spec(
+        path = "www/",
+        format = "text",
+        pattern = "index.html",
+        recursive = FALSE
+      ),
+      # app.R file
+      pkglite::file_spec(
+        path = ".",
+        format = "text",
+        pattern = "app.R",
+        recursive = FALSE
+      )
+    ) |>
+    pkglite::pack(output = pkglite_file, quiet = FALSE)
+}
+
+unpack_pkglite_bundle <- function(pkglite_file = "pilot4_webR_pkglite.txt", output_dir = "pilot4_webR_files") {
+  pkglite::unpack(input = pkglite_file, output = output_dir)
 }
