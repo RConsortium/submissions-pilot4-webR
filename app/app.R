@@ -36,7 +36,6 @@ library(tippy)
 
 # adam_data
 library(haven)
-library(cards)
 
 box::use(
   logic / adam_data[get_adsl, get_adas, get_adtte, get_adlb],
