@@ -56,13 +56,20 @@ jobs:
         run: |
           quarto render cover-letter/cover-letter.qmd
 
+      - name: Compile pkglite file (custom)
+        run: |
+          source("utils.R"); create_pkglite_bundle();
+        shell: Rscript {0}
+
       - name: Compile ECTD Bundle (custom)
+        if: ${{ false }}
         run: |
           source("utils.R"); create_app_bundle(); create_ectd_bundle()
         shell: Rscript {0}
 
       - name: Set up object storage s3cmd cli tool
         uses: s3-actions/s3cmd@v1.6.1
+        if: ${{ false }}
         with:
           provider: linode
           region: 'us-east-1'
@@ -70,6 +77,7 @@ jobs:
           secret_key: ${{ secrets.S3_SECRET_KEY }}
 
       - name: Publish ECTD App bundle to Linode Object Storage
+        if: ${{ false }}
         run: |
           s3cmd put ectd_bundle/r4app.zip --mime-type 'application/zip' --acl-public s3://rsubmission-draft/r4app.zip
 
@@ -83,7 +91,8 @@ jobs:
       - name: Copy ECTD bundle
         run: bash ./.github/scripts/copy-ectd-bundle.sh
         env:
-          DESTINATION_DIR: submissions-pilot4-webR-to-fda/m5/datasets/rconsortiumpilot4/analysis/adam/programs
+          DESTINATION_PROGRAMS_DIR: submissions-pilot4-webR-to-fda/m5/datasets/rconsortiumpilot4/analysis/adam/programs
+          DESTINATION_DATASETS_DIR: submissions-pilot4-webR-to-fda/m5/datasets/rconsortiumpilot4/analysis/adam/datasets
           ADRG_DESTINATION_DIR: submissions-pilot4-webR-to-fda/m5/datasets/rconsortiumpilot4/analysis/adam/datasets
           README_DESTINATION_DIR: submissions-pilot4-webR-to-fda
           LETTER_DESTINATION_DIR: submissions-pilot4-webR-to-fda/m1/us
