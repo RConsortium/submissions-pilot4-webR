@@ -1,6 +1,6 @@
 {
   "R": {
-    "Version": "4.4.1",
+    "Version": "4.4.3",
     "Repositories": [
       {
         "Name": "BioCsoft",
@@ -369,22 +369,6 @@
       ],
       "Hash": "d7e13f49c19103ece9e58ad2d83a7354"
     },
-    "cards": {
-      "Package": "cards",
-      "Version": "0.1.0",
-      "Source": "Repository",
-      "Repository": "RSPM",
-      "Requirements": [
-        "R",
-        "cli",
-        "dplyr",
-        "glue",
-        "rlang",
-        "tidyr",
-        "tidyselect"
-      ],
-      "Hash": "9c4837e8ea64efc048919647b2a23041"
-    },
     "checkmate": {
       "Package": "checkmate",
       "Version": "2.3.2",
@@ -561,7 +545,7 @@
     },
     "emmeans": {
       "Package": "emmeans",
-      "Version": "1.10.3",
+      "Version": "1.11.0",
       "Source": "Repository",
       "Repository": "CRAN",
       "Requirements": [
@@ -574,7 +558,7 @@
         "stats",
         "utils"
       ],
-      "Hash": "276510e85e99a058fa4a0668e7ecca05"
+      "Hash": "80fa277f6bb5d98d0889fa33930f0b56"
     },
     "estimability": {
       "Package": "estimability",
@@ -1415,6 +1399,19 @@
       ],
       "Hash": "015473b3c114c47a50282be0dbe80ad4"
     },
+    "pkglite": {
+      "Package": "pkglite",
+      "Version": "0.2.4",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "crayon",
+        "magrittr",
+        "remotes"
+      ],
+      "Hash": "df9aa0563aeace822cd7c564b25ebdbd"
+    },
     "prettyunits": {
       "Package": "prettyunits",
       "Version": "1.2.0",
@@ -1551,6 +1548,20 @@
         "vroom"
       ],
       "Hash": "9de96463d2117f6ac49980577939dfb3"
+    },
+    "remotes": {
+      "Package": "remotes",
+      "Version": "2.5.0",
+      "Source": "Repository",
+      "Repository": "CRAN",
+      "Requirements": [
+        "R",
+        "methods",
+        "stats",
+        "tools",
+        "utils"
+      ],
+      "Hash": "3ee025083e66f18db6cf27b56e23e141"
     },
     "renv": {
       "Package": "renv",

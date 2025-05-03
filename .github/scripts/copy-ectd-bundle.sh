@@ -7,8 +7,18 @@ function l { # Log a message to the terminal.
     echo -e "[$SCRIPT_NAME] ${1:-}"
 }
 
-# ECTD file to copy from source repo
+# Environment variables representing directory structure
+# - defined in specific GitHub Action step
+#DESTINATION_PROGRAMS_DIR=submissions-pilot4-webR-to-fda/m5/datasets/rconsortiumpilot4/analysis/adam/programs
+#DESTINATION_DATASETS_DIR=submissions-pilot4-webR-to-fda/m5/datasets/rconsortiumpilot4/analysis/adam/datasets
+#ADRG_DESTINATION_DIR=submissions-pilot4-webR-to-fda/m5/datasets/rconsortiumpilot4/analysis/adam/datasets
+#README_DESTINATION_DIR=submissions-pilot4-webR-to-fda
+#LETTER_DESTINATION_DIR: submissions-pilot4-webR-to-fda/m1/us
+#ECTD file to copy from source repo
+
+# Variables representing files/directories
 ECTD_BUNDLE_DIR=ectd_bundle
+ECTD_PKGLITE_FILE=pilot4_webR_pkglite.txt
 ECTD_BUNDLE_FILE=r4app.zip
 ADRG_SOURCE_DIR=adrg
 ADRG_SOURCE_FILE=adrg-quarto-pdf.pdf
@@ -19,6 +29,27 @@ README_DEST_FILE=README.md
 LETTER_SOURCE_DIR=cover-letter
 LETTER_SOURCE_FILE=cover-letter.pdf
 LETTER_DEST_FILE=cover-letter.pdf
+DATASETS_SOURCE_DIR=app/www/adam
+
+# Copy XPT datasets and metadata files
+if [ -f "${DATASETS_SOURCE_DIR}" ]; then
+  echo "Copy XPT data and metadata files"
+  if [ ! -f "${DESTINATION_DATASETS_DIR}" ]; then
+    echo "Create new directory ${DESTINATION_DATASETS_DIR}"
+    mkdir -p "${DESTINATION_DATASETS_DIR}"
+  fi
+  cp "${DATASETS_SOURCE_DIR}/*" "${DESTINATION_DATASETS_DIR}/."
+fi
+
+# Copy pkglite file
+if [ -f "${ECTD_PKGLITE_FILE}" ]; then
+  echo "Copy pkglite file"
+  if [ ! -f "${DESTINATION_PROGRAMS_DIR}" ]; then
+    echo "Create new directory ${DESTINATION_PROGRAMS_DIR}"
+    mkdir -p "${DESTINATION_PROGRAMS_DIR}"
+  fi
+  cp "${ECTD_PKGLITE_FILE}" "${DESTINATION_PROGRAMS_DIR}/."
+fi
 
 # Copy ADRG (PDF version)
 if [ -f "${ADRG_SOURCE_DIR}/${ADRG_SOURCE_FILE}" ]; then
@@ -55,14 +86,3 @@ if [ -f "${LETTER_SOURCE_DIR}/${LETTER_SOURCE_FILE}" ]; then
 fi
 
 echo "Cover letter copied to ${LETTER_DESTINATION_DIR}/${LETTER_DEST_FILE}"
-
-# if [ -f "${ECTD_BUNDLE_DIR}/${ECTD_BUNDLE_FILE}" ]; then
-#   echo "Copying ${ECTD_BUNDLE_DIR}/${ECTD_BUNDLE_FILE}"
-#   if [ ! -f "$DESTINATION_DIR" ]; then
-#     echo "Create new directory ${DESTINATION_DIR}"
-#     mkdir -p "${DESTINATION_DIR}"
-#   fi
-#   cp "${ECTD_BUNDLE_DIR}/${ECTD_BUNDLE_FILE}" "${DESTINATION_DIR}/${ECTD_BUNDLE_FILE}"
-# fi
-
-# echo "ECTD Bundle file copied to ${DESTINATION_DIR}/${ECTD_BUNDLE_FILE}"
