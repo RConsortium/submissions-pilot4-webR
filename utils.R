@@ -115,7 +115,7 @@ extract_app_bundle <- function(archive_name = "shinyapp.zip", dir_build = "_site
   invisible(TRUE)
 }
 
-create_pkglite_bundle <- function(source_app_dir = "app", pkglite_file = "pilot4_webR_pkglite.txt") {
+create_app_pkglite_bundle <- function(source_app_dir = "app", pkglite_file = "pilot4_webR_pkglite.txt") {
   # application source code
   pkg <- source_app_dir
 
@@ -164,7 +164,42 @@ create_pkglite_bundle <- function(source_app_dir = "app", pkglite_file = "pilot4
         recursive = FALSE
       )
     ) |>
-    pkglite::pack(output = pkglite_file, quiet = FALSE)
+    pkglite::pack(output = file.path("dev", pkglite_file), quiet = FALSE)
+}
+
+create_env_pkglite_bundle <- function(
+  source_app_dir = "app", 
+  renv_lockfile = "renv.lock",
+  utils_file = "utils.R",
+  pkglite_file = "pilot4_webR_env.txt"
+) {
+
+  # create temp directory and move relevant files
+  working_dir <- tempdir()
+  file.copy(file.path(source_app_dir, "DESCRIPTION"), working_dir)
+  file.copy(renv_lockfile, working_dir)
+  file.copy(utils_file, working_dir)
+
+  renv_spec <- pkglite::file_spec(
+    ".",
+    pattern = "\\.lock",
+    format = "text",
+    recursive = FALSE
+  )
+
+  utils_spec <- pkglite::file_spec(
+    ".",
+    pattern = "^utils",
+    format = "text",
+    recursive = FALSE
+  )
+
+  pkglite::collate(
+    pkg = working_dir,
+    renv_spec,
+    utils_spec
+  ) |>
+    pkglite::pack(output = file.path("dev", pkglite_file))
 }
 
 unpack_pkglite_bundle <- function(pkglite_file = "pilot4_webR_pkglite.txt", output_dir = "pilot4_webR_files") {
