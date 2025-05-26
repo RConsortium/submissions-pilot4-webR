@@ -319,7 +319,6 @@ An additional set of R functions are included in the `utils.R` script to support
 pilot4_functions_df <- tibble::tribble(
   ~name, ~purpose,
   "build_app", "Create the web-assembly application bundle directly from the Shiny application files",
-  "extract_app_bundle", "Extract the pre-compiled bundle of the web-assembly version of the Shiny application",
   "run_app_webassembly", "Launch the web-assembly version of the application in a separate web process",
   "run_app_shiny", "Launch the Shiny application using the traditional Shiny process inside the R session"
 )
@@ -379,6 +378,8 @@ Not Applicable. This pilot project displays analysis output as a Shiny applicati
 
 # Directory Structure
 
+TODO: Revise to inlcude pkglite files instead of r4app.zip
+
 Study datasets and the Shiny application supportive files are organized in accordance to Study Data Technical Conformance Guide.
 
     ├── m1
@@ -407,7 +408,7 @@ Study datasets and the Shiny application supportive files are organized in accor
 dir_df <- tibble::tibble(
   name = c("module", "  datasets", "    rconsortiumpilot4", "    analysis", "      adam", "      datasets", "      programs"),
   index = 1:7,
-  desc = c("Refers to the eCTD module in which clinical study data is being submitted.", "Resides within the module folder as the top-level folder for clinical study data being submitted for m5.", "Study identifier or analysis type performed", "Contains folders for analysis datasets and software programs; arrange in designated level 6 subfolders", "Contains subfolders for ADaM datasets and corresponding software programs", "Contains ADaM datasets, analysis data reviewer’s guide, analysis results metadata and define files", "Contains Shiny application source files bundled as a zip archive")
+  desc = c("Refers to the eCTD module in which clinical study data is being submitted.", "Resides within the module folder as the top-level folder for clinical study data being submitted for m5.", "Study identifier or analysis type performed", "Contains folders for analysis datasets and software programs; arrange in designated level 6 subfolders", "Contains subfolders for ADaM datasets and corresponding software programs", "Contains ADaM datasets, analysis data reviewer’s guide, analysis results metadata and define files", "Contains application and environment files packaged as text files.")
 )
 
 dir_df_kbl <- kbl(
@@ -437,33 +438,15 @@ dir_df_kbl %>%
 ```
 :::
 
-
-The R scripts and supporting files for the Shiny application are contained in the `r4app.zip` archive with the following structure (the output below has been truncated for brevity):
-
-    r4app
-    ├── app
-    │   ├── app.R
-    │   ├── logic
-    │   ├── views
-    │   └── www
-    ├── app_bundle
-    │   ├── README.md
-    │   └── shinyapp.zip
-    ├── renv
-    │   ├── activate.R
-    │   └── settings.json
-    ├── renv.lock
-    ├── submissions-pilot4-webr.Rproj
-    └── utils.R
-
-
 ```{=tex}
 \appendix
 \renewcommand{\thesection}{A}
 ```
 # Appendix 1: Pilot 4 Shiny Application Installation and Usage {#sec-a1}
 
-To install and execute the Shiny application, follow all of the procedures below. Ensure that you note the location of where you downloaded the Pilot 4 eCTD submission files. For demonstration purposes, the procedures below assume the transfer has been saved to this location: `C:\pilot4`.
+To install and execute the Shiny application, follow all of the procedures below. Ensure that you note the location of where you downloaded the Pilot 4 eCTD submission files. For demonstration purposes, the procedures below assume the transfer has been saved to this location: `C:\pilot4webR`.
+
+In addition, create a new directory to hold the unpacked Pilot 4 Shiny application files. For demonstration purposes, the procedures below assume the new directory is this location: `C:\pilot4webR_files`.
 
 ## Installation of R and RStudio
 
@@ -486,29 +469,43 @@ Sys.which("make")
 
 ## Installation of R Packages
 
-A minimum set of R packages are required to ensure the Pilot 2 Shiny application files are successfully unpacked and the custom package environment used for the application is replicated correctly. The first package to install is the `remotes` package:
+A minimum set of R packages are required to ensure the Pilot 4 Shiny application files are successfully unpacked and the custom package environment used for the application is replicated correctly. Run the following commands in the R console to install the `remotes` and `renv` packages:
 
 ``` r
 install.packages("remotes")
 
 # install version 1.0.7 of the renv package:
 remotes::install_version("renv", version = "1.0.7")
+
+# install version 0.2.4 of the pkglite package:
+remotes::install_version("pkglite", version = "0.2.4")
 ```
 
 ## Extract Application Bundle
 
-To unpack the Shiny application bundle `r4app.zip`, use the following procedure:
+Use the `pkglite` package to unpack the Shiny application bundle `pilot4_webR_pkglite.txt` as well as the environment lockfile contained in `pilot4_webR_env.txt` within the Pilot 4 eCTD submission transfer. These files are located in the following relative path within the eCTD transfer directory:
 
-1. Open the folder containing the `r4app.zip` file. Assuming the ECTD transfer has been copied to `C:\pilot4` the archive should be available the following location:
-
+``` sh
+m5\datasets\rconsortiumpilot4webR\analysis\adam\programs\pilot4_webR_pkglite.txt
+m5\datasets\rconsortiumpilot4webR\analysis\adam\programs\pilot4_webR_env.txt
 ```
-C:\pilot4\m5\datasets\rconsortiumpilot4\analysis\adam\programs\r4app.zip
+
+Enter the following command in the R console to extract the Shiny application files and environment lockfile to the appropriate destination directories:
+
+``` r
+# create application directory
+dir.create("C:/pilot4webR_files/app")
+pkglite::unpack(
+  input = "C:/pilot4cwebR/m5/datasets/rconsortiumpilot4/analysis/adam/programs/pilot4_webR_pkglite.txt", 
+  output = "C:/pilot4webR_files/app"
+)
+
+# extract environment lockfile
+pkglite::unpack(
+  input = "C:/pilot4cwebR/m5/datasets/rconsortiumpilot4/analysis/adam/programs/pilot4_webR_env.txt",
+  output = "C:?pilot4webR_files" 
+)
 ```
-
-2. Right-click the zip file and select __Extract All...__ in the context menu.
-3. Confirm the destination for the extracted files (it will default to a directory called `r4app` in the same location) and click the __Extract__ button.
-
-![](figures/extract_zip_file_annotated.png){width="50%"}
 
 ## Initialize R Package Environment
 
@@ -525,7 +522,7 @@ The package library includes all packages required to execute the application in
 Open the RStudio Project file `submissions-pilot4-webR.Rproj` within the directory of the extracted application bundle:
 
 1.  Select `File -> Open Project`
-2.  Click the **Browse** button and navigate to the `r4app` directory to select the `submissions-pilot4-webr.Rproj` file. 
+2.  Click the **Browse** button and navigate to the `C:/pilot3webR_files` directory to select the `submissions-pilot4-webr.Rproj` file. 
 
 RStudio will refresh the window and automatically install the `renv` package into the project directory. You may see a prompt about the installation of the `BiocManager` package. If so, accept the installation by typing `y` in the console. To complete the process of restoring remaining R packages, run the following command in the R console:
 
@@ -541,7 +538,7 @@ source("utils.R")
 
 ### Option 2: R Console {.unnumbered}
 
-Launch a new R session in the `r4app` directory of the extracted application bundle. By default, the R Gui interface on Windows will launch a new R session in your default Windows home directory (typically the **Documents** folder). Perform the following steps to ensure R is launched in the proper directory.
+Launch a new R session in the `C:/pilot4webR_files` directory of the extracted application bundle. By default, the R Gui interface on Windows will launch a new R session in your default Windows home directory (typically the **Documents** folder). Perform the following steps to ensure R is launched in the proper directory.
 
 ::: callout-note
 The procedure below assumes R 4.4.1 has been installed in a default location. If you are unsure of the full path to the R GUI executable on your system, you can find the location on your system by performing the following steps:
@@ -554,10 +551,10 @@ The procedure below assumes R 4.4.1 has been installed in a default location. If
 :::
 
 1.  Open the Windows Powershell program by searching for Windows Powershell in the Windows Start menu.
-2.  Change the current directory to the `r4app` directory by running the following command (substitute the `r4app` location for your appropriate directory as needed):
+2.  Change the current directory to the `C:/pilot4webR_files` directory by running the following command (substitute the `C:/pilot3webR_files` location for your appropriate directory as needed):
 
 ``` sh
-Set-Location -Path "C:\pilot4\m5\datasets\rconsortiumpilot4\analysis\adam\programs\r4app"
+Set-Location -Path "C:\pilot4webR_files"
 ```
 
 3.  Launch the Windows R GUI in this session by running the following command:
@@ -584,19 +581,9 @@ source("utils.R")
 
 ## Prepare Shiny Application
 
-With the rapid evolution of web-assembly technology in the R ecosystem, this pilot offers two methods of preparing the application as a contingency in the event of any issues.
+### Compile Shiny Application
 
-### Option 1: Extract Pre-Compiled Bundle
-
-A pre-compiled version of the application is available inside a compressed zip file archive. Run the following code to extract the archive to a new sub-directory `_site`:
-
-```r
-extract_app_bundle()
-```
-
-### Option 2: Compile Shiny Application
-
-The second method involves compiling the application in your R environment. Run the following code to compile the Shiny application source files to a new sub-directory `_site`  
+Run the following code to compile the Shiny application source files to a new sub-directory `_site`  
 
 ```r
 build_app()
