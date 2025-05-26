@@ -64,7 +64,6 @@ jobs:
 
       - name: Set up object storage s3cmd cli tool
         uses: s3-actions/s3cmd@v1.6.1
-        if: ${{ false }}
         with:
           provider: linode
           region: 'us-east-1'
