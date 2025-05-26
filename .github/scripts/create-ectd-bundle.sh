@@ -73,7 +73,7 @@ echo "Cover letter copied to ${LETTER_DESTINATION_DIR}/${LETTER_DEST_FILE}"
 # Copy datasets
 if [ -d "$DATASETS_SOURCE_DIR" ]; then
   echo "Copying ${DATASETS_SOURCE_DIR}"
-  cp -r "${DATASETS_SOURCE_DIR}" "${ECTD_ROOT_DIR}/."
+  cp -r "${DATASETS_SOURCE_DIR}" "${ECTD_DATASETS_DIR}"
 fi
 
 # Copy pilot 4 app pkglite file
