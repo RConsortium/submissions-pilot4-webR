@@ -15,8 +15,14 @@ ECTD_BUNDLE_DIR=submissions-pilot4-webR-to-fda
 ECTD_LETTER_DIR=${ECTD_BUNDLE_DIR}/m1/us
 ECTD_DATASETS_DIR=${ECTD_BUNDLE_DIR}/m5/datasets/rconsortiumpilot4container/analysis/adam/datasets
 ECTD_PROGRAMS_DIR=${ECTD_BUNDLE_DIR}/m5/datasets/rconsortiumpilot4container/analysis/adam/programs
+ADRG_SOURCE_DIR=adrg
+ADRG_SOURCE_FILE=adrg-quarto-pdf.pdf
 ADRG_DESTINATION_DIR=${ECTD_DATASETS_DIR}
-README_DESTINATION_DIR=${ECTD_BUNDLE_DIR}
+README_SOURCE_DIR=ectd_readme
+README_SOURCE_FILE=README.md
+README_DESITNATION_DIR=${ECTD_BUNDLE_DIR}
+LETTER_SOURCE_DIR=cover-letter
+LETTER_SOURCE_FILE=cover-letter.pdf
 LETTER_DESTINATION_DIR=${ECTD_LETTER_DIR}
 DATASETS_SOURCE_DIR=app/www/adam
 
