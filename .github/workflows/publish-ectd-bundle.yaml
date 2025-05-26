@@ -56,13 +56,15 @@ jobs:
         run: |
           quarto render cover-letter/cover-letter.qmd
 
-      - name: Compile pkglite files (custom)
+
+      - name: Compile pkglite file (custom)
         run: |
           source("utils.R"); create_app_pkglite_bundle(); create_env_pkglite_bundle()
         shell: Rscript {0}
 
       - name: Set up object storage s3cmd cli tool
         uses: s3-actions/s3cmd@v1.6.1
+        if: ${{ false }}
         with:
           provider: linode
           region: 'us-east-1'

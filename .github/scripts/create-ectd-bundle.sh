@@ -18,21 +18,11 @@ ECTD_PROGRAMS_DIR=${ECTD_BUNDLE_DIR}/m5/datasets/rconsortiumpilot4container/anal
 ADRG_DESTINATION_DIR=${ECTD_DATASETS_DIR}
 README_DESTINATION_DIR=${ECTD_BUNDLE_DIR}
 LETTER_DESTINATION_DIR=${ECTD_LETTER_DIR}
-ADRG_SOURCE_DIR=adrg
-ADRG_SOURCE_FILE=adrg-quarto-pdf.pdf
-ADRG_DEST_FILE=adrg.pdf
-README_SOURCE_DIR=ectd_readme
-README_SOURCE_FILE=README.md
-README_DEST_FILE=README.md
-LETTER_SOURCE_DIR=cover-letter
-LETTER_SOURCE_FILE=cover-letter.pdf
-LETTER_DEST_FILE=cover-letter.pdf
-DATASETS_SOURCE_DIR=datasets
+DATASETS_SOURCE_DIR=app/www/adam
 
 # Create directory structure for ectd bundle
 mkdir -p "${ECTD_LETTER_DIR}"
 mkdir -p "${ECTD_PROGRAMS_DIR}"
-#mkdir -p "${ECTD_DATASETS_DIR}"
 
 # Copy ADRG (PDF version)
 if [ -f "${ADRG_SOURCE_DIR}/${ADRG_SOURCE_FILE}" ]; then
@@ -92,13 +82,3 @@ fi
 
 echo "Environment pkglite file copied to ${PKGLITE_SOURCE_DIR}/${PKGLITE_ENV_SOURCE_FILE}"
 
-# if [ -f "${ECTD_BUNDLE_DIR}/${ECTD_BUNDLE_FILE}" ]; then
-#   echo "Copying ${ECTD_BUNDLE_DIR}/${ECTD_BUNDLE_FILE}"
-#   if [ ! -f "$DESTINATION_DIR" ]; then
-#     echo "Create new directory ${DESTINATION_DIR}"
-#     mkdir -p "${DESTINATION_DIR}"
-#   fi
-#   cp "${ECTD_BUNDLE_DIR}/${ECTD_BUNDLE_FILE}" "${DESTINATION_DIR}/${ECTD_BUNDLE_FILE}"
-# fi
-
-# echo "ECTD Bundle file copied to ${DESTINATION_DIR}/${ECTD_BUNDLE_FILE}"
