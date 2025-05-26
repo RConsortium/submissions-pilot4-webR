@@ -56,9 +56,9 @@ jobs:
         run: |
           quarto render cover-letter/cover-letter.qmd
 
-      - name: Compile ECTD Bundle (custom)
+      - name: Compile pkglite files (custom)
         run: |
-          source("utils.R"); create_app_bundle(); create_ectd_bundle()
+          source("utils.R"); create_app_pkglite_bundle(); create_env_pkglite_bundle()
         shell: Rscript {0}
 
       - name: Set up object storage s3cmd cli tool
@@ -69,10 +69,6 @@ jobs:
           access_key: ${{ secrets.S3_ACCESS_KEY }}
           secret_key: ${{ secrets.S3_SECRET_KEY }}
 
-      - name: Publish ECTD App bundle to Linode Object Storage
-        run: |
-          s3cmd put ectd_bundle/r4app.zip --mime-type 'application/zip' --acl-public s3://rsubmission-draft/r4app.zip
-
       - name: Check out ECTD bundle destination repo
         uses: actions/checkout@v4
         with:
@@ -80,13 +76,13 @@ jobs:
           path: ./submissions-pilot4-webR-to-fda
           token: ${{ secrets.API_TOKEN_GITHUB }}
 
-      - name: Copy ECTD bundle
-        run: bash ./.github/scripts/copy-ectd-bundle.sh
-        env:
-          DESTINATION_DIR: submissions-pilot4-webR-to-fda/m5/datasets/rconsortiumpilot4/analysis/adam/programs
-          ADRG_DESTINATION_DIR: submissions-pilot4-webR-to-fda/m5/datasets/rconsortiumpilot4/analysis/adam/datasets
-          README_DESTINATION_DIR: submissions-pilot4-webR-to-fda
-          LETTER_DESTINATION_DIR: submissions-pilot4-webR-to-fda/m1/us
+      - name: Create ECTD bundle
+        run: bash ./.github/scripts/create-ectd-bundle.sh
 
-      - name: Push ECTD bundle repository
+      - name: Push ECTD bundle
         run: bash ./.github/scripts/push-ectd-bundle.sh
+      
+      - name: Publish ADRG PDF to object storage
+        run: |
+          s3cmd put adrg/adrg-quarto-pdf.pdf --mime-type 'application/pdf' --acl-public s3://rsubmission-draft/pilot4-webR-adrg.pdf
+

@@ -7,9 +7,17 @@ function l { # Log a message to the terminal.
     echo -e "[$SCRIPT_NAME] ${1:-}"
 }
 
-# ECTD file to copy from source repo
-ECTD_BUNDLE_DIR=ectd_bundle
-ECTD_BUNDLE_FILE=r4app.zip
+# Define file and directory paths
+PKGLITE_SOURCE_DIR=dev
+PKGLITE_APP_SOURCE_FILE=pilot4_webR_pkglite.txt
+PKGLITE_ENV_SOURCE_FILE=pilot4_webR_env.txt
+ECTD_BUNDLE_DIR=submissions-pilot4-webR-to-fda
+ECTD_LETTER_DIR=${ECTD_BUNDLE_DIR}/m1/us
+ECTD_DATASETS_DIR=${ECTD_BUNDLE_DIR}/m5/datasets/rconsortiumpilot4container/analysis/adam/datasets
+ECTD_PROGRAMS_DIR=${ECTD_BUNDLE_DIR}/m5/datasets/rconsortiumpilot4container/analysis/adam/programs
+ADRG_DESTINATION_DIR=${ECTD_DATASETS_DIR}
+README_DESTINATION_DIR=${ECTD_BUNDLE_DIR}
+LETTER_DESTINATION_DIR=${ECTD_LETTER_DIR}
 ADRG_SOURCE_DIR=adrg
 ADRG_SOURCE_FILE=adrg-quarto-pdf.pdf
 ADRG_DEST_FILE=adrg.pdf
@@ -19,6 +27,12 @@ README_DEST_FILE=README.md
 LETTER_SOURCE_DIR=cover-letter
 LETTER_SOURCE_FILE=cover-letter.pdf
 LETTER_DEST_FILE=cover-letter.pdf
+DATASETS_SOURCE_DIR=datasets
+
+# Create directory structure for ectd bundle
+mkdir -p "${ECTD_LETTER_DIR}"
+mkdir -p "${ECTD_PROGRAMS_DIR}"
+#mkdir -p "${ECTD_DATASETS_DIR}"
 
 # Copy ADRG (PDF version)
 if [ -f "${ADRG_SOURCE_DIR}/${ADRG_SOURCE_FILE}" ]; then
@@ -55,6 +69,28 @@ if [ -f "${LETTER_SOURCE_DIR}/${LETTER_SOURCE_FILE}" ]; then
 fi
 
 echo "Cover letter copied to ${LETTER_DESTINATION_DIR}/${LETTER_DEST_FILE}"
+
+# Copy datasets
+if [ -d "$DATASETS_SOURCE_DIR" ]; then
+  echo "Copying ${DATASETS_SOURCE_DIR}"
+  cp "${DATASETS_SOURCE_DIR}/*" "${ECTD_DATASETS_DIR}/."
+fi
+
+# Copy pilot 4 app pkglite file
+if [ -f "${PKGLITE_SOURCE_DIR}/${PKGLITE_APP_SOURCE_FILE}" ]; then
+  echo "Copying ${PKGLITE_SOURCE_DIR}/${PKGLITE_APP_SOURCE_FILE}"
+  cp "${PKGLITE_SOURCE_DIR}/${PKGLITE_APP_SOURCE_FILE}" "${ECTD_PROGRAMS_DIR}/${PKGLITE_APP_SOURCE_FILE}"
+fi
+
+echo "App pkglite file copied to ${PKGLITE_SOURCE_DIR}/${PKGLITE_APP_SOURCE_FILE}"
+
+# Copy pilot 4 env pkglite file
+if [ -f "${PKGLITE_SOURCE_DIR}/${PKGLITE_ENV_SOURCE_FILE}" ]; then
+  echo "Copying ${PKGLITE_SOURCE_DIR}/${PKGLITE_ENV_SOURCE_FILE}"
+  cp "${PKGLITE_SOURCE_DIR}/${PKGLITE_ENV_SOURCE_FILE}" "${ECTD_PROGRAMS_DIR}/${PKGLITE_ENV_SOURCE_FILE}"
+fi
+
+echo "Environment pkglite file copied to ${PKGLITE_SOURCE_DIR}/${PKGLITE_ENV_SOURCE_FILE}"
 
 # if [ -f "${ECTD_BUNDLE_DIR}/${ECTD_BUNDLE_FILE}" ]; then
 #   echo "Copying ${ECTD_BUNDLE_DIR}/${ECTD_BUNDLE_FILE}"
