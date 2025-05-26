@@ -8,6 +8,8 @@ on:
       - 'utils.R'
       - 'renv.lock'
       - 'ectd_readme/README.qmd'
+      - 'cover-letter/cover-letter.qmd'
+      - 'adrg/_adrg.qmd'
 
 name: Publish ECTD bundle
 
