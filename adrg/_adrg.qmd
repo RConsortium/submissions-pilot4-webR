@@ -398,7 +398,8 @@ Study datasets and the Shiny application supportive files are organized in accor
                         │   ├── define2-0-0.xsl
                         │   └── define.xml
                         └── programs
-                            └── r4app.zip
+                            ├── pilot4_webR_env.txt
+                            └── pilot4_webR_pkglite.txt
 
 ```{r}
 #| label: pilot4-dir-structure
