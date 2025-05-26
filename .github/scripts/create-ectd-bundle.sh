@@ -7,49 +7,22 @@ function l { # Log a message to the terminal.
     echo -e "[$SCRIPT_NAME] ${1:-}"
 }
 
-# Environment variables representing directory structure
-# - defined in specific GitHub Action step
-#DESTINATION_PROGRAMS_DIR=submissions-pilot4-webR-to-fda/m5/datasets/rconsortiumpilot4/analysis/adam/programs
-#DESTINATION_DATASETS_DIR=submissions-pilot4-webR-to-fda/m5/datasets/rconsortiumpilot4/analysis/adam/datasets
-#ADRG_DESTINATION_DIR=submissions-pilot4-webR-to-fda/m5/datasets/rconsortiumpilot4/analysis/adam/datasets
-#README_DESTINATION_DIR=submissions-pilot4-webR-to-fda
-#LETTER_DESTINATION_DIR: submissions-pilot4-webR-to-fda/m1/us
-#ECTD file to copy from source repo
-
-# Variables representing files/directories
-ECTD_BUNDLE_DIR=ectd_bundle
-ECTD_PKGLITE_FILE=pilot4_webR_pkglite.txt
-ECTD_BUNDLE_FILE=r4app.zip
-ADRG_SOURCE_DIR=adrg
-ADRG_SOURCE_FILE=adrg-quarto-pdf.pdf
-ADRG_DEST_FILE=adrg.pdf
-README_SOURCE_DIR=ectd_readme
-README_SOURCE_FILE=README.md
-README_DEST_FILE=README.md
-LETTER_SOURCE_DIR=cover-letter
-LETTER_SOURCE_FILE=cover-letter.pdf
-LETTER_DEST_FILE=cover-letter.pdf
+# Define file and directory paths
+PKGLITE_SOURCE_DIR=dev
+PKGLITE_APP_SOURCE_FILE=pilot4_webR_pkglite.txt
+PKGLITE_ENV_SOURCE_FILE=pilot4_webR_env.txt
+ECTD_BUNDLE_DIR=submissions-pilot4-webR-to-fda
+ECTD_LETTER_DIR=${ECTD_BUNDLE_DIR}/m1/us
+ECTD_DATASETS_DIR=${ECTD_BUNDLE_DIR}/m5/datasets/rconsortiumpilot4container/analysis/adam/datasets
+ECTD_PROGRAMS_DIR=${ECTD_BUNDLE_DIR}/m5/datasets/rconsortiumpilot4container/analysis/adam/programs
+ADRG_DESTINATION_DIR=${ECTD_DATASETS_DIR}
+README_DESTINATION_DIR=${ECTD_BUNDLE_DIR}
+LETTER_DESTINATION_DIR=${ECTD_LETTER_DIR}
 DATASETS_SOURCE_DIR=app/www/adam
 
-# Copy XPT datasets and metadata files
-if [ -f "${DATASETS_SOURCE_DIR}" ]; then
-  echo "Copy XPT data and metadata files"
-  if [ ! -f "${DESTINATION_DATASETS_DIR}" ]; then
-    echo "Create new directory ${DESTINATION_DATASETS_DIR}"
-    mkdir -p "${DESTINATION_DATASETS_DIR}"
-  fi
-  cp "${DATASETS_SOURCE_DIR}/*" "${DESTINATION_DATASETS_DIR}/."
-fi
-
-# Copy pkglite file
-if [ -f "${ECTD_PKGLITE_FILE}" ]; then
-  echo "Copy pkglite file"
-  if [ ! -f "${DESTINATION_PROGRAMS_DIR}" ]; then
-    echo "Create new directory ${DESTINATION_PROGRAMS_DIR}"
-    mkdir -p "${DESTINATION_PROGRAMS_DIR}"
-  fi
-  cp "${ECTD_PKGLITE_FILE}" "${DESTINATION_PROGRAMS_DIR}/."
-fi
+# Create directory structure for ectd bundle
+mkdir -p "${ECTD_LETTER_DIR}"
+mkdir -p "${ECTD_PROGRAMS_DIR}"
 
 # Copy ADRG (PDF version)
 if [ -f "${ADRG_SOURCE_DIR}/${ADRG_SOURCE_FILE}" ]; then
@@ -86,3 +59,26 @@ if [ -f "${LETTER_SOURCE_DIR}/${LETTER_SOURCE_FILE}" ]; then
 fi
 
 echo "Cover letter copied to ${LETTER_DESTINATION_DIR}/${LETTER_DEST_FILE}"
+
+# Copy datasets
+if [ -d "$DATASETS_SOURCE_DIR" ]; then
+  echo "Copying ${DATASETS_SOURCE_DIR}"
+  cp "${DATASETS_SOURCE_DIR}/*" "${ECTD_DATASETS_DIR}/."
+fi
+
+# Copy pilot 4 app pkglite file
+if [ -f "${PKGLITE_SOURCE_DIR}/${PKGLITE_APP_SOURCE_FILE}" ]; then
+  echo "Copying ${PKGLITE_SOURCE_DIR}/${PKGLITE_APP_SOURCE_FILE}"
+  cp "${PKGLITE_SOURCE_DIR}/${PKGLITE_APP_SOURCE_FILE}" "${ECTD_PROGRAMS_DIR}/${PKGLITE_APP_SOURCE_FILE}"
+fi
+
+echo "App pkglite file copied to ${PKGLITE_SOURCE_DIR}/${PKGLITE_APP_SOURCE_FILE}"
+
+# Copy pilot 4 env pkglite file
+if [ -f "${PKGLITE_SOURCE_DIR}/${PKGLITE_ENV_SOURCE_FILE}" ]; then
+  echo "Copying ${PKGLITE_SOURCE_DIR}/${PKGLITE_ENV_SOURCE_FILE}"
+  cp "${PKGLITE_SOURCE_DIR}/${PKGLITE_ENV_SOURCE_FILE}" "${ECTD_PROGRAMS_DIR}/${PKGLITE_ENV_SOURCE_FILE}"
+fi
+
+echo "Environment pkglite file copied to ${PKGLITE_SOURCE_DIR}/${PKGLITE_ENV_SOURCE_FILE}"
+
