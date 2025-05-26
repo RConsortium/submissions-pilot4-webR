@@ -13,8 +13,9 @@ PKGLITE_APP_SOURCE_FILE=pilot4_webR_pkglite.txt
 PKGLITE_ENV_SOURCE_FILE=pilot4_webR_env.txt
 ECTD_BUNDLE_DIR=submissions-pilot4-webR-to-fda
 ECTD_LETTER_DIR=${ECTD_BUNDLE_DIR}/m1/us
-ECTD_DATASETS_DIR=${ECTD_BUNDLE_DIR}/m5/datasets/rconsortiumpilot4container/analysis/adam/datasets
-ECTD_PROGRAMS_DIR=${ECTD_BUNDLE_DIR}/m5/datasets/rconsortiumpilot4container/analysis/adam/programs
+ECTD_ROOT_DIR=${ECTD_BUNDLE_DIR}/m5/datasets/rconsortiumpilot4webR/analysis/adam
+ECTD_DATASETS_DIR=${ECTD_BUNDLE_DIR}/m5/datasets/rconsortiumpilot4webR/analysis/adam/datasets
+ECTD_PROGRAMS_DIR=${ECTD_BUNDLE_DIR}/m5/datasets/rconsortiumpilot4webR/analysis/adam/programs
 ADRG_SOURCE_DIR=adrg
 ADRG_SOURCE_FILE=adrg-quarto-pdf.pdf
 ADRG_DESTINATION_DIR=${ECTD_DATASETS_DIR}
@@ -72,7 +73,7 @@ echo "Cover letter copied to ${LETTER_DESTINATION_DIR}/${LETTER_DEST_FILE}"
 # Copy datasets
 if [ -d "$DATASETS_SOURCE_DIR" ]; then
   echo "Copying ${DATASETS_SOURCE_DIR}"
-  cp "${DATASETS_SOURCE_DIR}/*" "${ECTD_DATASETS_DIR}/."
+  cp -r "${DATASETS_SOURCE_DIR}" "${ECTD_ROOT_DIR}/."
 fi
 
 # Copy pilot 4 app pkglite file
