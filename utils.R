@@ -170,6 +170,7 @@ create_app_pkglite_bundle <- function(source_app_dir = "app", pkglite_file = "pi
 create_env_pkglite_bundle <- function(
   source_app_dir = "app", 
   renv_lockfile = "renv.lock",
+  rstudio_project_file = "submissions-pilot4-webr.Rproj",
   utils_file = "utils.R",
   pkglite_file = "pilot4_webR_env.txt"
 ) {
@@ -178,11 +179,19 @@ create_env_pkglite_bundle <- function(
   working_dir <- tempdir()
   file.copy(file.path(source_app_dir, "DESCRIPTION"), working_dir)
   file.copy(renv_lockfile, working_dir)
+  file.copy(rstudio_project_file, working_dir)
   file.copy(utils_file, working_dir)
 
   renv_spec <- pkglite::file_spec(
     ".",
     pattern = "\\.lock",
+    format = "text",
+    recursive = FALSE
+  )
+
+  rstudio_proj_spec <- pkglite::file_spec(
+    ".",
+    pattern = "\\.Rproj",
     format = "text",
     recursive = FALSE
   )
@@ -197,6 +206,7 @@ create_env_pkglite_bundle <- function(
   pkglite::collate(
     pkg = working_dir,
     renv_spec,
+    rstudio_proj_spec,
     utils_spec
   ) |>
     pkglite::pack(output = file.path("dev", pkglite_file))
