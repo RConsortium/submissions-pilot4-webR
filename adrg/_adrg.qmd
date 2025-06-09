@@ -387,7 +387,7 @@ Study datasets and the Shiny application supportive files are organized in accor
     │       └── cover-letter.pdf
     └── m5
         └── datasets
-            └── rconsortiumpilot4
+            └── rconsortiumpilot4webR
                 └── analysis
                     └── adam
                         ├── datasets
@@ -407,7 +407,7 @@ Study datasets and the Shiny application supportive files are organized in accor
 #| eval: true
 
 dir_df <- tibble::tibble(
-  name = c("module", "  datasets", "    rconsortiumpilot4", "    analysis", "      adam", "      datasets", "      programs"),
+  name = c("module", "  datasets", "    rconsortiumpilot4webR", "    analysis", "      adam", "      datasets", "      programs"),
   index = 1:7,
   desc = c("Refers to the eCTD module in which clinical study data is being submitted.", "Resides within the module folder as the top-level folder for clinical study data being submitted for m5.", "Study identifier or analysis type performed", "Contains folders for analysis datasets and software programs; arrange in designated level 6 subfolders", "Contains subfolders for ADaM datasets and corresponding software programs", "Contains ADaM datasets, analysis data reviewer’s guide, analysis results metadata and define files", "Contains application and environment files packaged as text files.")
 )
@@ -497,13 +497,13 @@ Enter the following command in the R console to extract the Shiny application fi
 # create application directory
 dir.create("C:/pilot4webR_files/app")
 pkglite::unpack(
-  input = "C:/pilot4cwebR/m5/datasets/rconsortiumpilot4/analysis/adam/programs/pilot4_webR_pkglite.txt", 
+  input = "C:/pilot4cwebR/m5/datasets/rconsortiumpilot4webR/analysis/adam/programs/pilot4_webR_pkglite.txt", 
   output = "C:/pilot4webR_files/app"
 )
 
 # extract environment lockfile
 pkglite::unpack(
-  input = "C:/pilot4cwebR/m5/datasets/rconsortiumpilot4/analysis/adam/programs/pilot4_webR_env.txt",
+  input = "C:/pilot4cwebR/m5/datasets/rconsortiumpilot4webR/analysis/adam/programs/pilot4_webR_env.txt",
   output = "C:?pilot4webR_files" 
 )
 ```
