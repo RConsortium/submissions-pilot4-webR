@@ -10,7 +10,6 @@ function l { # Log a message to the terminal.
 # Define file and directory paths
 PKGLITE_SOURCE_DIR=dev
 PKGLITE_APP_SOURCE_FILE=pilot4_webR_pkglite.txt
-PKGLITE_ENV_SOURCE_FILE=pilot4_webR_env.txt
 PKGLITE_UTILS_FILE=pkglite_utils.r
 ECTD_BUNDLE_DIR=submissions-pilot4-webR-to-fda
 ECTD_LETTER_DIR=${ECTD_BUNDLE_DIR}/m1/us
@@ -74,7 +73,7 @@ echo "Cover letter copied to ${LETTER_DESTINATION_DIR}/${LETTER_DEST_FILE}"
 # Copy datasets
 if [ -d "$DATASETS_SOURCE_DIR" ]; then
   echo "Copying ${DATASETS_SOURCE_DIR}"
-  cp -r "${DATASETS_SOURCE_DIR}" "${ECTD_DATASETS_DIR}"
+  cp -r "${DATASETS_SOURCE_DIR}" "${ECTD_ROOT_DIR}"
 fi
 
 # Copy pilot 4 app pkglite file
@@ -83,13 +82,13 @@ if [ -f "${PKGLITE_SOURCE_DIR}/${PKGLITE_APP_SOURCE_FILE}" ]; then
   cp "${PKGLITE_SOURCE_DIR}/${PKGLITE_APP_SOURCE_FILE}" "${ECTD_PROGRAMS_DIR}/${PKGLITE_APP_SOURCE_FILE}"
 fi
 
-echo "App pkglite file copied to ${PKGLITE_SOURCE_DIR}/${PKGLITE_APP_SOURCE_FILE}"
+echo "App pkglite file copied to ${ECTD_PROGRAMS_DIR}/${PKGLITE_APP_SOURCE_FILE}"
 
 # Copy pilot 4 pkglite utils R script
-if [ -f "${PKGLITE_SOURCE_DIR}/${PKGLITE_UTILS_FILE}" ]; then
-  echo "Copying ${PKGLITE_SOURCE_DIR}/${PKGLITE_UTILS_FILE}"
-  cp "${PKGLITE_SOURCE_DIR}/${PKGLITE_UTILS_FILE}" "${ECTD_PROGRAMS_DIR}/${PKGLITE_UTILS_FILE}"
+if [ -f "${PKGLITE_UTILS_FILE}" ]; then
+  echo "Copying ${PKGLITE_UTILS_FILE}"
+  cp "${PKGLITE_UTILS_FILE}" "${ECTD_PROGRAMS_DIR}/${PKGLITE_UTILS_FILE}"
 fi
 
-echo "Utils pkglite R file copied to ${PKGLITE_SOURCE_DIR}/${PKGLITE_UTILS_FILE}"
+echo "Utils pkglite R file copied to ${ECTD_PROGRAMS_DIR}/${PKGLITE_UTILS_FILE}"
 
