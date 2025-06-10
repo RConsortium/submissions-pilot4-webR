@@ -54,8 +54,8 @@ m5
                 │   ├── define.xml        # ADaM data define file
                 │   └── define2-0-0.xsl
                 └── programs
-                    ├── pilot4_webR_env.txt
-                    └── pilot4_webR_pkglite.txt
+                    ├── pilot4_webR_pkglite.txt
+                    └── pkglite_utils.r
 ```
 Other files: (**Do not include in eCTD package**)
 

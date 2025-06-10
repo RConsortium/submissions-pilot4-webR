@@ -378,8 +378,6 @@ Not Applicable. This pilot project displays analysis output as a Shiny applicati
 
 # Directory Structure
 
-TODO: Revise to inlcude pkglite files instead of r4app.zip
-
 Study datasets and the Shiny application supportive files are organized in accordance to Study Data Technical Conformance Guide.
 
     ├── m1
@@ -398,8 +396,8 @@ Study datasets and the Shiny application supportive files are organized in accor
                         │   ├── define2-0-0.xsl
                         │   └── define.xml
                         └── programs
-                            ├── pilot4_webR_env.txt
-                            └── pilot4_webR_pkglite.txt
+                            ├── pilot4_webR_pkglite.txt
+                            └── pkglite_utils.r
 
 ```{r}
 #| label: pilot4-dir-structure
@@ -451,7 +449,7 @@ In addition, create a new directory to hold the unpacked Pilot 4 Shiny applicati
 
 ## Installation of R and RStudio
 
-Download and install R 4.4.1 for Windows from <https://cran.r-project.org/bin/windows/base/R-4.4.1-win.exe>. While optional, it is also recommended to use RStudio IDE for executing R code to launch the application. You can download RStudio for Windows by visiting <https://posit.co/download/rstudio-desktop/#download>.
+Download and install R 4.4.1 for Windows from <https://cloud.r-project.org/bin/windows/base/old/4.4.1/R-4.4.1-win.exe>. While optional, it is also recommended to use RStudio IDE for executing R code to launch the application. You can download RStudio for Windows by visiting <https://posit.co/download/rstudio-desktop/#download>.
 
 ::: callout-info
 When launching RStudio for the first time, you may be prompted to select the version of R to use. Ensure that the default selection of __Use your machine's default 64-bit version of R__ is selected and click OK.
@@ -459,7 +457,7 @@ When launching RStudio for the first time, you may be prompted to select the ver
 
 ## Installation of Rtools
 
-Due to certain R packages requiring compilation from source, it is also required that you install the **Rtools** Windows utility from CRAN. You can download Rtools built for R version `4.4.1` by visiting <https://cloud.r-project.org/bin/windows/Rtools/rtools44/files/rtools44-6104-6039.exe>. During the installation procedure, keep the default choices in the settings presented in the installation dialog.
+Due to certain R packages requiring compilation from source, it is also required that you install the **Rtools** Windows utility from CRAN. You can download Rtools built for R version `4.4.1` by visiting <https://cloud.r-project.org/bin/windows/Rtools/rtools44/files/rtools44-6459-6401.exe>. During the installation procedure, keep the default choices in the settings presented in the installation dialog.
 
 Once the installation is complete, launch a new R session (if you have an existing session open, close that session first) and in the console, run the following command that should give the location of your Rtools installation:
 
@@ -491,20 +489,19 @@ m5\datasets\rconsortiumpilot4webR\analysis\adam\programs\pilot4_webR_pkglite.txt
 m5\datasets\rconsortiumpilot4webR\analysis\adam\programs\pilot4_webR_env.txt
 ```
 
-Enter the following command in the R console to extract the Shiny application files and environment lockfile to the appropriate destination directories:
+Enter the following commands in the R console to extract the Shiny application files and environment lockfile to the appropriate destination directory:
 
 ``` r
 # create application directory
-dir.create("C:/pilot4webR_files/app")
-pkglite::unpack(
-  input = "C:/pilot4cwebR/m5/datasets/rconsortiumpilot4webR/analysis/adam/programs/pilot4_webR_pkglite.txt", 
-  output = "C:/pilot4webR_files/app"
-)
+dir.create("C:/pilot4webR_files")
 
-# extract environment lockfile
-pkglite::unpack(
-  input = "C:/pilot4cwebR/m5/datasets/rconsortiumpilot4webR/analysis/adam/programs/pilot4_webR_env.txt",
-  output = "C:?pilot4webR_files" 
+# source utils.R script
+source("C:/pilot4webR/m5/datasets/rconsortiumpilot4webR/analysis/adam/programs/utils.R")
+
+# unpack submission pkglite bundle
+unpack_pkglite_bundle(
+  pkglite_file = "C:/pilot4webR/m5/datasets/rconsortiumpilot4webR/analysis/adam/programs/pilot4_webR_pkglite.txt",
+  datasets_dir = "C:/pilot4webR/m5/datasets/rconsortiumpilot4webR/analysis/adam/datasets"
 )
 ```
 
@@ -523,7 +520,7 @@ The package library includes all packages required to execute the application in
 Open the RStudio Project file `submissions-pilot4-webR.Rproj` within the directory of the extracted application bundle:
 
 1.  Select `File -> Open Project`
-2.  Click the **Browse** button and navigate to the `C:/pilot3webR_files` directory to select the `submissions-pilot4-webr.Rproj` file. 
+2.  Click the **Browse** button and navigate to the `C:/pilot4webR_files` directory to select the `submissions-pilot4-webr.Rproj` file. 
 
 RStudio will refresh the window and automatically install the `renv` package into the project directory. You may see a prompt about the installation of the `BiocManager` package. If so, accept the installation by typing `y` in the console. To complete the process of restoring remaining R packages, run the following command in the R console:
 
