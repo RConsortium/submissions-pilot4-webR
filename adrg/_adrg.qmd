@@ -494,12 +494,13 @@ Enter the following commands in the R console to extract the Shiny application f
 dir.create("C:/pilot4webR_files")
 
 # source utils.R script
-source("C:/pilot4webR/m5/datasets/rconsortiumpilot4webR/analysis/adam/programs/utils.R")
+source("C:/pilot4webR/m5/datasets/rconsortiumpilot4webR/analysis/adam/programs/pkglite_utils.r")
 
 # unpack submission pkglite bundle
 unpack_pkglite_bundle(
   pkglite_file = "C:/pilot4webR/m5/datasets/rconsortiumpilot4webR/analysis/adam/programs/pilot4_webR_pkglite.txt",
-  datasets_dir = "C:/pilot4webR/m5/datasets/rconsortiumpilot4webR/analysis/adam/datasets"
+  datasets_dir = "C:/pilot4webR/m5/datasets/rconsortiumpilot4webR/analysis/adam/datasets",
+  output_dir = "C:/pilot4_webR_files"
 )
 ```
 
