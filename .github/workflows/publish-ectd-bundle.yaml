@@ -62,7 +62,7 @@ jobs:
 
       - name: Compile pkglite file (custom)
         run: |
-          source("utils.R"); create_app_pkglite_bundle(); create_env_pkglite_bundle()
+          source("pkglite_utils.r"); create_app_pkglite_bundle()
         shell: Rscript {0}
 
       - name: Set up object storage s3cmd cli tool
