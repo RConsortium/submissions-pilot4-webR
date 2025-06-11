@@ -6,6 +6,7 @@ on:
     paths:
       - 'app/**'
       - 'utils.R'
+      - 'pkglite_utils.r'
       - 'renv.lock'
       - 'ectd_readme/README.qmd'
       - 'cover-letter/cover-letter.qmd'
