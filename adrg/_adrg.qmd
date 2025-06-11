@@ -445,8 +445,6 @@ dir_df_kbl %>%
 
 To install and execute the Shiny application, follow all of the procedures below. Ensure that you note the location of where you downloaded the Pilot 4 eCTD submission files. For demonstration purposes, the procedures below assume the transfer has been saved to this location: `C:\pilot4webR`.
 
-In addition, create a new directory to hold the unpacked Pilot 4 Shiny application files. For demonstration purposes, the procedures below assume the new directory is this location: `C:\pilot4webR_files`.
-
 ## Installation of R and RStudio
 
 Download and install R 4.4.1 for Windows from <https://cloud.r-project.org/bin/windows/base/old/4.4.1/R-4.4.1-win.exe>. While optional, it is also recommended to use RStudio IDE for executing R code to launch the application. You can download RStudio for Windows by visiting <https://posit.co/download/rstudio-desktop/#download>.
