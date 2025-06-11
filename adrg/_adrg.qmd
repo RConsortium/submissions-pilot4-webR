@@ -508,9 +508,7 @@ unpack_pkglite_bundle(
 The dependencies for executing the Shiny application are managed by the `renv` R package management system. To bootstrap the customized R package library used for the Shiny application, launch a new R session in the directory where you unpacked the application source files in the previous step. **Choose one of the following options** depending on your R computing environment and preference.
 
 ::: callout-note
-Due to certain R packages in the application requiring compilation, the entire package restoration procedure may require at least ten minutes or longer to complete depending on internet bandwidth and your computer's hardware profile.
-
-The package library includes all packages required to execute the application in the traditional method, however executing the application in the web-assembly method requires a minimal set of packages. Additional details can be found in @sec-launch .
+The package library includes all packages required to execute the application in the traditional method. However, executing the application in the web-assembly method requires a minimal set of packages. Additional details can be found in @sec-launch .
 :::
 
 ### Option 1: RStudio {.unnumbered}
@@ -569,7 +567,9 @@ renv::restore(prompt = FALSE)
 Due to certain R packages in the application requiring compilation, the entire package restoration procedure may require at least ten minutes or longer to complete depending on internet bandwidth and your computer's hardware profile.
 :::
 
-Once the package installation process is complete, you may see a message in the R console stating a new version of the `BiocManager` has been installed and to restart the R session to use that new version. This package is not utilized in the Pilot application, and you do not need to restart your R session. Next, run the following code to load a set of functions utilized in the remaining steps:
+Once the package installation process is complete, you may see a message in the R console stating a new version of the `BiocManager` has been installed and to restart the R session to use that new version. This package is not utilized in the Pilot application, and you do not need to restart your R session. It is also possible that a message appears stating a dependency tree was repaired during package installation concerning the `visR` package and recommends to call the `renv::snapshot()` command to capture the dependencies in the `renv` lockfile. This is entirely optional, as the correct versions of the application dependencies are installed correctly. 
+
+Run the following code to load a set of functions utilized in the remaining steps:
 
 ```r
 source("utils.R")
@@ -579,11 +579,15 @@ source("utils.R")
 
 ### Compile Shiny Application
 
-Run the following code to compile the Shiny application source files to a new sub-directory `_site`  
+Run the following code to compile the Shiny application source files to a new sub-directory called `_site`:
 
 ```r
 build_app()
 ```
+
+::: callout-note
+During the compilation procedure, key assets necessary for the web assembly compilers will be downloaded and the console will display numerous messages and progress indicators. If you wish to not see these verbose messages during compilation, you can set the `quiet` parameter to `TRUE` during the compilation with `build_app(quiet = TRUE)`.
+:::
 
 ## Launch Shiny Application {#sec-launch}
 
@@ -595,11 +599,7 @@ The web-assembly version of the Shiny application can be launched with the follo
 run_app_webassembly()
 ```
 
-A message appears in the R console displaying the web address of the application. To view the application, launch a new web browser session in Microsoft Edge and paste the address in the address bar. By default, the address will be `http://127.0.0.1:7654`.
-
-::: callout-note
-If the `build_app()` function was used to compile the application files, you may encounter a slight delay as the web browser installs the R packages. When visiting the application in a future session, these package installations will be cached in your browser's local storage and will render in less time.
-:::
+A message appears in the R console displaying the web address of the application. To view the application, launch a new web browser session in Microsoft Edge and paste the address in the address bar. By default, the address will be `http://127.0.0.1:7654`. When you are ready to stop the application, return to the R console and either press `Ctrl + C` on your keyboard or press the escape key on your keyboard.
 
 ### Traditional Shiny Method
 
@@ -608,7 +608,6 @@ While not required, the application can also be launched with the traditional me
 ```r
 run_app_shiny()
 ```
-
 
 # Appendix 2: Application Usage Guide {.unnumbered}
 
