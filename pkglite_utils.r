@@ -2,6 +2,7 @@ create_app_pkglite_bundle <- function(
   source_app_dir = "app", 
   renv_lockfile = "renv.lock",
   renv_rprofile = ".Rprofile",
+  renv_support_dir = "renv",
   rstudio_project_file = "submissions-pilot4-webr.Rproj",
   utils_file = "utils.R",
   pkglite_file = "pilot4_webR_pkglite.txt"
@@ -9,9 +10,13 @@ create_app_pkglite_bundle <- function(
 
   # create temp directory and move relevant files
   working_dir <- tempdir()
+  dir.create(file.path(working_dir, renv_support_dir))
   file.copy(file.path(source_app_dir, "DESCRIPTION"), working_dir)
   file.copy(renv_lockfile, working_dir)
   file.copy(renv_rprofile, working_dir)
+  file.copy(file.path(renv_support_dir, ".gitignore"), file.path(working_dir, renv_support_dir, ".gitignore"))
+  file.copy(file.path(renv_support_dir, "activate.R"), file.path(working_dir, renv_support_dir, "activate.R"))
+  file.copy(file.path(renv_support_dir, "settings.json"), file.path(working_dir, renv_support_dir, "settings.json"))
   file.copy(rstudio_project_file, working_dir)
   file.copy(utils_file, working_dir)
 
@@ -71,14 +76,21 @@ create_app_pkglite_bundle <- function(
   
   # supporting files
   renv_spec <- pkglite::file_spec(
-    ".",
+    path = ".",
     pattern = "\\.lock",
     format = "text",
     recursive = FALSE
   )
 
+  renv_support_spec <- pkglite::file_spec(
+    path = "renv/",
+    format = "text",
+    recursive = FALSE,
+    all_files = TRUE
+  )
+
   rprofile_spec <- pkglite::file_spec(
-    ".",
+    path = ".",
     pattern = "\\.Rprofile",
     format = "text",
     recursive = FALSE,
@@ -86,14 +98,14 @@ create_app_pkglite_bundle <- function(
   )
 
   rstudio_proj_spec <- pkglite::file_spec(
-    ".",
+    path = ".",
     pattern = "\\.Rproj",
     format = "text",
     recursive = FALSE
   )
 
   utils_spec <- pkglite::file_spec(
-    ".",
+    path = ".",
     pattern = "^utils",
     format = "text",
     recursive = FALSE
@@ -102,6 +114,7 @@ create_app_pkglite_bundle <- function(
   app_support_pkg <- working_dir |>
     pkglite::collate(
       renv_spec,
+      renv_support_spec,
       rprofile_spec,
       rstudio_proj_spec,
       utils_spec
@@ -120,6 +133,7 @@ unpack_pkglite_bundle <- function(
   pkglite_file = "pilot4_webR_pkglite.txt",
   datasets_dir = "datasets",
   renv_lockfile = "renv.lock",
+  renv_support_dir = "renv",
   renv_rprofile = ".Rprofile",
   rstudio_project_file = "submissions-pilot4-webr.Rproj",
   utils_file = "utils.R",
@@ -132,6 +146,11 @@ unpack_pkglite_bundle <- function(
   file.rename(
     from = file.path(output_dir, "pilot4webR", renv_lockfile),
     to = file.path(output_dir, renv_lockfile)
+  )
+
+  file.rename(
+    from = file.path(output_dir, "pilot4webR", renv_support_dir),
+    to = file.path(output_dir, renv_support_dir)
   )
 
   file.rename(
