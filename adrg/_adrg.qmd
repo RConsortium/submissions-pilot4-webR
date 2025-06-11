@@ -480,14 +480,13 @@ remotes::install_version("pkglite", version = "0.2.4")
 
 ## Extract Application Bundle
 
-Use the `pkglite` package to unpack the Shiny application bundle `pilot4_webR_pkglite.txt` as well as the environment lockfile contained in `pilot4_webR_env.txt` within the Pilot 4 eCTD submission transfer. These files are located in the following relative path within the eCTD transfer directory:
+Use the `pkglite` package to unpack the Shiny application bundle `pilot4_webR_pkglite.txt` within the Pilot 4 eCTD submission transfer. This file is located in the following relative path within the eCTD transfer directory:
 
 ``` sh
 m5\datasets\rconsortiumpilot4webR\analysis\adam\programs\pilot4_webR_pkglite.txt
-m5\datasets\rconsortiumpilot4webR\analysis\adam\programs\pilot4_webR_env.txt
 ```
 
-Enter the following commands in the R console to extract the Shiny application files and environment lockfile to the appropriate destination directory:
+Enter the following commands in the R console to extract the Shiny application files and additional environment files to the appropriate destination directory:
 
 ``` r
 # create application directory
