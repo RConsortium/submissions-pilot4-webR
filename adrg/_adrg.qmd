@@ -500,7 +500,7 @@ source("C:/pilot4webR/m5/datasets/rconsortiumpilot4webR/analysis/adam/programs/p
 unpack_pkglite_bundle(
   pkglite_file = "C:/pilot4webR/m5/datasets/rconsortiumpilot4webR/analysis/adam/programs/pilot4_webR_pkglite.txt",
   datasets_dir = "C:/pilot4webR/m5/datasets/rconsortiumpilot4webR/analysis/adam/datasets",
-  output_dir = "C:/pilot4_webR_files"
+  output_dir = "C:/pilot4webR_files"
 )
 ```
 
@@ -546,7 +546,7 @@ The procedure below assumes R 4.4.1 has been installed in a default location. If
 :::
 
 1.  Open the Windows Powershell program by searching for Windows Powershell in the Windows Start menu.
-2.  Change the current directory to the `C:/pilot4webR_files` directory by running the following command (substitute the `C:/pilot3webR_files` location for your appropriate directory as needed):
+2.  Change the current directory to the `C:/pilot4webR_files` directory by running the following command (substitute the `C:/pilot4webR_files` location for your appropriate directory as needed):
 
 ``` sh
 Set-Location -Path "C:\pilot4webR_files"
