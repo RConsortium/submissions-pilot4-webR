@@ -391,6 +391,7 @@ Study datasets and the Shiny application supportive files are organized in accor
                         ├── datasets
                         │   ├── adadas.xpt
                         │   ├── adlbc.xpt
+                        |   ├── adrg.pdf
                         │   ├── adsl.xpt
                         │   ├── adtte.xpt
                         │   ├── define2-0-0.xsl
