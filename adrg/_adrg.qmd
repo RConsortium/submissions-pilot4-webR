@@ -11,7 +11,7 @@ library(magrittr)
 
 ## Purpose
 
-The Analysis Data Reviewer's Guide (ADRG) provides specific instructions for executing a Shiny application created with the R-language for viewing analysis results and performing custom subpopulation analysis based on the data sets and analytical methods used in the [R Consortium R Submission Pilot 1](https://github.com/RConsortium/submissions-pilot1-to-fda). This document provides context for the analysis datasets and terminology that benefit from additional explanation beyond the Data Definition document (define.xml), as well as a summary of ADaM conformance findings. @sec-a1 provides detailed procedures for installing and configuring a local R environment to view the included Shiny application.
+The Analysis Data Reviewer's Guide (ADRG) provides specific instructions for executing a Shiny application created with the R-language for viewing analysis results and performing custom subpopulation analysis based on the data sets and analytical methods used in the [R Consortium R Submission Pilot 1](https://github.com/RConsortium/submissions-pilot1-to-fda). This document provides context for the analysis datasets and terminology that benefit from additional explanation beyond the Data Definition document (define.xml), as well as a summary of ADaM conformance findings. @sec-a1 provides detailed procedures for installing and configuring a local R environment to view the included Shiny application in both the WebAssembly runtime and traditional R session.
 
 ## Study Data Standards and Dictionary Inventory
 
