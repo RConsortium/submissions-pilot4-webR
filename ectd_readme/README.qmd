@@ -16,8 +16,6 @@ To learn more about other pilots, visit [the R consortium R submission working g
 ## FDA Response 
 
 - Initial submission
-
-TBD
   
 ## Run Shiny Application
 
@@ -68,4 +66,4 @@ The ECTD bundle was last rendered on {{< meta date >}} .
 
 ## Questions 
 
-Report issues in <https://github.com/RConsortium/submissions-pilot4-to-fda/issues>
+Report issues in <https://github.com/RConsortium/submissions-pilot4-webR/issues>
